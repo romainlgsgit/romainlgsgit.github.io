@@ -1,0 +1,106 @@
+/* Styles globaux */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Fond noir */
+    color: #e0e0e0; /* Couleur du texte */
+}
+
+/* Formulaire de connexion */
+#FormConn {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    background-color: #1e1e1e; /* Fond du formulaire */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+#Title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px; /* Taille de police agrandie pour le titre */
+}
+
+/* Styles pour les champs de saisie */
+input[type="texte"],
+input[type="password"],
+input[type="button"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #444; /* Bordure plus sombre */
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #2a2a2a; /* Fond des champs de saisie */
+    color: #e0e0e0; /* Couleur du texte */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #dc3545; /* Couleur de la bordure au focus */
+    outline: none; /* Retire le contour par défaut */
+}
+
+/* Styles pour le bouton de soumission */
+input[type="button"] {
+    background-color: #dc3545; /* Couleur verte */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Ajout de transition pour le transform */
+}
+
+input[type="button"]:hover {
+    background-color: #dc3545; /* Couleur au survol */
+    transform: scale(1.05); /* Léger agrandissement au survol */
+}
+
+/* Dashboard utilisateur */
+#Name {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px; /* Taille de police agrandie pour le nom */
+}
+
+#ration {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px auto;
+    width: 50%;
+}
+
+/* Styles pour le bouton de déconnexion */
+#delog {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #dc3545; /* Couleur rouge */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Ajout de transition pour le transform */
+}
+
+#delog:hover {
+    background-color: #c82333; /* Couleur au survol */
+    transform: scale(1.05); /* Léger agrandissement au survol */
+}
+
+/* Styles pour les SVG */
+#ringsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px auto;
+    width: 75%;
+}
+
+/* Styles supplémentaires */
+h1, h4, p {
+    margin: 0;
+    padding: 0;
+}
