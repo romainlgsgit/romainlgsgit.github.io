@@ -23,31 +23,24 @@ Je suis développeur full-stack, passionné par la création de **sites web** et
 
 ## 📌 Projets mis en avant
 
-### 🌐 [News TikiTaka](https://github.com/RomainLegros/news-tikitaka)  
+### 🌐 [News TikiTaka](https://newstikitakaweb.fr)  
 Développement d’un site web de journalistes sportifs indépendants.  
 **Technos :** HTML, CSS, PHP, SQL  
 
 ---
 
-### 🎯 [RL Studios](https://github.com/RomainLegros/rl-studios)  
+### 🎯 [RL Studios](https://rlstudiosweb.com)  
 Développement d’un site vitrine de studio de jeux vidéo.  
 **Technos :** HTML, CSS, JS  
 
 ---
 
-### 🎮 [Larceny Simulator](https://github.com/RomainLegros/larceny-simulator)  
+### 🎮 [Larceny Simulator](https://rlstudiosweb.com/larceny.html)  
 Développement d’un jeu vidéo de simulation de vol d’objets.  
 **Technos :** Unity, C#  
 
 ---
 
-### 🎮 [Léana](https://github.com/RomainLegros/leana)  
+### 🎮 [Léana](https://rlstudiosweb.com/Leana.html)  
 Développement d’un jeu d’aventure en 2D.  
 **Technos :** Unity, C#  
-
----
-
-## 📊 Stats GitHub
-
-![Stats](https://github-readme-stats.vercel.app/api?username=RomainLegros&show_icons=true&theme=tokyonight)  
-![Langages](https://github-readme-stats.vercel.app/api/top-langs/?username=RomainLegros&layout=compact&theme=tokyonight)  
