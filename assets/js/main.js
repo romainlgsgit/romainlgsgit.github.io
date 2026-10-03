@@ -454,6 +454,24 @@ function drawMap(z, ang) {
 }
 
 const pelouse = shots[0];
+const streetview = document.getElementById('streetview');
+let svLoaded = false;
+function loadStreetView() {
+  svLoaded = true;
+  streetview.addEventListener('load', () => setTimeout(() => streetview.classList.add('ready'), 1500), { once: true });
+  streetview.src = streetview.dataset.src;
+}
+// Vue 360° interactive : on « entre » dans Street View, puis on en ressort
+document.getElementById('explore').addEventListener('click', () => {
+  document.body.classList.add('exploring');
+  streetview.tabIndex = 0;
+  streetview.focus();
+});
+document.getElementById('exit360').addEventListener('click', () => {
+  document.body.classList.remove('exploring');
+  streetview.tabIndex = -1;
+  document.getElementById('barca').scrollIntoView({ behavior: 'smooth' });
+});
 pelouse.style.transformOrigin = '50% 60%';
 
 function renderGround(p) {
@@ -472,6 +490,7 @@ function renderGround(p) {
   const o = smooth(range(p, 0.84, 0.91));
   pelouse.style.opacity = o.toFixed(3);
   pelouse.style.visibility = o < 0.01 ? 'hidden' : 'visible';
+  streetview.style.setProperty('--sv', o.toFixed(3));
   if (o > 0) pelouse.style.transform = `scale(${lerp(1.3, 1, easeOut(range(p, 0.84, 1))).toFixed(4)})`;
 
   // Altitude approximative
@@ -543,6 +562,7 @@ function frame(now) {
 
   updateOverlays(prog);
   if (prog > 0.02) loadCatalogne();
+  if (!svLoaded && prog > 0.55) loadStreetView();
   if (!prefetched && prog > 0.2) prefetchTiles();
   if (scrollY > journeyEnd + innerHeight * 1.2) return; // la section projets couvre tout
   canvas.style.visibility = prog < SWITCH + 0.01 ? 'visible' : 'hidden';
@@ -567,6 +587,7 @@ if (!Number.isNaN(qp)) {
   loadEurope();
   loadCatalogne();
   if (qp > 0.2) prefetchTiles();
+  if (qp > 0.55) loadStreetView();
 }
 
 requestAnimationFrame(frame);
