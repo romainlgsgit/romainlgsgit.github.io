@@ -260,6 +260,111 @@ const marker = new THREE.Sprite(
 marker.position.copy(latLon(BCN.lat, BCN.lon, 1.012));
 spin.add(marker);
 
+/* --- Surcouches satellite HD (tuiles Esri) pour le zoom sur l'Europe --- */
+const ESRI = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
+const mercX = (lon, z) => ((lon + 180) / 360) * 256 * 2 ** z;
+const mercY = (lat, z) => {
+  const s = Math.sin(lat * D);
+  return (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * 256 * 2 ** z;
+};
+
+const patchMaterials = [];
+function makePatch({ z, lon0, lon1, lat0, lat1, radius, order }) {
+  // Grille de tuiles qui couvre la zone
+  const tx0 = Math.floor(mercX(lon0, z) / 256);
+  const tx1 = Math.floor(mercX(lon1, z) / 256);
+  const ty0 = Math.floor(mercY(lat1, z) / 256);
+  const ty1 = Math.floor(mercY(lat0, z) / 256);
+  const W = (tx1 - tx0 + 1) * 256;
+  const H = (ty1 - ty0 + 1) * 256;
+  const [c, g] = makeCanvas(W, H);
+  const tex = canvasTex(c);
+  tex.generateMipmaps = true;
+
+  // Morceau de sphère avec des UV en projection Mercator
+  const geo = new THREE.SphereGeometry(
+    radius, 96, 72,
+    (lon0 + 180) * D, (lon1 - lon0) * D,
+    (90 - lat1) * D, (lat1 - lat0) * D
+  );
+  const pos = geo.attributes.position;
+  const muv = new Float32Array(pos.count * 2);
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), zz = pos.getZ(i);
+    const lat = Math.asin(clamp(y / radius, -1, 1)) / D;
+    const lon = Math.atan2(zz, -x) / D - 180;
+    const lonN = lon < -180 ? lon + 360 : lon;
+    muv[i * 2] = (mercX(lonN, z) - tx0 * 256) / W;
+    muv[i * 2 + 1] = 1 - (mercY(lat, z) - ty0 * 256) / H;
+  }
+  geo.setAttribute('muv', new THREE.BufferAttribute(muv, 2));
+
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { map: { value: tex }, sunDir: { value: sunDir }, ready: { value: 0 } },
+    vertexShader: /* glsl */ `
+      attribute vec2 muv;
+      varying vec2 vUv;
+      varying vec2 vM;
+      varying vec3 vN;
+      void main() {
+        vUv = uv;
+        vM = muv;
+        vN = normalize(mat3(modelMatrix) * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform sampler2D map;
+      uniform vec3 sunDir;
+      uniform float ready;
+      varying vec2 vUv;
+      varying vec2 vM;
+      varying vec3 vN;
+      void main() {
+        vec4 t = texture2D(map, vM);
+        float d = dot(normalize(vN), sunDir);
+        vec3 golden = mix(vec3(1.0, 0.62, 0.4), vec3(1.0), smoothstep(0.0, 0.45, d));
+        vec3 col = t.rgb * golden * (0.12 + 1.1 * max(d, 0.0) + 0.25 * smoothstep(0.0, 0.3, d));
+        vec2 e = min(vUv, 1.0 - vUv);
+        float edge = smoothstep(0.0, 0.12, e.x) * smoothstep(0.0, 0.12, e.y);
+        float a = t.a * edge * smoothstep(-0.18, 0.22, d) * ready;
+        gl_FragColor = vec4(col, a);
+        #include <colorspace_fragment>
+      }`,
+    transparent: true,
+    depthWrite: false,
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.renderOrder = order;
+  spin.add(mesh);
+  patchMaterials.push(mat);
+
+  let pending = false;
+  let started = false;
+  return function load() {
+    if (started) return;
+    started = true;
+    for (let x = tx0; x <= tx1; x++) {
+      for (let y = ty0; y <= ty1; y++) {
+        const im = new Image();
+        im.crossOrigin = 'anonymous';
+        im.decoding = 'async';
+        im.onload = () => {
+          g.drawImage(im, (x - tx0) * 256, (y - ty0) * 256);
+          mat.uniforms.ready.value = 1;
+          if (!pending) {
+            pending = true;
+            setTimeout(() => { tex.needsUpdate = true; pending = false; }, 250);
+          }
+        };
+        im.src = ESRI(z, x, y);
+      }
+    }
+  };
+}
+// Europe de l'Ouest (vue large) puis Catalogne (vue proche)
+const loadEurope = makePatch({ z: 5, lon0: -30, lon1: 45, lat0: 18, lat1: 64, radius: 1.0006, order: 1 });
+const loadCatalogne = makePatch({ z: 7, lon0: -8, lon1: 14, lat0: 33, lat1: 49, radius: 1.0012, order: 2 });
+
 
 /* ==========================================================
    Descente réelle : imagerie satellite puis photos du Camp Nou
@@ -414,6 +519,8 @@ function renderSpace(p, t) {
   const idle = reduceMotion ? 0 : t * 0.03;
   spin.rotation.set(lerp(0.32, rxT, turn), ryT - (1 - turn) * (2.4 + idle), 0);
   cloudMesh.rotation.y = reduceMotion ? 0 : t * 0.004;
+  // Les nuages globaux sont basse définition : on les efface en approche
+  cloudMesh.material.opacity = 0.8 * (1 - range(tE, 0.35, 0.7));
   stars.rotation.y = t * 0.002;
 
   const show = range(tE, 0.3, 0.5) * (1 - range(tE, 0.92, 1));
@@ -435,6 +542,7 @@ function frame(now) {
   if (Math.abs(target - prog) < 1e-5) prog = target;
 
   updateOverlays(prog);
+  if (prog > 0.02) loadCatalogne();
   if (!prefetched && prog > 0.2) prefetchTiles();
   if (scrollY > journeyEnd + innerHeight * 1.2) return; // la section projets couvre tout
   canvas.style.visibility = prog < SWITCH + 0.01 ? 'visible' : 'hidden';
@@ -448,6 +556,7 @@ function frame(now) {
 addEventListener('resize', resize);
 addEventListener('scroll', readScroll, { passive: true });
 resize();
+setTimeout(loadEurope, 600);
 
 // Aperçu figé d'une étape (développement) : ?p=0.75
 const qp = parseFloat(new URLSearchParams(location.search).get('p'));
@@ -455,6 +564,8 @@ if (!Number.isNaN(qp)) {
   frozen = true;
   target = prog = clamp(qp);
   jumpOnce = true;
+  loadEurope();
+  loadCatalogne();
   if (qp > 0.2) prefetchTiles();
 }
 
