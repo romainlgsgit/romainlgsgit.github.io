@@ -454,7 +454,7 @@ function drawMap(z, ang) {
 }
 
 const pelouse = shots[0];
-pelouse.style.transformOrigin = '50% 45%';
+pelouse.style.transformOrigin = '50% 70%';
 
 function renderGround(p) {
   const on = p >= SWITCH - 0.02;
@@ -479,7 +479,7 @@ function renderGround(p) {
   if (p < 0.88) {
     const mpp = (156543.03 * Math.cos(CN.lat * D)) / 2 ** z;
     alt = mpp * innerHeight * 1.37;
-  } else alt = lerp(40, 1.8, easeOut(range(p, 0.88, 1)));
+  } else alt = lerp(160, 52, easeOut(range(p, 0.88, 1))); // photo prise du haut des tribunes
   setAltitude(alt);
 }
 

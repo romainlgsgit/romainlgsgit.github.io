@@ -9,6 +9,6 @@ Un portfolio en forme de voyage : on part de l'espace, on plonge vers la Terre, 
 - **pedri8lyn_** — site des edits Pedri
 
 Fait avec HTML, CSS, JavaScript et Three.js.
-Crédits : textures de la Terre NASA (via Three.js) · imagerie satellite © Esri, Maxar, Earthstar Geographics · photo du Camp Nou : Luis Miguel Bugallo Sánchez (CC BY-SA 3.0), Wikimedia Commons.
+Crédits : textures de la Terre NASA (via Three.js) · imagerie satellite © Esri, Maxar, Earthstar Geographics · photo du Camp Nou : Markus Unger (CC BY 2.0), Wikimedia Commons.
 
 📫 legrosromainpro@gmail.com
