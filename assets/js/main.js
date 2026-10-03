@@ -267,13 +267,13 @@ spin.add(marker);
 const ground = document.getElementById('ground');
 const mapCanvas = document.getElementById('map');
 const mctx = mapCanvas.getContext('2d');
-const shots = ['aerial', 'tribune', 'pelouse'].map((id) => document.getElementById(`shot-${id}`));
+const shots = ['pelouse'].map((id) => document.getElementById(`shot-${id}`));
 
 // Centre de la pelouse du Camp Nou
 const CN = { lat: 41.38088, lon: 2.12282 };
 const TILE_URL = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
 const Z_START = 6.5;
-const Z_END = 17.4;
+const Z_END = 18.9;
 const MAX_LEVEL = 18;
 
 const tiles = new Map();
@@ -348,50 +348,33 @@ function drawMap(z, ang) {
   }
 }
 
-// Point de focus de chaque photo (le stade / le centre de la tribune)
-const SHOT_FOCUS = ['47% 62%', '50% 42%', '50% 45%'];
-shots.forEach((el, i) => { el.style.transformOrigin = SHOT_FOCUS[i]; });
+const pelouse = shots[0];
+pelouse.style.transformOrigin = '50% 45%';
 
 function renderGround(p) {
   const on = p >= SWITCH - 0.02;
   ground.style.visibility = on ? 'visible' : 'hidden';
   if (!on) return;
 
-  // 1. Satellite : de l'Espagne jusqu'au stade
-  const tM = range(p, SWITCH, 0.74);
+  // 1. Satellite : de la côte catalane jusque dans le stade
+  const tM = range(p, SWITCH, 0.9);
   const z = lerp(Z_START, Z_END, 1 - Math.pow(1 - tM, 1.25));
   const ang = (1 - easeOut(tM)) * -0.5;
-  if (p < 0.8) drawMap(z, reduceMotion ? 0 : ang);
-  mapCanvas.style.opacity = (1 - range(p, 0.72, 0.77)).toFixed(3);
+  if (p < 0.92) drawMap(z, reduceMotion ? 0 : ang);
+  mapCanvas.style.opacity = (1 - range(p, 0.86, 0.91)).toFixed(3);
 
-  // 2-4. Photos réelles : vue aérienne, tribune, bord de pelouse
-  const fades = [
-    [0.72, 0.77, 0.84, 0.88],
-    [0.84, 0.88, 0.91, 0.95],
-    [0.91, 0.95, 2, 3],
-  ];
-  const zooms = [
-    [0.72, 0.88, 1, 1.75],
-    [0.84, 0.95, 1, 1.28],
-    [0.91, 1, 1.22, 1],
-  ];
-  shots.forEach((el, i) => {
-    const [a, b, c, d] = fades[i];
-    const o = Math.min(smooth(range(p, a, b)), 1 - smooth(range(p, c, d)));
-    const [za, zb, s0, s1] = zooms[i];
-    el.style.opacity = o.toFixed(3);
-    el.style.visibility = o < 0.01 ? 'hidden' : 'visible';
-    if (o > 0) el.style.transform = `scale(${lerp(s0, s1, ease(range(p, za, zb))).toFixed(4)})`;
-  });
+  // 2. On entre directement sur la pelouse
+  const o = smooth(range(p, 0.84, 0.91));
+  pelouse.style.opacity = o.toFixed(3);
+  pelouse.style.visibility = o < 0.01 ? 'hidden' : 'visible';
+  if (o > 0) pelouse.style.transform = `scale(${lerp(1.3, 1, easeOut(range(p, 0.84, 1))).toFixed(4)})`;
 
   // Altitude approximative
   let alt;
-  if (p < 0.74) {
+  if (p < 0.88) {
     const mpp = (156543.03 * Math.cos(CN.lat * D)) / 2 ** z;
     alt = mpp * innerHeight * 1.37;
-  } else if (p < 0.86) alt = lerp(900, 250, range(p, 0.74, 0.86));
-  else if (p < 0.93) alt = lerp(45, 25, range(p, 0.86, 0.93));
-  else alt = lerp(6, 1.8, range(p, 0.93, 1));
+  } else alt = lerp(40, 1.8, easeOut(range(p, 0.88, 1)));
   setAltitude(alt);
 }
 
