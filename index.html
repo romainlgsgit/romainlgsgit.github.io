@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Romain Legros — Portfolio</title>
+  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'à la pelouse du Camp Nou pour découvrir mes projets." />
+  <meta name="theme-color" content="#05060b" />
+  <meta property="og:title" content="Romain Legros — Portfolio" />
+  <meta property="og:description" content="De l'espace à la pelouse du Camp Nou : mes projets web et mobile." />
+  <meta property="og:image" content="https://romainlgsgit.github.io/assets/img/screen-notes.webp" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+</head>
+<body>
+
+  <!-- ========== DÉCOR FIXE ========== -->
+  <div class="nebula" aria-hidden="true"></div>
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div id="clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+  <header class="topbar">
+    <a href="#top" class="logo" aria-label="Retour en haut">RL<span>.</span></a>
+    <nav>
+      <a href="#barca">Projets Barça</a>
+      <a href="mailto:legrosromainpro@gmail.com" class="nav-cta">Contact</a>
+    </nav>
+  </header>
+
+  <!-- ========== CALQUES DU VOYAGE ========== -->
+  <div class="overlay" id="overlay">
+
+    <section class="hero fade" data-show="-1,0,0.045,0.1" aria-label="Présentation">
+      <div class="hero-card">
+        <div class="hero-head">
+          <img class="avatar" src="photo.jpg" alt="Romain Legros" width="96" height="96" />
+          <span class="status"><span class="pulse"></span>Ouvert aux projets</span>
+        </div>
+        <p class="eyebrow">Portfolio · Développeur web &amp; mobile</p>
+        <h1>Romain<br /><span>Legros</span></h1>
+        <ul class="facts">
+          <li><strong>20</strong> ans</li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            Normandie, France
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m12 7 4 3-1.5 4.5h-5L8 10Z"/><path d="M12 3v4M21 10.5l-5 -.5M17.5 19.5 14.5 14.5M6.5 19.5l3-5M3 10.5l5-.5"/></svg>
+            Fan de sport
+          </li>
+        </ul>
+        <p class="bio">
+          Je conçois des sites web et des applications mobiles, du design jusqu'à la mise en ligne.
+          Le sport, c'est ma passion — et le Barça avant tout. Ce portfolio est un voyage&nbsp;:
+          scrolle pour atterrir dans chacun de mes univers et découvrir ce que j'y ai construit.
+        </p>
+        <a class="mail" href="mailto:legrosromainpro@gmail.com">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          legrosromainpro@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <div class="scroll-hint fade" data-show="-1,0,0.015,0.04" aria-hidden="true">
+      <span>Scrolle pour décoller</span>
+      <i></i>
+    </div>
+
+    <div class="caption cap-left fade" data-show="0.15,0.2,0.36,0.42">
+      <span class="caption-kicker">Destination</span>
+      <p class="caption-title">Barcelone</p>
+      <p class="caption-sub">Catalunya · 41.38° N, 2.12° E</p>
+    </div>
+
+    <div class="caption cap-right fade" data-show="0.6,0.65,0.77,0.83">
+      <span class="caption-kicker">Les Corts, Barcelona</span>
+      <p class="caption-title">Camp Nou</p>
+      <p class="caption-sub">Le plus grand stade d'Europe</p>
+    </div>
+
+    <div class="caption cap-center fade" data-show="0.9,0.96,2,3">
+      <span class="caption-kicker">Univers 01</span>
+      <p class="caption-title">Coup d'envoi</p>
+      <p class="caption-sub">Mes projets autour du FC Barcelona ↓</p>
+    </div>
+
+    <div class="hud" aria-hidden="true">
+      <div class="hud-alt">
+        <span class="hud-label">Altitude</span>
+        <span class="hud-value" id="alt">—</span>
+      </div>
+      <ol class="hud-stages" id="stages">
+        <li>Espace</li>
+        <li>Terre</li>
+        <li>Barcelone</li>
+        <li>Camp Nou</li>
+      </ol>
+    </div>
+  </div>
+
+  <main id="top">
+    <div id="journey"></div>
+
+    <!-- ========== UNIVERS 01 : FC BARCELONA ========== -->
+    <section id="barca">
+      <div class="wrap">
+
+        <header class="section-head">
+          <span class="kicker"><span class="crest" aria-hidden="true"></span>Univers 01 · FC Barcelona</span>
+          <h2>Més que <em>des projets.</em></h2>
+          <p>Supporter du Barça depuis toujours, j'ai transformé cette passion en produits concrets&nbsp;: une application mobile publiée sur l'App Store et deux sites web pour la communauté culer.</p>
+        </header>
+
+        <!-- BCN SOCIAL — projet phare -->
+        <article class="bcn">
+          <div class="bcn-copy">
+            <div class="app-id">
+              <img src="assets/img/bcn-icon.png" alt="" width="72" height="72" />
+              <div>
+                <span class="tag">Application iOS · Projet phare</span>
+                <h3>BCN Social</h3>
+              </div>
+            </div>
+            <p class="lead">Le Barça, vécu ensemble.</p>
+            <p>
+              L'application des culers que j'ai imaginée, conçue et développée de A à Z, disponible sur l'App Store.
+              Un feed social, les matchs en direct avec une notification à chaque but, les notes des joueurs
+              après chaque rencontre, des pronostics, un quiz quotidien… et <strong>Draft Foot</strong>, un jeu de cartes du Barça en 1v1.
+            </p>
+            <ul class="features">
+              <li><b>Direct</b> Notif à chaque but, même app fermée</li>
+              <li><b>Notes</b> Vote sur la compo réelle du match</li>
+              <li><b>Feed</b> Réactions, likes, @mentions</li>
+              <li><b>Jeux</b> Pronostics, quiz, tirs au but 1v1</li>
+              <li><b>Classements</b> La Liga &amp; Ligue des Champions</li>
+              <li><b>Premium</b> Abonnement sans pub</li>
+            </ul>
+            <div class="ctas">
+              <a class="btn-store" href="https://apps.apple.com/app/id6788364700" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.15-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.94 1.16 9.21.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.59-.75 2.99-.75 1.4 0 1.79.75 3.01.72 1.24-.02 2.03-1.13 2.79-2.25.88-1.29 1.24-2.53 1.26-2.6-.03-.01-2.42-.93-2.45-3.71ZM14.07 5.85c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.78-.97 2.83 1.02.08 2.07-.52 2.71-1.29Z"/></svg>
+                <span><small>Télécharger dans l'</small>App Store</span>
+              </a>
+              <a class="btn-ghost" href="https://romainlgsgit.github.io/BCNSocial/#app" target="_blank" rel="noopener">Le site de l'app ↗</a>
+            </div>
+            <p class="stack">React Native · Expo · TypeScript · Firebase · Notifications push</p>
+          </div>
+
+          <div class="phones" aria-label="Captures de l'application BCN Social">
+            <figure class="phone p-left"><img src="assets/img/screen-calendrier.webp" alt="BCN Social — calendrier des matchs" loading="lazy" /></figure>
+            <figure class="phone p-center"><img src="assets/img/screen-notes.webp" alt="BCN Social — notes des joueurs sur la compo" loading="lazy" /></figure>
+            <figure class="phone p-right"><img src="assets/img/screen-jeux.webp" alt="BCN Social — jeux et pronostics" loading="lazy" /></figure>
+          </div>
+        </article>
+
+        <!-- DRAFT FOOT -->
+        <article class="draft">
+          <div class="draft-copy">
+            <span class="tag tag-gold">✦ Dans BCN Social</span>
+            <h3>Draft Foot</h3>
+            <p>
+              Un jeu de cartes intégré à l'app&nbsp;: ouvre des packs, collectionne les joueurs du Barça,
+              compose ton onze et affronte d'autres supporters en 1v1. Mode classé du Bronze à Ultime,
+              tournois, boutique… et un stade à faire grandir jusqu'au Camp Nou.
+            </p>
+          </div>
+          <div class="cards">
+            <img src="assets/img/card-pedri.webp" alt="Carte Pedri" loading="lazy" />
+            <img src="assets/img/card-yamal.webp" alt="Carte Lamine Yamal" loading="lazy" />
+            <img src="assets/img/card-raphinha.webp" alt="Carte Raphinha" loading="lazy" />
+          </div>
+          <div class="draft-shots">
+            <img src="assets/img/draft-lobby.webp" alt="Draft Foot — lobby" loading="lazy" />
+            <img src="assets/img/draft-boutique.webp" alt="Draft Foot — boutique de packs" loading="lazy" />
+            <img src="assets/img/draft-tournoi.webp" alt="Draft Foot — tournois" loading="lazy" />
+          </div>
+        </article>
+
+        <!-- SITES WEB -->
+        <h3 class="sub-head">Sites web</h3>
+        <div class="sites">
+          <a class="site" href="https://www.newstikitaka.fr" target="_blank" rel="noopener">
+            <div class="browser">
+              <div class="browser-bar"><i></i><i></i><i></i><span>newstikitaka.fr</span></div>
+              <img src="assets/img/newstikitaka.jpg" alt="Page d'accueil de NewsTikitaka" loading="lazy" />
+            </div>
+            <div class="site-info">
+              <span class="tag">Média · Actualité du Barça</span>
+              <h4>NewsTikitaka <span aria-hidden="true">↗</span></h4>
+              <p>Site d'actualité du FC Barcelona tenu par des journalistes indépendants&nbsp;: breaking news, équipe première, Barça Atlètic &amp; Masia, Barça Femení.</p>
+              <p class="stack">HTML · CSS · PHP · SQL</p>
+            </div>
+          </a>
+          <a class="site" href="https://pedri8lyn.github.io" target="_blank" rel="noopener">
+            <div class="browser">
+              <div class="browser-bar"><i></i><i></i><i></i><span>pedri8lyn.github.io</span></div>
+              <img src="assets/img/pedri8lyn.jpg" alt="Page d'accueil de pedri8lyn_" loading="lazy" />
+            </div>
+            <div class="site-info">
+              <span class="tag">Site fan · Edits vidéo</span>
+              <h4>pedri8lyn_ <span aria-hidden="true">↗</span></h4>
+              <p>La vitrine des edits Pedri du compte pedri8lyn_&nbsp;: toutes les vidéos TikTok et Instagram au même endroit, avec une direction artistique éditoriale.</p>
+              <p class="stack">HTML · CSS · JavaScript</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="next">
+          <span class="kicker">Prochain univers</span>
+          <p>Le voyage continue bientôt…</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="wrap">
+        <p>Un projet, une idée de site&nbsp;? <a href="mailto:legrosromainpro@gmail.com">legrosromainpro@gmail.com</a></p>
+        <p class="muted">© 2026 Romain Legros · Normandie, France</p>
+      </div>
+    </footer>
+  </main>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
