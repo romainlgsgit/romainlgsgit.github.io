@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Romain Legros — Portfolio</title>
-  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou pour découvrir mes projets." />
+  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade pour découvrir mes projets web, mobile et jeux vidéo." />
   <meta name="theme-color" content="#05060b" />
   <meta property="og:title" content="Romain Legros — Portfolio" />
-  <meta property="og:description" content="De l'espace jusqu'au Camp Nou : mes projets web et mobile." />
+  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis dans une borne d'arcade : mes projets web, mobile et jeux vidéo." />
   <meta property="og:image" content="https://romainlgsgit.github.io/assets/img/screen-notes.webp" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2026100401" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026100402" />
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
   </script>
@@ -27,11 +27,20 @@
     <canvas id="map"></canvas>
   </div>
   <div id="clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <canvas id="pixelwipe" aria-hidden="true"></canvas>
+  <div id="warp-screen" aria-hidden="true">
+    <p class="ws-small">Univers 02</p>
+    <p class="ws-big">WORLD 2</p>
+    <p class="ws-sub">Jeux vidéo</p>
+    <p class="ws-lives"><span class="ws-heart"></span> × 3</p>
+  </div>
 
   <header class="topbar">
     <a href="#top" class="logo" aria-label="Retour en haut">RL<span>.</span></a>
     <nav>
+      <span class="hud-arcade" aria-hidden="true"><b class="oneup">1UP</b> <span id="score">000000</span> <span class="hud-coin"></span>×<span id="coins">00</span></span>
       <a href="#barca">Projets Barça</a>
+      <a href="#arcade">Jeux vidéo</a>
       <a href="mailto:legrosromainpro@gmail.com" class="nav-cta">Contact</a>
     </nav>
   </header>
@@ -208,9 +217,158 @@
           </a>
         </div>
 
-        <div class="next">
-          <span class="kicker">Prochain univers</span>
-          <p>Le voyage continue bientôt…</p>
+      </div>
+    </section>
+
+    <!-- ========== TRANSITION : WORLD 2 ========== -->
+    <section id="warp" aria-label="Transition vers l'univers jeux vidéo">
+      <div class="warp-hint">
+        <span class="warp-coin" aria-hidden="true"></span>
+        <p>Insert coin</p>
+        <span>Continue de scroller pour changer de monde</span>
+      </div>
+    </section>
+
+    <!-- ========== UNIVERS 02 : JEUX VIDÉO ========== -->
+    <section id="arcade">
+      <div class="wrap">
+
+        <header class="arcade-head">
+          <p class="press-start">PRESS START</p>
+          <span class="px-kicker">Univers 02 · Jeux vidéo</span>
+          <h2>GAME<br /><span>SELECT</span></h2>
+          <p class="arcade-intro">
+            Avant les sites et les apps, il y a eu les jeux. Sous le nom de <strong>RL Studios</strong>,
+            j'ai conçu et développé trois jeux vidéo, du jeu de plateforme en pixel art sur Android
+            jusqu'à une aventure en 3D sur PC.
+          </p>
+        </header>
+
+        <!-- LEVEL 1 : TYRO -->
+        <article class="level level-tyro" data-level>
+          <div class="level-bar">
+            <span>Level 1</span><span class="level-dots" aria-hidden="true"></span><span>2021</span>
+          </div>
+          <div class="level-grid">
+            <div class="cabinet">
+              <div class="crt">
+                <button class="trailer" type="button" data-yt="m2tpbruJzTU" aria-label="Lire le trailer de Tyro">
+                  <img class="crt-main" src="assets/img/games/tyro-nuit.webp" alt="Tyro : niveau de nuit avec des montgolfières" loading="lazy" />
+                  <span class="play"><i aria-hidden="true"></i>Play trailer</span>
+                </button>
+              </div>
+              <div class="thumbs">
+                <button type="button" class="on"><img src="assets/img/games/tyro-nuit.webp" alt="Niveau de nuit" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/tyro-nuages.webp" alt="Niveau dans les nuages" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/tyro-montagnes.webp" alt="Niveau des montagnes" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/tyro-desert.webp" alt="Niveau du désert" loading="lazy" /></button>
+              </div>
+            </div>
+            <div class="level-info">
+              <h3>TYRO</h3>
+              <p class="tagline">Élimine les ennemis… mais ne meurs pas&nbsp;!</p>
+              <p>
+                Mon premier jeu publié&nbsp;: un jeu de plateforme 2D en pixel art pour Android.
+                Tu diriges Tyro à travers 50 niveaux (forêts, montagnes, désert, nuits étoilées),
+                tu ramasses des pièces et tu évites les ennemis, avec des contrôles tactiles pensés pour le mobile.
+              </p>
+              <ul class="stats">
+                <li><b>Genre</b>Plateforme 2D</li>
+                <li><b>Support</b>Android</li>
+                <li><b>Niveaux</b>50</li>
+                <li><b>Prix</b>Gratuit</li>
+              </ul>
+              <div class="px-ctas">
+                <a class="px-btn" href="https://rlstudiosfr.itch.io/tyro" target="_blank" rel="noopener">▶ Télécharger</a>
+                <a class="px-btn px-btn-alt" href="https://youtu.be/m2tpbruJzTU" target="_blank" rel="noopener">Trailer ↗</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- LEVEL 2 : LARCENY SIMULATOR -->
+        <article class="level level-larceny" data-level>
+          <div class="level-bar">
+            <span>Level 2</span><span class="level-dots" aria-hidden="true"></span><span>2024</span>
+          </div>
+          <div class="level-grid">
+            <div class="cabinet">
+              <div class="crt">
+                <a class="trailer" href="https://rlstudiosfr.itch.io/larceny-simulator" target="_blank" rel="noopener" aria-label="Voir Larceny Simulator sur itch.io">
+                  <img class="crt-main pixelated" src="assets/img/games/larceny-cover.png" alt="Larceny Simulator : un cambrioleur devant une maison la nuit" loading="lazy" />
+                  <span class="play"><i aria-hidden="true"></i>Voir le jeu</span>
+                </a>
+              </div>
+            </div>
+            <div class="level-info">
+              <h3>LARCENY<br />SIMULATOR</h3>
+              <p class="tagline">Entre. Vole. Ressors sans te faire voir.</p>
+              <p>
+                Un jeu de simulation de cambriolage sur PC&nbsp;: tu t'introduis dans des maisons
+                pour dérober un maximum d'objets. Mon projet le plus récent, sorti en 2024.
+              </p>
+              <ul class="stats">
+                <li><b>Genre</b>Simulation</li>
+                <li><b>Support</b>Windows</li>
+                <li><b>Sortie</b>Avril 2024</li>
+                <li><b>Prix</b>2,99&nbsp;€</li>
+              </ul>
+              <div class="px-ctas">
+                <a class="px-btn" href="https://rlstudiosfr.itch.io/larceny-simulator" target="_blank" rel="noopener">▶ Acheter sur itch.io</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- BOSS FINAL : LÉANA -->
+        <article class="level level-leana boss" data-level>
+          <div class="boss-warning" aria-hidden="true"><span>⚠ Warning ⚠</span><span>Boss final</span><span>⚠ Warning ⚠</span></div>
+          <div class="level-bar">
+            <span>Boss final · Mon plus gros jeu</span><span class="level-dots" aria-hidden="true"></span><span>2022</span>
+          </div>
+          <div class="level-grid">
+            <div class="cabinet">
+              <div class="crt">
+                <button class="trailer" type="button" data-yt="rgRbUqGp400" aria-label="Lire le trailer de Léana">
+                  <img class="crt-main" src="assets/img/games/leana-titre.webp" alt="Léana : écran titre" loading="lazy" />
+                  <span class="play"><i aria-hidden="true"></i>Play trailer</span>
+                </button>
+              </div>
+              <div class="thumbs">
+                <button type="button" class="on"><img src="assets/img/games/leana-titre.webp" alt="Écran titre" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/leana-ruines.webp" alt="Les ruines" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/leana-combat.webp" alt="Combat dans la jungle" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/leana-temple.webp" alt="Le temple" loading="lazy" /></button>
+                <button type="button"><img src="assets/img/games/leana-portail.webp" alt="Le portail" loading="lazy" /></button>
+              </div>
+            </div>
+            <div class="level-info">
+              <h3>LÉANA</h3>
+              <p class="tagline">Échappe-toi de la planète en terminant les 3 mondes.</p>
+              <p>
+                Un jeu d'action-aventure en 3D sur PC, développé avec Unity. Léana traverse une jungle
+                extraterrestre, des ruines et des temples, entre combats, plateformes et énigmes,
+                pour quitter une planète hostile. C'est mon projet le plus ambitieux à ce jour.
+              </p>
+              <ul class="stats">
+                <li><b>Genre</b>Action-aventure 3D</li>
+                <li><b>Support</b>Windows</li>
+                <li><b>Moteur</b>Unity</li>
+                <li><b>Sortie</b>23 août 2022</li>
+                <li><b>Prix</b>4,99&nbsp;€</li>
+                <li><b>PEGI</b>12</li>
+              </ul>
+              <div class="px-ctas">
+                <a class="px-btn" href="https://rlstudiosfr.itch.io/leana" target="_blank" rel="noopener">▶ Acheter sur itch.io</a>
+                <a class="px-btn px-btn-alt" href="https://youtu.be/rgRbUqGp400" target="_blank" rel="noopener">Trailer ↗</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="game-over">
+          <p class="px-kicker">To be continued</p>
+          <p class="go-title">NEXT WORLD<br />LOADING<span class="dots" aria-hidden="true"></span></p>
         </div>
       </div>
     </section>
@@ -221,12 +379,13 @@
         <p class="muted">© 2026 Romain Legros · Normandie, France</p>
         <p class="credits">
           Imagerie satellite © Esri, Maxar, Earthstar Geographics ·
-          Terre : textures NASA via Three.js ·, via Wikimedia Commons
+          Terre : textures NASA via Three.js ·
+          Jeux et trailers : RL Studios
         </p>
       </div>
     </footer>
   </main>
 
-  <script type="module" src="assets/js/main.js?v=2026100401"></script>
+  <script type="module" src="assets/js/main.js?v=2026100402"></script>
 </body>
 </html>

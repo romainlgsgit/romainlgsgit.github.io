@@ -535,6 +535,119 @@ function frame(now) {
 }
 
 /* ==========================================================
+   Univers 02 : transition en pixels puis mode arcade
+   ========================================================== */
+document.documentElement.classList.add('js');
+const warp = document.getElementById('warp');
+const arcade = document.getElementById('arcade');
+const wipe = document.getElementById('pixelwipe');
+const wctx = wipe.getContext('2d');
+const warpScreen = document.getElementById('warp-screen');
+const scoreEl = document.getElementById('score');
+const coinsEl = document.getElementById('coins');
+const WIPE_BG = '#07051a';
+const WIPE_SPARK = ['#ffcc33', '#8f7bff', '#4fe3ff', '#ff4d6d', '#a50044', '#004d98'];
+
+// Une case de la grille = 1 pixel du canvas, agrandi sans lissage
+let order = [];
+let wcols = 0;
+let lastWipeKey = '';
+function setupWipe() {
+  const cell = innerWidth < 640 ? 26 : 38;
+  wcols = Math.ceil(innerWidth / cell);
+  const wrows = Math.ceil(innerHeight / cell);
+  wipe.width = wcols;
+  wipe.height = wrows;
+  wipe.style.width = `${wcols * cell}px`;
+  wipe.style.height = `${wrows * cell}px`;
+  // Balayage en diagonale, avec du bruit pour l'effet « pixels qui tombent »
+  order = [];
+  for (let y = 0; y < wrows; y++) {
+    for (let x = 0; x < wcols; x++) order.push([x, y, (x + y) / (wcols + wrows) + Math.random() * 0.35]);
+  }
+  order.sort((a, b) => a[2] - b[2]);
+  lastWipeKey = '';
+}
+
+function drawWipe(t) {
+  const fill = ease(range(t, 0, 0.42));
+  const clear = ease(range(t, 0.58, 0.9));
+  const visible = fill > 0 && clear < 1;
+  wipe.style.visibility = visible ? 'visible' : 'hidden';
+  const n = order.length;
+  const a = Math.floor(clear * n);
+  const b = Math.floor(fill * n);
+  const key = `${a}:${b}`;
+  if (!visible || key === lastWipeKey) return;
+  lastWipeKey = key;
+  const edge = Math.max(1, Math.floor(n * 0.05));
+  wctx.clearRect(0, 0, wipe.width, wipe.height);
+  for (let i = a; i < b; i++) {
+    const front = i >= b - edge || (clear > 0 && i < a + edge);
+    wctx.fillStyle = front ? WIPE_SPARK[(i * 7) % WIPE_SPARK.length] : WIPE_BG;
+    wctx.fillRect(order[i][0], order[i][1], 1, 1);
+  }
+}
+
+let bestScore = 0;
+function updateArcade() {
+  const top = warp.offsetTop;
+  const t = range(scrollY, top - innerHeight * 0.7, arcade.offsetTop);
+  drawWipe(t);
+  const ws = Math.min(range(t, 0.4, 0.47), 1 - range(t, 0.53, 0.6));
+  warpScreen.style.opacity = ws.toFixed(3);
+  warpScreen.style.visibility = ws > 0.01 ? 'visible' : 'hidden';
+  document.body.classList.toggle('arcade', t >= 0.5);
+
+  bestScore = Math.max(bestScore, Math.floor(Math.max(0, scrollY - top) / 4) * 10);
+  scoreEl.textContent = String(bestScore).padStart(6, '0');
+}
+
+// Les niveaux apparaissent en « pas » pixel, et rapportent une pièce chacun
+let coins = 0;
+const levelObs = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue;
+    e.target.classList.add('in');
+    levelObs.unobserve(e.target);
+    coins++;
+    coinsEl.textContent = String(coins).padStart(2, '0');
+  }
+}, { threshold: 0.2 });
+document.querySelectorAll('[data-level]').forEach((el) => levelObs.observe(el));
+
+// Galeries : une vignette remplace l'image de l'écran
+document.querySelectorAll('.cabinet').forEach((cab) => {
+  const main = cab.querySelector('.crt-main');
+  cab.querySelectorAll('.thumbs button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      cab.querySelector('.crt iframe')?.remove();
+      cab.querySelectorAll('.thumbs button').forEach((b) => b.classList.toggle('on', b === btn));
+      const img = btn.querySelector('img');
+      main.src = img.src;
+      main.alt = img.alt;
+    });
+  });
+});
+
+// Trailers : la vidéo YouTube ne se charge qu'au clic
+document.querySelectorAll('.trailer[data-yt]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.yt}?autoplay=1&rel=0&modestbranding=1`;
+    f.title = btn.getAttribute('aria-label');
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    btn.closest('.crt').appendChild(f);
+  });
+});
+
+addEventListener('scroll', updateArcade, { passive: true });
+addEventListener('resize', () => { setupWipe(); updateArcade(); });
+setupWipe();
+updateArcade();
+
+/* ==========================================================
    Démarrage
    ========================================================== */
 addEventListener('resize', resize);
