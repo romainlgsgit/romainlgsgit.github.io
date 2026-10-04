@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Romain Legros — Portfolio</title>
-  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'à la pelouse du Camp Nou pour découvrir mes projets." />
+  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou pour découvrir mes projets." />
   <meta name="theme-color" content="#05060b" />
   <meta property="og:title" content="Romain Legros — Portfolio" />
-  <meta property="og:description" content="De l'espace à la pelouse du Camp Nou : mes projets web et mobile." />
+  <meta property="og:description" content="De l'espace jusqu'au Camp Nou : mes projets web et mobile." />
   <meta property="og:image" content="https://romainlgsgit.github.io/assets/img/screen-notes.webp" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,14 +25,8 @@
   <canvas id="scene" aria-hidden="true"></canvas>
   <div id="ground" aria-hidden="true">
     <canvas id="map"></canvas>
-    <div class="shot" id="shot-pelouse"><img src="assets/img/campnou/pelouse-vide.jpg" alt="" decoding="async" /></div>
-    <iframe id="streetview" title="Vue 360° depuis la pelouse du Camp Nou (Google Street View)" tabindex="-1"
-      data-src="https://www.google.com/maps/embed?pb=!4v1!6m8!1m7!1szrwmtV7Mp8u0piO8Jp6f3g!2m2!1d41.380758!2d2.122498!3f63!4f0!5f0.4"
-      loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
   </div>
   <div id="clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
-  <button class="btn-360 exit-360" id="exit360" type="button">Quitter la vue 360° ↓</button>
 
   <header class="topbar">
     <a href="#top" class="logo" aria-label="Retour en haut">RL<span>.</span></a>
@@ -87,21 +81,12 @@
       <p class="caption-sub">Catalunya · 41.38° N, 2.12° E</p>
     </div>
 
-    <div class="caption cap-right fade" data-show="0.64,0.69,0.8,0.84">
+    <div class="caption cap-right fade" data-show="0.62,0.67,0.9,0.96">
       <span class="caption-kicker">Les Corts, Barcelona</span>
       <p class="caption-title">Camp Nou</p>
       <p class="caption-sub">Le plus grand stade d'Europe</p>
     </div>
 
-    <div class="caption cap-center fade" data-show="0.95,0.98,2,3">
-      <span class="caption-kicker">Univers 01</span>
-      <p class="caption-title">Coup d'envoi</p>
-      <p class="caption-sub">Tu es sur la pelouse du Camp Nou. Mes projets Barça sont juste en dessous ↓</p>
-      <button class="btn-360" id="explore" type="button">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="10" ry="4"/><path d="M12 2v3M12 19v3"/><circle cx="12" cy="12" r="1.5"/></svg>
-        Regarder autour de toi · 360°
-      </button>
-    </div>
 
     <div class="hud" aria-hidden="true">
       <div class="hud-alt">
@@ -236,10 +221,7 @@
         <p class="muted">© 2026 Romain Legros · Normandie, France</p>
         <p class="credits">
           Imagerie satellite © Esri, Maxar, Earthstar Geographics ·
-          Terre : textures NASA via Three.js ·
-          Vue 360° : Google Street View ·
-          Photo du Camp Nou :
-          <a href="https://commons.wikimedia.org/wiki/File:Camp_nou_2010_empty.jpg" target="_blank" rel="noopener">Fish-guts</a> (domaine public), via Wikimedia Commons
+          Terre : textures NASA via Three.js ·, via Wikimedia Commons
         </p>
       </div>
     </footer>

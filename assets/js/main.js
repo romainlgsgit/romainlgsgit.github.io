@@ -372,13 +372,12 @@ const loadCatalogne = makePatch({ z: 7, lon0: -8, lon1: 14, lat0: 33, lat1: 49, 
 const ground = document.getElementById('ground');
 const mapCanvas = document.getElementById('map');
 const mctx = mapCanvas.getContext('2d');
-const shots = ['pelouse'].map((id) => document.getElementById(`shot-${id}`));
 
-// Centre de la pelouse du Camp Nou
+// Centre du terrain du Camp Nou
 const CN = { lat: 41.38088, lon: 2.12282 };
 const TILE_URL = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
 const Z_START = 6.5;
-const Z_END = 18.9;
+const Z_END = 18.4;
 const MAX_LEVEL = 18;
 
 const tiles = new Map();
@@ -453,53 +452,19 @@ function drawMap(z, ang) {
   }
 }
 
-const pelouse = shots[0];
-const streetview = document.getElementById('streetview');
-let svLoaded = false;
-function loadStreetView() {
-  svLoaded = true;
-  streetview.addEventListener('load', () => setTimeout(() => streetview.classList.add('ready'), 1500), { once: true });
-  streetview.src = streetview.dataset.src;
-}
-// Vue 360° interactive : on « entre » dans Street View, puis on en ressort
-document.getElementById('explore').addEventListener('click', () => {
-  document.body.classList.add('exploring');
-  streetview.tabIndex = 0;
-  streetview.focus();
-});
-document.getElementById('exit360').addEventListener('click', () => {
-  document.body.classList.remove('exploring');
-  streetview.tabIndex = -1;
-  document.getElementById('barca').scrollIntoView({ behavior: 'smooth' });
-});
-pelouse.style.transformOrigin = '50% 60%';
-
 function renderGround(p) {
   const on = p >= SWITCH - 0.02;
   ground.style.visibility = on ? 'visible' : 'hidden';
   if (!on) return;
 
-  // 1. Satellite : de la côte catalane jusque dans le stade
-  const tM = range(p, SWITCH, 0.9);
+  // Satellite : de la côte catalane jusqu'au Camp Nou, puis la section projets arrive
+  const tM = range(p, SWITCH, 1);
   const z = lerp(Z_START, Z_END, 1 - Math.pow(1 - tM, 1.25));
   const ang = (1 - easeOut(tM)) * -0.5;
-  if (p < 0.92) drawMap(z, reduceMotion ? 0 : ang);
-  mapCanvas.style.opacity = (1 - range(p, 0.86, 0.91)).toFixed(3);
+  drawMap(z, reduceMotion ? 0 : ang);
 
-  // 2. On entre directement sur la pelouse
-  const o = smooth(range(p, 0.84, 0.91));
-  pelouse.style.opacity = o.toFixed(3);
-  pelouse.style.visibility = o < 0.01 ? 'hidden' : 'visible';
-  streetview.style.setProperty('--sv', o.toFixed(3));
-  if (o > 0) pelouse.style.transform = `scale(${lerp(1.3, 1, easeOut(range(p, 0.84, 1))).toFixed(4)})`;
-
-  // Altitude approximative
-  let alt;
-  if (p < 0.88) {
-    const mpp = (156543.03 * Math.cos(CN.lat * D)) / 2 ** z;
-    alt = mpp * innerHeight * 1.37;
-  } else alt = lerp(40, 1.7, easeOut(range(p, 0.88, 1)));
-  setAltitude(alt);
+  const mpp = (156543.03 * Math.cos(CN.lat * D)) / 2 ** z;
+  setAltitude(mpp * innerHeight * 1.37);
 }
 
 /* ==========================================================
@@ -562,7 +527,6 @@ function frame(now) {
 
   updateOverlays(prog);
   if (prog > 0.02) loadCatalogne();
-  if (!svLoaded && prog > 0.55) loadStreetView();
   if (!prefetched && prog > 0.2) prefetchTiles();
   if (scrollY > journeyEnd + innerHeight * 1.2) return; // la section projets couvre tout
   canvas.style.visibility = prog < SWITCH + 0.01 ? 'visible' : 'hidden';
@@ -587,7 +551,6 @@ if (!Number.isNaN(qp)) {
   loadEurope();
   loadCatalogne();
   if (qp > 0.2) prefetchTiles();
-  if (qp > 0.55) loadStreetView();
 }
 
 requestAnimationFrame(frame);

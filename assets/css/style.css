@@ -60,37 +60,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
   background: #1d2a33;
 }
 #map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; filter: saturate(1.08) contrast(1.04); }
-.shot { position: absolute; inset: 0; opacity: 0; visibility: hidden; will-change: opacity, transform; }
-.shot img { width: 100%; height: 100%; object-fit: cover; }
-#shot-pelouse img { object-position: 50% 60%; }
-/* Pendant le scroll, la carte « Afficher dans Google Maps » est décalée hors champ (elle revient en mode 360°) */
-#streetview {
-  position: absolute; top: 0; left: -180px; width: calc(100% + 180px); height: 100%; border: 0;
-  opacity: 0; pointer-events: none; transition: opacity .8s;
-}
-#streetview.ready { opacity: var(--sv, 0); }
-.exploring #streetview { pointer-events: auto; left: 0; width: 100%; }
-.exploring #ground::after,
-.exploring .overlay,
-.exploring .topbar { opacity: 0 !important; pointer-events: none !important; }
-.exploring main > section, .exploring main > footer { pointer-events: none; }
-.btn-360 {
-  pointer-events: auto; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 10px; margin-top: 22px;
-  font: 600 14px/1 var(--body); color: #000; background: #fff;
-  padding: 13px 20px; border: 0; border-radius: 99px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-  transition: transform .2s var(--ease);
-}
-.btn-360:hover { transform: translateY(-2px); }
-.btn-360 svg { width: 18px; height: 18px; }
-.exit-360 {
-  position: fixed; left: 50%; bottom: 28px; z-index: 30; margin: 0;
-  transform: translateX(-50%); display: none;
-}
-.exit-360:hover { transform: translateX(-50%) translateY(-2px); }
-.exploring .exit-360 { display: inline-flex; }
-
 #ground::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background:
@@ -236,8 +205,6 @@ svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round
 }
 .cap-left { left: var(--gutter); bottom: 18vh; }
 .cap-right { left: var(--gutter); top: 13vh; }
-.cap-center { left: 0; right: 0; bottom: 13vh; text-align: center; padding: 0 var(--gutter); }
-.cap-center .caption-title { font-size: clamp(44px, 6.5vw, 96px); }
 .caption-title {
   font-family: var(--display); font-stretch: 115%; font-weight: 900;
   font-size: clamp(48px, 8vw, 120px); line-height: .9; letter-spacing: -.045em; margin: 10px 0 12px;
