@@ -397,17 +397,22 @@ function getTile(l, x, y, request) {
   }
   return im && im.ok ? im : null;
 }
-function worldPx(l) {
+// Centre de la carte : le Camp Nou au début, Roland-Garros pour le retour dans l'espace
+let mapCenter = CN;
+function setMapCenter(c) {
+  if (c !== mapCenter) { mapCenter = c; mapDirty = true; }
+}
+function worldPx(l, c = mapCenter) {
   const n = 256 * 2 ** l;
-  const s = Math.sin(CN.lat * D);
-  return [((CN.lon + 180) / 360) * n, (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * n];
+  const s = Math.sin(c.lat * D);
+  return [((c.lon + 180) / 360) * n, (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * n];
 }
 
 let prefetched = false;
-function prefetchTiles() {
-  prefetched = true;
+function prefetchTiles(c = CN) {
+  if (c === CN) prefetched = true;
   for (let l = Math.floor(Z_START); l <= MAX_LEVEL; l++) {
-    const [cx, cy] = worldPx(l);
+    const [cx, cy] = worldPx(l, c);
     const tx = Math.floor(cx / 256);
     const ty = Math.floor(cy / 256);
     const r = l < 12 ? 2 : 3;
@@ -524,13 +529,19 @@ const NORM_MARK = latLon(NORMANDIE.lat, NORMANDIE.lon, 1.012);
 const normVec = latLon(NORMANDIE.lat, NORMANDIE.lon);
 const ryN = Math.atan2(-normVec.x, normVec.z);
 const rxN = Math.atan2(normVec.y, Math.hypot(normVec.x, normVec.z));
-function renderOutro(t) {
-  spaceCam.position.set(0, 0, 4.4);
+const RG = { lat: 48.8459, lon: 2.2534 }; // Roland-Garros
+const rgVec = latLon(RG.lat, RG.lon);
+const ryR = Math.atan2(-rgVec.x, rgVec.z);
+const rxR = Math.atan2(rgVec.y, Math.hypot(rgVec.x, rgVec.z));
+// k : 0 = tout près de Paris, 1 = vue finale
+function renderOutro(t, k = 1) {
+  const e = ease(k);
+  spaceCam.position.set(0, 0, lerp(1.42, 4.4, 1 - Math.pow(1 - k, 2.2)));
   spaceCam.lookAt(0, 0, 0);
-  if (portrait) earth.position.set(0, -1.75, 0);
-  else earth.position.set(1.7, -0.05, 0);
-  const sway = reduceMotion ? 0 : Math.sin(t * 0.12) * 0.5;
-  spin.rotation.set(rxN * 0.8, ryN + sway, 0);
+  if (portrait) earth.position.set(0, -1.75 * e, 0);
+  else earth.position.set(1.7 * e, -0.05 * e, 0);
+  const sway = reduceMotion ? 0 : Math.sin(t * 0.12) * 0.5 * e;
+  spin.rotation.set(lerp(rxR, rxN * 0.8, e), lerp(ryR, ryN, e) + sway, 0);
   cloudMesh.rotation.y = reduceMotion ? 0 : t * 0.004;
   cloudMesh.material.opacity = 0.8;
   stars.rotation.y = t * 0.002;
@@ -554,11 +565,26 @@ function frame(now) {
   if (prog > 0.02) loadCatalogne();
   if (!prefetched && prog > 0.2) prefetchTiles();
   if (world === LAST) {
-    ground.style.visibility = 'hidden';
-    canvas.style.visibility = 'visible';
-    if (renderer) renderOutro(t);
+    if (outroK !== null && outroK < OUTRO_SWAP) {
+      // 1re partie : dézoom satellite depuis Roland-Garros
+      const k = outroK / OUTRO_SWAP;
+      setMapCenter(RG);
+      ground.style.visibility = 'visible';
+      mapCanvas.style.opacity = 1;
+      canvas.style.visibility = 'hidden';
+      drawMap(lerp(18.6, Z_START, 1 - Math.pow(1 - k, 1.6)), reduceMotion ? 0 : -0.5 * easeOut(k));
+    } else {
+      ground.style.visibility = 'hidden';
+      canvas.style.visibility = 'visible';
+      if (renderer) renderOutro(t, outroK === null ? 1 : range(outroK, OUTRO_SWAP, 1));
+    }
+    // Les nuages masquent le passage de la carte au globe
+    const ck = outroK === null ? 1 : outroK;
+    clouds.style.opacity = Math.min(smooth(range(ck, OUTRO_SWAP - 0.1, OUTRO_SWAP - 0.02)), 1 - smooth(range(ck, OUTRO_SWAP + 0.02, OUTRO_SWAP + 0.14))).toFixed(3);
+    clouds.style.transform = `scale(${(2.6 - range(ck, OUTRO_SWAP - 0.1, OUTRO_SWAP + 0.14) * 1.6).toFixed(3)})`;
     return;
   }
+  setMapCenter(CN);
   if (scrollY > journeyEnd + innerHeight * 1.2) return; // la section projets couvre tout
   canvas.style.visibility = prog < SWITCH + 0.01 ? 'visible' : 'hidden';
   if (renderer && prog < SWITCH + 0.01) renderSpace(Math.min(prog, SWITCH), t);
@@ -665,6 +691,7 @@ function setWorld(n) {
   document.body.classList.toggle('ecole', n === 4);
   document.body.classList.toggle('f1-mode', n === 5);
   document.body.classList.toggle('tennis-mode', n === 6);
+  if (n === 6) prefetchTiles(RG);
   document.body.classList.toggle('espace', n === 7);
   // Les prototypes d'applis ne tournent que dans leur univers
   document.querySelectorAll('.duo-phone iframe').forEach((f) => {
@@ -869,7 +896,54 @@ const lift = document.getElementById('liftoff');
 const lc = document.getElementById('liftoff-canvas');
 const lctx = lc.getContext('2d');
 const loLabel = document.getElementById('lo-label');
+let outroK = null;
+const OUTRO_SWAP = 0.5;
+const endCard = document.querySelector('.end-card');
+const outroCap = document.getElementById('outro-cap');
 async function spaceWarp(to, from) {
+  if (to === LAST) return zoomOutWarp(from);
+  return hyperWarp(to, from);
+}
+// Comme au début, mais à l'envers : on part de Roland-Garros et on recule jusqu'à l'espace
+async function zoomOutWarp(from) {
+  const speed = reduceMotion ? 0.01 : 1;
+  prefetchTiles(RG);
+  outroK = 0;
+  endCard.style.opacity = 0;
+  endCard.style.transform = 'translateY(20px)';
+  // Un court fondu au blanc, comme un flash de photo
+  lift.style.background = '#fff';
+  lc.style.display = 'none';
+  loLabel.textContent = '';
+  lift.style.visibility = 'visible';
+  await tween(220 * speed, (k) => { lift.style.opacity = k; });
+  landIn(LAST, from);
+  outroCap.querySelector('b').textContent = 'Roland-Garros';
+  outroCap.querySelector('span').textContent = 'Paris · 48.85° N, 2.25° E';
+  outroCap.style.visibility = 'visible';
+  await pause(120 * speed);
+  await tween(380 * speed, (k) => { lift.style.opacity = 1 - k; outroCap.style.opacity = k; });
+  lift.style.visibility = 'hidden';
+  lift.style.background = '';
+  lc.style.display = '';
+  await tween(4200 * speed, (k) => {
+    outroK = k;
+    if (k > OUTRO_SWAP && outroCap.querySelector('b').textContent !== "Retour dans l'espace") {
+      outroCap.querySelector('b').textContent = "Retour dans l'espace";
+      outroCap.querySelector('span').textContent = 'Fin du voyage';
+    }
+    // Légende : « Roland-Garros » pendant la carte, puis « Retour dans l'espace » sur le globe
+    const first = Math.min(range(k, 0, 0.05), 1 - smooth(range(k, OUTRO_SWAP - 0.12, OUTRO_SWAP - 0.04)));
+    const second = Math.min(smooth(range(k, OUTRO_SWAP + 0.06, OUTRO_SWAP + 0.14)), 1 - smooth(range(k, 0.86, 1)));
+    outroCap.style.opacity = k < OUTRO_SWAP ? first : second;
+  });
+  outroK = null;
+  outroCap.style.visibility = 'hidden';
+  endCard.style.transition = 'opacity .6s, transform .6s';
+  endCard.style.opacity = 1;
+  endCard.style.transform = '';
+}
+async function hyperWarp(to, from) {
   const speed = reduceMotion ? 0.01 : 1;
   const dpr = Math.min(devicePixelRatio || 1, 2);
   lc.width = innerWidth * dpr;
