@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Romain Legros — Portfolio</title>
-  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade et l'univers e-commerce pour découvrir mes projets web, mobile, jeux vidéo et e-commerce." />
+  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade, l'univers e-commerce et l'école pour découvrir mes projets web, mobile, jeux vidéo et e-commerce." />
   <meta name="theme-color" content="#05060b" />
   <meta property="og:title" content="Romain Legros — Portfolio" />
-  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis dans une borne d'arcade et l'univers e-commerce : mes projets web, mobile, jeux vidéo et e-commerce." />
+  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis dans une borne d'arcade, l'univers e-commerce et une salle de classe : mes projets web, mobile, jeux vidéo et e-commerce." />
   <meta property="og:image" content="https://romainlgsgit.github.io/assets/img/screen-notes.webp" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2026100408" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026100409" />
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
   </script>
@@ -56,6 +56,15 @@
       <div class="sf-step"></div>
     </div>
   </div>
+  <div id="chalkboard" aria-hidden="true">
+    <div class="cb-board">
+      <p class="cb-small" id="cb-small">Univers 04</p>
+      <p class="cb-big" id="cb-big">EtudEasy</p>
+      <p class="cb-sub" id="cb-sub">Application mobile</p>
+      <svg class="cb-line" viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M4 12c40-8 80-6 120-2s90 6 172-6"/></svg>
+      <div class="cb-tray"><i></i><i></i><b></b></div>
+    </div>
+  </div>
   <div id="warp-screen" aria-hidden="true">
     <p class="ws-small" id="ws-small">Univers 02</p>
     <p class="ws-big" id="ws-big">WORLD 2</p>
@@ -70,6 +79,7 @@
       <a href="#barca">Projets Barça</a>
       <a href="#arcade">Jeux vidéo</a>
       <a href="#boutique">E-commerce</a>
+      <a href="#etudeasy">Application</a>
       <a href="mailto:legrosromainpro@gmail.com" class="nav-cta">Contact</a>
     </nav>
   </header>
@@ -491,6 +501,105 @@
       </div>
     </section>
 
+    <!-- ========== UNIVERS 04 : APPLICATION MOBILE ========== -->
+    <section id="etudeasy">
+      <div class="wrap">
+
+        <header class="ec-head">
+          <span class="ec-kicker">Univers 04 · Application mobile</span>
+          <h2>Etud<em>Easy</em></h2>
+          <p class="ec-hand">l'assistant IA des étudiants</p>
+          <p class="ec-intro">Une application mobile iOS et Android qui réunit tout ce dont un étudiant a besoin&nbsp;: son emploi du temps, un réveil qui calcule l'heure du lever selon le trajet, et une intelligence artificielle qui organise les révisions et génère des examens blancs.</p>
+        </header>
+
+        <div class="ec-intro-grid">
+          <div class="ec-phones" aria-label="Captures d'EtudEasy">
+            <figure class="phone-e p1"><img src="assets/img/etudeasy/accueil.webp" alt="EtudEasy : écran d'accueil" loading="lazy" /></figure>
+            <figure class="phone-e p2"><img src="assets/img/etudeasy/planning.webp" alt="EtudEasy : le planning de la semaine" loading="lazy" /></figure>
+            <figure class="phone-e p3"><img src="assets/img/etudeasy/connexion.webp" alt="EtudEasy : écran de connexion" loading="lazy" /></figure>
+          </div>
+          <div class="ec-sheet">
+            <h3><span>Le problème</span></h3>
+            <ul class="ec-cross">
+              <li>Aucun outil ne réunit planning, réveil et IA pour les étudiants</li>
+              <li>L'heure du réveil se calcule à la main, sans tenir compte du trajet</li>
+              <li>Les chatbots IA sont trop généralistes</li>
+              <li>Les outils d'examens blancs sont payants ou limités</li>
+            </ul>
+            <h3><span>La solution</span></h3>
+            <ul class="ec-check">
+              <li>Un planning complet, qu'on peut remplir en parlant à l'IA</li>
+              <li>Un réveil intelligent qui intègre le trajet GPS</li>
+              <li>Des examens blancs générés et corrigés par l'IA</li>
+              <li>iOS et Android, en français et en espagnol, thème clair ou sombre</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ec-demo">
+          <div class="ec-demo-head">
+            <h3>Les fonctionnalités <span class="ec-scribble">à la loupe</span></h3>
+            <p>Clique sur un post-it pour voir l'écran correspondant.</p>
+          </div>
+          <div class="ec-demo-grid">
+            <div class="postits" role="tablist">
+              <button class="postit on" type="button" role="tab" aria-selected="true" data-screen="planning" style="--pc:#fff3a8;--r:-2deg"><b>📅 Planning</b>Cours, examens, révisions : la semaine en un coup d'œil, avec des couleurs par type.</button>
+              <button class="postit" type="button" role="tab" aria-selected="false" data-screen="reveil" style="--pc:#ffd6e0;--r:1.5deg"><b>⏰ Réveil intelligent</b>Calcule l'heure du lever selon le sommeil voulu, la préparation et le trajet GPS.</button>
+              <button class="postit" type="button" role="tab" aria-selected="false" data-screen="assistant" style="--pc:#cdeffd;--r:-1deg"><b>🤖 Assistant IA</b>« Trouve-moi un créneau pour réviser les maths » : l'IA l'ajoute au planning.</button>
+              <button class="postit" type="button" role="tab" aria-selected="false" data-screen="examens-ia" style="--pc:#d8f5c8;--r:2deg"><b>📝 Examens blancs</b>L'IA crée un examen sur n'importe quelle matière, à partir d'un texte ou d'une photo de cours.</button>
+              <button class="postit" type="button" role="tab" aria-selected="false" data-screen="resultats" style="--pc:#ffe2bf;--r:-1.5deg"><b>✅ Correction</b>Note, réponses expliquées et mots-clés manquants pour progresser.</button>
+              <button class="postit" type="button" role="tab" aria-selected="false" data-screen="espagnol" style="--pc:#e6dcff;--r:1deg"><b>🌍 FR / ES</b>Application traduite en espagnol, thème clair ou sombre au choix.</button>
+            </div>
+            <div class="ec-device">
+              <span class="tape" aria-hidden="true"></span>
+              <div class="phone-e big"><img id="ec-screen" src="assets/img/etudeasy/planning.webp" alt="EtudEasy : écran sélectionné" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bulletin">
+          <div class="bulletin-head">
+            <div><p class="b-school">Bulletin technique</p><p class="b-sub">EtudEasy · Développée en équipe de 3 · Lead developer&nbsp;: Romain Legros</p></div>
+            <img src="assets/img/etudeasy/icon.webp" alt="" width="56" height="56" />
+          </div>
+          <div class="b-table">
+            <table>
+              <thead><tr><th>Matière</th><th>Ce qui a été fait</th><th>Appréciation</th></tr></thead>
+              <tbody>
+                <tr><td>Application mobile</td><td>React Native 0.81, Expo 54, TypeScript strict, Expo Router</td><td class="hand">Une seule base de code pour iOS et Android</td></tr>
+                <tr><td>Données &amp; comptes</td><td>Firebase Auth (e-mail, Google), Firestore en temps réel, 8 collections</td><td class="hand">Synchronisé sur tous les appareils</td></tr>
+                <tr><td>Intelligence artificielle</td><td>Mistral AI via un backend Node.js / Express déployé avec Docker</td><td class="hand">Planning et examens générés par l'IA</td></tr>
+                <tr><td>Géolocalisation</td><td>Calcul du trajet (OSRM, Apple Transit) pour le réveil</td><td class="hand">Plus jamais en retard en cours</td></tr>
+                <tr><td>Qualité</td><td>76 tests Jest, 78 % de couverture, CI/CD GitHub Actions</td><td class="hand">Très bon travail&nbsp;!</td></tr>
+                <tr><td>Langues &amp; RGPD</td><td>i18next (FR / ES), thèmes clair et sombre, suppression de compte</td><td class="hand">Pensé pour tous</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="b-foot">Projet présenté pour la certification <b>Concepteur Développeur d'Applications</b> (RNCP 37873). Application testée sur iOS (TestFlight) et Android.</p>
+        </div>
+
+        <div class="ec-you">
+          <div class="ec-you-txt">
+            <span class="ec-kicker">Et toi&nbsp;?</span>
+            <h3>Je peux créer une application mobile <span class="ec-scribble">comme EtudEasy</span></h3>
+            <p>Une idée d'application&nbsp;? Je la conçois et la développe de A à Z, pour iPhone et Android en même temps&nbsp;:</p>
+            <ul class="ec-check">
+              <li>Comptes utilisateurs et connexion Google</li>
+              <li>Données synchronisées en temps réel</li>
+              <li>Notifications push</li>
+              <li>Fonctions d'intelligence artificielle</li>
+              <li>Géolocalisation, calendrier, appareil photo</li>
+              <li>Publication sur l'App Store et le Google Play Store</li>
+            </ul>
+          </div>
+          <div class="ec-phones small" aria-hidden="true">
+            <figure class="phone-e p1"><img src="assets/img/etudeasy/clair.webp" alt="" loading="lazy" /></figure>
+            <figure class="phone-e p2"><img src="assets/img/etudeasy/qcm.webp" alt="" loading="lazy" /></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="wrap">
         <p>Un projet, une idée de site&nbsp;? <a href="mailto:legrosromainpro@gmail.com">legrosromainpro@gmail.com</a></p>
@@ -505,6 +614,6 @@
     </footer>
   </main>
 
-  <script type="module" src="assets/js/main.js?v=2026100408"></script>
+  <script type="module" src="assets/js/main.js?v=2026100409"></script>
 </body>
 </html>

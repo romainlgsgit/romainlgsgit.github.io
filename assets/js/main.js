@@ -616,8 +616,10 @@ const sfScene = shopfront.querySelector('.sf-scene');
 const sfDoor = shopfront.querySelector('.sf-door');
 const sfL = shopfront.querySelector('.sf-l');
 const sfR = shopfront.querySelector('.sf-r');
-const WORLD_START = { 2: () => arcade.offsetTop, 3: () => boutique.offsetTop };
-const WORLD_TOP = { 2: arcade, 3: boutique };
+const ecole = document.getElementById('etudeasy');
+const WORLD_START = { 2: () => arcade.offsetTop, 3: () => boutique.offsetTop, 4: () => ecole.offsetTop };
+const WORLD_TOP = { 2: arcade, 3: boutique, 4: ecole };
+const LAST = 4;
 
 let world = 1;
 let warping = false;
@@ -626,6 +628,7 @@ function setWorld(n) {
   world = n;
   document.body.classList.toggle('arcade', n === 2);
   document.body.classList.toggle('boutique', n === 3);
+  document.body.classList.toggle('ecole', n === 4);
 }
 
 // Une fois l'écran couvert, on se place dans le bon monde : au début si on avance,
@@ -634,7 +637,7 @@ function landIn(n, from) {
   const forward = n > world;
   setWorld(n);
   const start = n === 1 ? 0 : WORLD_START[n]();
-  const end = n === 3 ? Infinity : WORLD_START[n + 1]();
+  const end = n === LAST ? Infinity : WORLD_START[n + 1]();
   if (forward) jumpTo(Math.max(from, start));
   else jumpTo(Math.min(from, end - innerHeight * 1.25));
 }
@@ -696,11 +699,51 @@ async function doorWarp(to, from) {
   shopfront.style.opacity = 1;
 }
 
+/* Transition vers / depuis l'école : le tableau noir descend, la craie écrit, il remonte */
+const board = document.getElementById('chalkboard');
+const cbBoard = board.querySelector('.cb-board');
+const cbTexts = ['cb-small', 'cb-big', 'cb-sub'].map((id) => document.getElementById(id));
+const cbLine = board.querySelector('.cb-line');
+const CHALK = {
+  1: ['Univers 01', 'FC Barcelona', 'Retour au Camp Nou'],
+  2: ['Univers 02', 'Jeux vidéo', "Retour à l'arcade"],
+  3: ['Univers 03', 'E-commerce', 'Retour au magasin'],
+  4: ['Univers 04', 'EtudEasy', 'Application mobile'],
+};
+function writeChalk(k) {
+  // Chaque ligne s'écrit l'une après l'autre, de gauche à droite
+  cbTexts.forEach((el, i) => {
+    const t = clamp(k * 3.2 - i * 0.9);
+    el.style.clipPath = `inset(0 ${(1 - t) * 100}% 0 0)`;
+  });
+  cbLine.style.strokeDashoffset = 340 * (1 - clamp(k * 3.2 - 2.4));
+}
+async function chalkWarp(to, from) {
+  const speed = reduceMotion ? 0.01 : 1;
+  const forward = to === 4;
+  CHALK[to].forEach((txt, i) => { cbTexts[i].textContent = txt; });
+  writeChalk(0);
+  board.style.visibility = 'visible';
+  cbBoard.style.transform = 'translateY(-100%)';
+
+  // Le tableau descend avec un petit rebond
+  await tween(560 * speed, (k) => {
+    const b = k < 0.75 ? ease(k / 0.75) : 1 + Math.sin((k - 0.75) / 0.25 * Math.PI) * 0.025;
+    cbBoard.style.transform = `translateY(${(b - 1) * 100}%)`;
+  });
+  landIn(to, from);
+  await tween((forward ? 1150 : 700) * speed, writeChalk);
+  await pause((forward ? 420 : 200) * speed);
+  await tween(560 * speed, (k) => { cbBoard.style.transform = `translateY(${-100 * ease(k)}%)`; });
+  board.style.visibility = 'hidden';
+}
+
 async function changeWorld(to) {
   warping = true;
   const from = scrollY;
   lockScroll(true);
-  if (to === 3 || world === 3) await doorWarp(to, from);
+  if (to === 4 || world === 4) await chalkWarp(to, from);
+  else if (to === 3 || world === 3) await doorWarp(to, from);
   else await pixelWarp(to, from);
   lockScroll(false);
   warping = false;
@@ -710,7 +753,7 @@ async function changeWorld(to) {
 // On entre dans un monde dès la fin de la page du précédent ;
 // on en ressort quand sa section est repassée sous le bas de l'écran.
 function wantedWorld() {
-  for (const n of [3, 2]) {
+  for (const n of [4, 3, 2]) {
     const top = WORLD_TOP[n].getBoundingClientRect().top;
     if (top < innerHeight * (world >= n ? 1.08 : 0.9)) return n;
   }
@@ -768,6 +811,26 @@ document.querySelectorAll('.trailer[data-yt]').forEach((btn) => {
     btn.closest('.crt').appendChild(f);
   });
 });
+
+// EtudEasy : un post-it affiche l'écran correspondant sur le téléphone
+const ecScreen = document.getElementById('ec-screen');
+document.querySelectorAll('.postit').forEach((p) => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.postit').forEach((x) => {
+      x.classList.toggle('on', x === p);
+      x.setAttribute('aria-selected', x === p);
+    });
+    ecScreen.style.opacity = 0;
+    // Sur mobile le téléphone est au-dessus des post-its : on le ramène à l'écran
+    if (matchMedia('(max-width: 900px)').matches) ecScreen.closest('.ec-device').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      ecScreen.src = `assets/img/etudeasy/${p.dataset.screen}.webp`;
+      ecScreen.onload = () => { ecScreen.style.opacity = 1; };
+    }, 180);
+  });
+});
+// Précharge les écrans pour un changement instantané
+['reveil', 'assistant', 'examens-ia', 'resultats', 'espagnol'].forEach((n) => { new Image().src = `assets/img/etudeasy/${n}.webp`; });
 
 addEventListener('scroll', updateArcade, { passive: true });
 addEventListener('resize', setupWipe);
