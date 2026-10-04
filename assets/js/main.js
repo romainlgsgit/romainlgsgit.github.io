@@ -12,6 +12,29 @@ const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
 
+// Chargement d'images hors du fil principal : le décodage des centaines de tuiles
+// satellite ne bloque plus l'animation (c'était la cause des saccades sur téléphone)
+const imgQueue = [];
+let imgActive = 0;
+const IMG_MAX = 6;
+function pumpImages() {
+  while (imgActive < IMG_MAX && imgQueue.length) {
+    const { url, resolve } = imgQueue.shift();
+    imgActive++;
+    fetch(url, { mode: 'cors' })
+      .then((r) => (r.ok ? r.blob() : Promise.reject()))
+      .then((blob) => createImageBitmap(blob))
+      .then(resolve, () => resolve(null))
+      .finally(() => { imgActive--; pumpImages(); });
+  }
+}
+function loadBitmap(url, urgent = false) {
+  return new Promise((resolve) => {
+    imgQueue[urgent ? 'unshift' : 'push']({ url, resolve });
+    pumpImages();
+  });
+}
+
 const journey = document.getElementById('journey');
 const overlay = document.getElementById('overlay');
 const canvas = document.getElementById('scene');
@@ -21,6 +44,8 @@ const hud = document.querySelector('.hud');
 const altEl = document.getElementById('alt');
 const stageEls = [...document.querySelectorAll('#stages li')];
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Téléphones et tablettes : on allège le rendu pour garder un scroll fluide
+const COARSE = matchMedia('(pointer: coarse)').matches || innerWidth < 700;
 
 /* Phases du voyage (progression 0 → 1 sur #journey) */
 const SWITCH = 0.5; // passage Terre → stade (caché par les nuages)
@@ -45,6 +70,25 @@ const fades = [...document.querySelectorAll('[data-show]')].map((el) => ({
   k: el.dataset.show.split(',').map(Number),
 }));
 
+// N'écrit un style que s'il a changé : sur téléphone, les recalculs de style
+// à chaque image étaient l'une des causes des saccades
+const styleCache = new WeakMap();
+function setStyle(el, prop, val) {
+  let c = styleCache.get(el);
+  if (!c) styleCache.set(el, (c = {}));
+  if (c[prop] === val) return;
+  c[prop] = val;
+  el.style[prop] = val;
+}
+function setClass(el, name, on) {
+  const key = `.${name}`;
+  let c = styleCache.get(el);
+  if (!c) styleCache.set(el, (c = {}));
+  if (c[key] === on) return;
+  c[key] = on;
+  el.classList.toggle(name, on);
+}
+
 function updateOverlays(p) {
   for (const { el, k } of fades) {
     const [a, b, c, d] = k;
@@ -52,29 +96,29 @@ function updateOverlays(p) {
     const fout = 1 - smooth(range(p, c, d));
     const o = Math.min(fin, fout);
     const dir = fin < 1 ? 1 : -1;
-    el.style.setProperty('--o', o.toFixed(3));
-    el.style.setProperty('--y', `${((1 - o) * 26 * dir).toFixed(1)}px`);
-    el.classList.toggle('off', o < 0.01);
+    setStyle(el, 'opacity', o.toFixed(2));
+    setStyle(el, 'transform', `translate3d(0, ${Math.round((1 - o) * 26 * dir)}px, 0)`);
+    setClass(el, 'off', o < 0.01);
   }
 
   // Tout le calque s'efface quand la section projets arrive
   const after = range(scrollY, journeyEnd, journeyEnd + innerHeight * 0.35);
-  overlay.style.opacity = (1 - after).toFixed(3);
-  overlay.style.visibility = after >= 1 ? 'hidden' : 'visible';
-  hud.classList.toggle('hidden', p > 0.97);
-  topbar.classList.toggle('solid', scrollY > journeyEnd + innerHeight * 0.2);
+  setStyle(overlay, 'opacity', (1 - after).toFixed(2));
+  setStyle(overlay, 'visibility', after >= 1 ? 'hidden' : 'visible');
+  setClass(hud, 'hidden', p > 0.97 || (portrait && p < 0.06));
+  setClass(topbar, 'solid', scrollY > journeyEnd + innerHeight * 0.2);
 
   const stage = p < 0.1 ? 0 : p < 0.3 ? 1 : p < SWITCH ? 2 : 3;
-  stageEls.forEach((li, i) => li.classList.toggle('on', i === stage));
+  stageEls.forEach((li, i) => setClass(li, 'on', i === stage));
 
   // Nuages : on les traverse autour du changement de scène
   const cin = smooth(range(p, 0.41, 0.49));
   const cout = 1 - smooth(range(p, 0.51, 0.6));
-  clouds.style.opacity = Math.min(cin, cout).toFixed(3);
-  clouds.style.transform = `scale(${(1 + range(p, 0.41, 0.6) * 1.6).toFixed(3)})`;
+  setStyle(clouds, 'opacity', Math.min(cin, cout).toFixed(2));
+  setStyle(clouds, 'transform', `scale(${(1 + range(p, 0.41, 0.6) * 1.6).toFixed(3)})`);
   // Plongée finale vers le sol : on agrandit le canvas sous les nuages
   const dive = p < SWITCH ? easeOut(range(p, 0.36, SWITCH)) * 0.9 : 0;
-  canvas.style.transform = dive > 0.001 ? `scale(${(1 + dive).toFixed(3)})` : '';
+  setStyle(canvas, 'transform', dive > 0.001 ? `scale(${(1 + dive).toFixed(3)})` : '');
 }
 
 const nf = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
@@ -88,7 +132,7 @@ function setAltitude(meters) {
 let renderer = null;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, COARSE ? 1.25 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 } catch (e) {
   document.documentElement.classList.add('no-webgl');
@@ -179,8 +223,8 @@ space.add(earth);
 
 const earthMat = new THREE.ShaderMaterial({
   uniforms: {
-    dayMap: { value: loadTex('assets/tex/earth_day_4096.jpg') },
-    nightMap: { value: loadTex('assets/tex/earth_night_4096.jpg') },
+    dayMap: { value: loadTex(`assets/tex/earth_day_${COARSE ? 2048 : 4096}.jpg`) },
+    nightMap: { value: loadTex(`assets/tex/earth_night_${COARSE ? 2048 : 4096}.jpg`) },
     sunDir: { value: sunDir },
   },
   vertexShader: /* glsl */ `
@@ -343,20 +387,21 @@ function makePatch({ z, lon0, lon1, lat0, lat1, radius, order }) {
   return function load() {
     if (started) return;
     started = true;
+    const total = (tx1 - tx0 + 1) * (ty1 - ty0 + 1);
+    let done = 0;
     for (let x = tx0; x <= tx1; x++) {
       for (let y = ty0; y <= ty1; y++) {
-        const im = new Image();
-        im.crossOrigin = 'anonymous';
-        im.decoding = 'async';
-        im.onload = () => {
-          g.drawImage(im, (x - tx0) * 256, (y - ty0) * 256);
-          mat.uniforms.ready.value = 1;
-          if (!pending) {
+        loadBitmap(ESRI(z, x, y)).then((bmp) => {
+          done++;
+          if (bmp) g.drawImage(bmp, (x - tx0) * 256, (y - ty0) * 256);
+          if (!COARSE || done === total) mat.uniforms.ready.value = 1;
+          // Envoyer une grande texture au GPU coûte cher : sur téléphone, on le fait rarement
+          if (done === total) { tex.needsUpdate = true; return; }
+          if (!pending && !COARSE) {
             pending = true;
             setTimeout(() => { tex.needsUpdate = true; pending = false; }, 250);
           }
-        };
-        im.src = ESRI(z, x, y);
+        });
       }
     }
   };
@@ -387,15 +432,14 @@ function getTile(l, x, y, request) {
   if (y < 0 || y >= n) return null;
   x = ((x % n) + n) % n;
   const key = `${l}/${x}/${y}`;
-  let im = tiles.get(key);
-  if (!im && request) {
-    im = new Image();
-    im.decoding = 'async';
-    im.onload = () => { im.ok = true; mapDirty = true; };
-    im.src = TILE_URL(l, x, y);
-    tiles.set(key, im);
+  let t = tiles.get(key);
+  if (!t && request) {
+    t = { bmp: null };
+    tiles.set(key, t);
+    // Les tuiles affichées maintenant passent avant le préchargement
+    loadBitmap(TILE_URL(l, x, y), request === 'now').then((bmp) => { t.bmp = bmp; if (bmp) mapDirty = true; });
   }
-  return im && im.ok ? im : null;
+  return t && t.bmp ? t.bmp : null;
 }
 // Centre de la carte : le Camp Nou au début, Roland-Garros pour le retour dans l'espace
 let mapCenter = CN;
@@ -435,7 +479,7 @@ function drawMap(z, ang) {
   mctx.fillRect(0, 0, W, H);
   const target = Math.min(MAX_LEVEL, Math.max(0, Math.ceil(z - 0.15)));
   const R = Math.hypot(W, H) / 2;
-  for (let l = Math.max(0, target - 4); l <= target; l++) {
+  for (let l = Math.max(0, target - (COARSE ? 2 : 4)); l <= target; l++) {
     const s = 2 ** (z - l);
     const [cx, cy] = worldPx(l);
     const x0 = Math.floor((cx - R / s) / 256);
@@ -449,7 +493,7 @@ function drawMap(z, ang) {
     mctx.translate(-cx, -cy);
     for (let x = x0; x <= x1; x++) {
       for (let y = y0; y <= y1; y++) {
-        const im = getTile(l, x, y, l === target);
+        const im = getTile(l, x, y, l === target && 'now');
         if (im) mctx.drawImage(im, x * 256, y * 256, 256 + 1 / s, 256 + 1 / s);
       }
     }
@@ -476,10 +520,17 @@ function renderGround(p) {
    Rendu
    ========================================================== */
 let portrait = false;
+let lastW = 0;
+let lastH = 0;
 function resize() {
   measure();
   readScroll();
-  mapDpr = Math.min(devicePixelRatio || 1, 2);
+  // Sur mobile, la barre d'adresse qui apparaît/disparaît change la hauteur :
+  // on ne recrée pas les canvas pour si peu (c'était une source de saccades)
+  if (COARSE && innerWidth === lastW && Math.abs(innerHeight - lastH) < 160) return;
+  lastW = innerWidth;
+  lastH = innerHeight;
+  mapDpr = Math.min(devicePixelRatio || 1, COARSE ? 1.25 : 2);
   mapCanvas.width = Math.round(innerWidth * mapDpr);
   mapCanvas.height = Math.round(innerHeight * mapDpr);
   mapDirty = true;
@@ -502,7 +553,8 @@ function renderSpace(p, t) {
   spaceCam.lookAt(0, 0, 0);
 
   const off = 1 - easeOut(range(tE, 0, 0.55));
-  if (portrait) earth.position.set(0, -2.6 * off, 0);
+  // Sur téléphone, la Terre est en haut et la carte de présentation en bas
+  if (portrait) earth.position.set(0, 2.35 * off, 0);
   else earth.position.set(1.75 * off, -0.1 * off, 0);
 
   const idle = reduceMotion ? 0 : t * 0.03;
@@ -553,6 +605,9 @@ function renderOutro(t, k = 1) {
 }
 
 let jumpOnce = false;
+let lastProg = -1;
+let lastScrollY = -1;
+let idleTick = 0;
 function frame(now) {
   requestAnimationFrame(frame);
   const t = now / 1000;
@@ -561,6 +616,12 @@ function frame(now) {
   prog += (target - prog) * k;
   if (Math.abs(target - prog) < 1e-5) prog = target;
 
+  // Rien ne bouge (scroll arrêté) : on ne refait que l'animation de la Terre, à 30 images/s
+  const still = prog === lastProg && scrollY === lastScrollY && world !== LAST;
+  lastProg = prog;
+  lastScrollY = scrollY;
+  if (still && (++idleTick % 2 || scrollY > journeyEnd + innerHeight * 1.2 || (prog >= SWITCH && !mapDirty))) return;
+  if (!still) idleTick = 0;
   updateOverlays(prog);
   if (prog > 0.02) loadCatalogne();
   if (!prefetched && prog > 0.2) prefetchTiles();
@@ -572,7 +633,7 @@ function frame(now) {
       ground.style.visibility = 'visible';
       mapCanvas.style.opacity = 1;
       canvas.style.visibility = 'hidden';
-      drawMap(lerp(18.6, Z_START, 1 - Math.pow(1 - k, 1.6)), reduceMotion ? 0 : -0.5 * easeOut(k));
+      drawMap(lerp(COARSE ? 17.6 : 18.6, Z_START, 1 - Math.pow(1 - k, 1.6)), reduceMotion ? 0 : -0.5 * easeOut(k));
     } else {
       ground.style.visibility = 'hidden';
       canvas.style.visibility = 'visible';
@@ -697,7 +758,8 @@ function setWorld(n) {
   document.querySelectorAll('.duo-phone iframe').forEach((f) => {
     const on = f.closest('section') === WORLD_TOP[n];
     if (on && !f.src) f.src = f.dataset.src;
-    else if (!on && f.src) f.removeAttribute('src');
+    // Fermée après la transition, pour ne pas provoquer d'à-coup pendant l'animation
+    else if (!on && f.src) setTimeout(() => { if (f.closest('section') !== WORLD_TOP[world]) f.removeAttribute('src'); }, 6000);
   });
 }
 
@@ -864,13 +926,19 @@ async function ballWarp(to, from) {
     tnShadow.style.transform = `translate(${x}px, ${y + 30 * sc}px) scale(${Math.max(0.3, 1 - h / 400) * sc})`;
     tnShadow.style.opacity = Math.max(0, 1 - h / 500);
   };
-  place(-80, H * 0.72, 260, 1);
+  // En portrait le court est vertical : la balle arrive du bas
+  const vert = H > W;
+  const x0 = vert ? W * 0.32 : -80;
+  const y0 = vert ? H + 60 : H * 0.72;
+  const x1 = W * 0.5;
+  const y1 = vert ? H * 0.58 : H * 0.6;
+  place(x0, y0, 260, 1);
   await tween(240 * speed, (k) => { tnIntro.style.opacity = k; });
   landIn(to, from);
   // Deux rebonds sur la terre battue
   await tween(1050 * speed, (k) => {
-    const x = lerp(-80, W * 0.5, k);
-    const y = lerp(H * 0.72, H * 0.6, k);
+    const x = lerp(x0, x1, k);
+    const y = lerp(y0, y1, k);
     const b = k < 0.55 ? k / 0.55 : (k - 0.55) / 0.45;
     const amp = k < 0.55 ? 300 : 150;
     const h = Math.abs(Math.sin(b * Math.PI)) * amp * (k < 0.55 ? 1 : 1);
@@ -880,7 +948,7 @@ async function ballWarp(to, from) {
   const big = (Math.hypot(W, H) / 80) * 2.4;
   await tween(520 * speed, (k) => {
     const e = k * k;
-    place(W * 0.5, lerp(H * 0.6, H * 0.5, e), 0, 1 + big * e);
+    place(x1, lerp(y1, H * 0.5, e), 0, 1 + big * e);
     tnShadow.style.opacity = 1 - k;
   });
   tnIntro.querySelector('.tn-court').style.opacity = 0;
@@ -998,9 +1066,16 @@ async function changeWorld(to) {
 
 // On entre dans un monde dès la fin de la page du précédent ;
 // on en ressort quand sa section est repassée sous le bas de l'écran.
+// Positions des sections mises en cache (lire la mise en page à chaque scroll coûte cher)
+const topCache = {};
+function cacheTops() { for (const n in WORLD_TOP) topCache[n] = WORLD_TOP[n].offsetTop; }
+addEventListener('load', cacheTops);
+addEventListener('resize', cacheTops);
+setInterval(cacheTops, 3000);
 function wantedWorld() {
+  if (!topCache[2]) cacheTops();
   for (const n of [7, 6, 5, 4, 3, 2]) {
-    const top = WORLD_TOP[n].getBoundingClientRect().top;
+    const top = topCache[n] - scrollY;
     if (top < innerHeight * (world >= n ? 1.08 : 0.9)) return n;
   }
   return 1;
@@ -1078,6 +1153,18 @@ document.querySelectorAll('.postit').forEach((p) => {
 // Précharge les écrans pour un changement instantané
 ['reveil', 'assistant', 'examens-ia', 'resultats', 'espagnol'].forEach((n) => { new Image().src = `assets/img/etudeasy/${n}.webp`; });
 
+// Menu de navigation (téléphone et petits écrans)
+const menuBtn = document.getElementById('menu-btn');
+const menu = document.getElementById('menu');
+function toggleMenu(open = !menu.classList.contains('open')) {
+  menu.classList.toggle('open', open);
+  menuBtn.classList.toggle('open', open);
+  menuBtn.setAttribute('aria-expanded', open);
+}
+menuBtn.addEventListener('click', () => toggleMenu());
+menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => toggleMenu(false)));
+addEventListener('scroll', () => { if (menu.classList.contains('open') && !warping) toggleMenu(false); }, { passive: true });
+
 addEventListener('scroll', updateArcade, { passive: true });
 addEventListener('resize', setupWipe);
 setupWipe();
@@ -1092,6 +1179,8 @@ addEventListener('resize', resize);
 addEventListener('scroll', readScroll, { passive: true });
 resize();
 setTimeout(loadEurope, 600);
+// Sur téléphone, tout est préparé pendant la lecture de la présentation
+if (COARSE) setTimeout(loadCatalogne, 900);
 
 // Aperçu figé d'une étape (développement) : ?p=0.75
 const qp = parseFloat(new URLSearchParams(location.search).get('p'));
