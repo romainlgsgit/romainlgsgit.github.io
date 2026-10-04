@@ -1099,6 +1099,16 @@ body.espace { background: #020308; }
 body.espace .footer { background: transparent; border-top-color: var(--line); }
 @media (max-width: 1180px) { .topbar nav a:not(.nav-cta) { display: none; } }
 
+.swipe-hint { display: none; }
+@media (max-width: 640px) {
+  .swipe-hint {
+    display: flex; align-items: center; gap: 10px; margin: -4px 0 12px; padding: 9px 12px; border-radius: 12px;
+    background: rgba(255, 255, 255, .06); border: 1px dashed var(--line-2); font-size: 12.5px; font-weight: 600; color: #e6e3ee;
+  }
+  .swipe-hint i { position: relative; flex: none; width: 18px; height: 26px; border: 1.5px solid #fff; border-radius: 10px; }
+  .swipe-hint i::after { content: ''; position: absolute; left: 50%; top: 5px; width: 3px; height: 6px; margin-left: -1.5px; border-radius: 2px; background: #fff; animation: wheel 1.6s var(--ease) infinite; }
+}
+
 /* ---------- Menu de navigation ---------- */
 .menu-btn { display: none; position: relative; width: 42px; height: 42px; border: 0; border-radius: 12px; background: rgba(255, 255, 255, .1); cursor: pointer; }
 .menu-btn i { position: absolute; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .25s, opacity .2s; }

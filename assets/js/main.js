@@ -16,7 +16,7 @@ const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
 // satellite ne bloque plus l'animation (c'était la cause des saccades sur téléphone)
 const imgQueue = [];
 let imgActive = 0;
-const IMG_MAX = 6;
+const IMG_MAX = 8;
 function pumpImages() {
   while (imgActive < IMG_MAX && imgQueue.length) {
     const { url, resolve } = imgQueue.shift();
@@ -29,10 +29,19 @@ function pumpImages() {
   }
 }
 function loadBitmap(url, urgent = false) {
-  return new Promise((resolve) => {
-    imgQueue[urgent ? 'unshift' : 'push']({ url, resolve });
+  let job;
+  const promise = new Promise((resolve) => {
+    job = { url, resolve };
+    imgQueue[urgent ? 'unshift' : 'push'](job);
     pumpImages();
   });
+  promise.job = job;
+  return promise;
+}
+// Une image préchargée « plus tard » devient urgente : on la remonte en tête de file
+function bumpBitmap(job) {
+  const i = imgQueue.indexOf(job);
+  if (i > 0) { imgQueue.splice(i, 1); imgQueue.unshift(job); }
 }
 
 const journey = document.getElementById('journey');
@@ -437,8 +446,10 @@ function getTile(l, x, y, request) {
     t = { bmp: null };
     tiles.set(key, t);
     // Les tuiles affichées maintenant passent avant le préchargement
-    loadBitmap(TILE_URL(l, x, y), request === 'now').then((bmp) => { t.bmp = bmp; if (bmp) mapDirty = true; });
-  }
+    const pr = loadBitmap(TILE_URL(l, x, y), request === 'now');
+    t.job = pr.job;
+    pr.then((bmp) => { t.bmp = bmp; t.job = null; if (bmp) mapDirty = true; });
+  } else if (t && t.job && request === 'now') bumpBitmap(t.job);
   return t && t.bmp ? t.bmp : null;
 }
 // Centre de la carte : le Camp Nou au début, Roland-Garros pour le retour dans l'espace
@@ -493,7 +504,7 @@ function drawMap(z, ang) {
     mctx.translate(-cx, -cy);
     for (let x = x0; x <= x1; x++) {
       for (let y = y0; y <= y1; y++) {
-        const im = getTile(l, x, y, l === target && 'now');
+        const im = getTile(l, x, y, l >= target - 2 && 'now');
         if (im) mctx.drawImage(im, x * 256, y * 256, 256 + 1 / s, 256 + 1 / s);
       }
     }
@@ -1153,6 +1164,49 @@ document.querySelectorAll('.postit').forEach((p) => {
 // Précharge les écrans pour un changement instantané
 ['reveil', 'assistant', 'examens-ia', 'resultats', 'espagnol'].forEach((n) => { new Image().src = `assets/img/etudeasy/${n}.webp`; });
 
+/* ---------- Voyage automatique : un seul scroll suffit pour aller jusqu'au Camp Nou ---------- */
+const barca = document.getElementById('barca');
+let autoPlaying = false;
+const JOURNEY_MS = 7000;
+async function autoJourney() {
+  autoPlaying = true;
+  warping = true;
+  lockScroll(true);
+  frozen = true;
+  if (!prefetched) prefetchTiles();
+  const start = clamp(scrollY / journeyEnd);
+  const ms = reduceMotion ? 10 : Math.max(1500, JOURNEY_MS * (1 - start));
+  await tween(ms, (k) => {
+    // Démarrage et arrivée en douceur, vitesse régulière au milieu
+    target = prog = lerp(start, 1, k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+  });
+  jumpTo(journeyEnd);
+  frozen = false;
+  lockScroll(false);
+  // On glisse jusqu'aux projets Barça
+  const from = scrollY;
+  const to = barca.offsetTop + innerHeight * 0.22;
+  await tween(reduceMotion ? 10 : 1100, (k) => { window.scrollTo(0, lerp(from, to, ease(k))); readScroll(); });
+  warping = false;
+  autoPlaying = false;
+}
+// Déclenché par le premier geste vers le bas tant qu'on est dans le voyage
+function wantsAuto() {
+  return !autoPlaying && !warping && world === 1 && !frozen && scrollY < journeyEnd - 10;
+}
+addEventListener('wheel', (e) => {
+  if (e.deltaY > 4 && wantsAuto()) { e.preventDefault(); autoJourney(); }
+}, { passive: false });
+let touchY = null;
+addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+addEventListener('touchmove', (e) => {
+  if (touchY === null || e.target.closest('.menu')) return;
+  if (touchY - e.touches[0].clientY > 12 && wantsAuto()) { e.preventDefault(); touchY = null; autoJourney(); }
+}, { passive: false });
+addEventListener('keydown', (e) => {
+  if (['ArrowDown', 'PageDown', ' ', 'Spacebar'].includes(e.key) && wantsAuto() && !e.target.closest('input, textarea, button, a')) { e.preventDefault(); autoJourney(); }
+});
+
 // Menu de navigation (téléphone et petits écrans)
 const menuBtn = document.getElementById('menu-btn');
 const menu = document.getElementById('menu');
@@ -1179,6 +1233,8 @@ addEventListener('resize', resize);
 addEventListener('scroll', readScroll, { passive: true });
 resize();
 setTimeout(loadEurope, 600);
+// Les images satellite de Barcelone se chargent pendant la lecture de la présentation
+setTimeout(() => { if (!prefetched) prefetchTiles(); }, 1500);
 // Sur téléphone, tout est préparé pendant la lecture de la présentation
 if (COARSE) setTimeout(loadCatalogne, 900);
 
