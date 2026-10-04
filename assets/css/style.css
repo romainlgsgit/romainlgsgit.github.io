@@ -459,7 +459,7 @@ main > section, main > footer { pointer-events: auto; }
 
 /* ---------- Section jeux ---------- */
 #arcade {
-  position: relative; padding: 120px 0 80px;
+  position: relative; padding: 120px 0 34vh;
   background:
     linear-gradient(rgba(143, 123, 255, .07) 2px, transparent 2px) 0 0 / 32px 32px,
     linear-gradient(90deg, rgba(143, 123, 255, .07) 2px, transparent 2px) 0 0 / 32px 32px,
@@ -766,11 +766,10 @@ body.arcade .footer .credits { font-size: 16px; }
 .receipt ul { list-style: none; display: grid; gap: 8px; }
 .receipt li { display: flex; justify-content: space-between; gap: 10px; }
 .receipt li b { color: var(--bq-green); }
-.r-total { display: flex; justify-content: space-between; font-weight: 600; font-size: 16px; text-transform: uppercase; }
 .r-thanks { text-align: center; margin: 18px 0 10px; color: #777; }
 .r-barcode { height: 44px; margin: 0 auto 6px; width: 80%; background: repeating-linear-gradient(90deg, #222 0 2px, transparent 2px 4px, #222 4px 7px, transparent 7px 9px, #222 9px 10px, transparent 10px 13px); }
 .checkout-cta h3 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4.4vw, 58px); line-height: 1.02; margin: 14px 0 16px; }
-.checkout-cta p { color: var(--bq-muted); margin-bottom: 26px; max-width: 480px; }
+.checkout-cta p { color: var(--bq-muted); max-width: 480px; }
 
 /* ---------- Tout le site passe en mode boutique ---------- */
 body.boutique { background: var(--bq-bg); }

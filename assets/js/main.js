@@ -659,7 +659,7 @@ async function pixelWarp(to, from) {
   wipe.style.visibility = 'hidden';
 }
 
-/* Transition vers / depuis la boutique : la façade, puis les portes qui s'ouvrent */
+/* Transition vers / depuis l'univers e-commerce : la façade, puis les portes qui s'ouvrent */
 function sceneAt(y, scale, doorOpen, alpha = 1) {
   sfScene.style.transform = `translateY(${y}%) scale(${scale})`;
   sfL.style.transform = `rotateY(${-doorOpen * 105}deg)`;
