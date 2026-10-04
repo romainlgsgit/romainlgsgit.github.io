@@ -1329,3 +1329,6 @@ if (!Number.isNaN(qp)) {
 }
 
 requestAnimationFrame(frame);
+
+// Indicateur lu par le script d'enregistrement vidéo (aucun effet pour les visiteurs)
+window.__portfolio = { get busy() { return warping || autoPlaying; }, get world() { return world; } };
