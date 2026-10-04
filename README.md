@@ -16,4 +16,4 @@ Un portfolio en forme de voyage : on part de l'espace, on plonge vers la Terre, 
 Fait avec HTML, CSS, JavaScript et Three.js.
 Crédits : photos des templates via Unsplash · textures de la Terre NASA (via Three.js) · imagerie satellite © Esri, Maxar, Earthstar Geographics, Wikimedia Commons.
 
-📫 legrosromainpro@gmail.com
+📫 legrosromainpro@gmail.com · Instagram [@romainlgs](https://www.instagram.com/romainlgs/)
