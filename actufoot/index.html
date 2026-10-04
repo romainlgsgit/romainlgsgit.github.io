@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Actu Foot — Maquette</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Maquette d'un site pour @ActuFoot_ : chaque tweet devient un article. Réalisée par Romain Legros." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" href="https://pbs.twimg.com/profile_images/1860995948089847808/oFkrcyD-_normal.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,500..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0a0a0a;
+      --paper: #ffffff;
+      --bg: #f5f5f4;
+      --line: #e5e5e5;
+      --muted: #737373;
+      --soft: #f0f0f0;
+      --card: #ffffff;
+      --text: #0a0a0a;
+      --live: #ff3b30;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --bg: #0a0a0a; --card: #141414; --text: #fafafa; --line: #262626; --muted: #a3a3a3; --soft: #1f1f1f; }
+    }
+    :root[data-theme="dark"] { --bg: #0a0a0a; --card: #141414; --text: #fafafa; --line: #262626; --muted: #a3a3a3; --soft: #1f1f1f; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font: 15px/1.55 Inter, system-ui, sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+    img { display: block; max-width: 100%; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .cond { font-family: Archivo, Inter, sans-serif; font-stretch: 70%; font-weight: 800; text-transform: uppercase; letter-spacing: -.005em; line-height: 1.02; }
+
+    /* ---------- Bandeau démo ---------- */
+    .demo { background: var(--paper); color: var(--ink); font-size: 12.5px; text-align: center; padding: 8px 16px; border-bottom: 1px solid #e5e5e5; }
+    .demo a { font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ---------- Header ---------- */
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(10,10,10,.92); backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px); color: #fff; }
+    .bar { height: 64px; display: flex; align-items: center; gap: 28px; }
+    .logo { display: flex; align-items: center; gap: 6px; }
+    .logo svg { width: 34px; height: 34px; }
+    .logo span { font-family: Archivo, sans-serif; font-stretch: 62%; font-weight: 800; font-size: 26px; letter-spacing: .01em; }
+    .nav { display: flex; gap: 22px; font-size: 14px; font-weight: 500; color: #a3a3a3; }
+    .nav a:hover { color: #fff; }
+    .bar-r { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .follow { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #0a0a0a; font-weight: 700; font-size: 14px; padding: 9px 16px; border-radius: 999px; transition: transform .15s; }
+    .follow:hover { transform: scale(1.03); }
+    .follow svg { width: 14px; height: 14px; }
+    .follow small { font-weight: 600; color: #737373; }
+    .ibtn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid #333; color: #fff; }
+    .ibtn svg { width: 17px; height: 17px; }
+    .burger { display: none; }
+
+    /* ---------- Hero ---------- */
+    .hero { background: #0a0a0a; color: #fff; padding: 56px 0 64px; overflow: hidden; }
+    .hero-in { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #a3a3a3; }
+    .eyebrow .pill { background: #fff; color: #0a0a0a; padding: 4px 9px; border-radius: 999px; letter-spacing: .08em; }
+    .hero h1 { font-size: clamp(56px, 9vw, 120px); margin: 18px 0 18px; }
+    .hero .lead { font-size: 18px; color: #d4d4d4; max-width: 30em; white-space: pre-line; }
+    .countdown { display: flex; gap: 10px; margin: 28px 0; }
+    .countdown div { min-width: 76px; padding: 12px 10px; border: 1px solid #2a2a2a; border-radius: 14px; text-align: center; }
+    .countdown b { display: block; font-family: Archivo, sans-serif; font-stretch: 70%; font-weight: 800; font-size: 38px; line-height: 1; font-variant-numeric: tabular-nums; }
+    .countdown span { font-size: 11px; color: #a3a3a3; text-transform: uppercase; letter-spacing: .1em; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn-w { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #0a0a0a; font-weight: 700; padding: 13px 20px; border-radius: 999px; }
+    .btn-o { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #333; color: #fff; font-weight: 600; padding: 13px 20px; border-radius: 999px; }
+    .stats { display: flex; gap: 16px; color: #a3a3a3; font-size: 14px; margin-left: 6px; }
+    .hero-img { position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; background: #1a1a1a; transform: rotate(1.5deg); box-shadow: 0 40px 80px rgba(0,0,0,.6); }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-img .src { position: absolute; left: 14px; bottom: 14px; display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); padding: 6px 12px 6px 6px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+    .hero-img .src img { width: 26px; height: 26px; border-radius: 50%; }
+
+    /* ---------- Marquee ---------- */
+    .marquee { background: var(--paper); color: var(--ink); border-bottom: 1px solid #e5e5e5; overflow: hidden; white-space: nowrap; }
+    .marquee-track { display: inline-flex; gap: 48px; padding: 14px 0; animation: scroll 60s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-track span { font-family: Archivo, sans-serif; font-stretch: 70%; font-weight: 800; text-transform: uppercase; font-size: 17px; display: inline-flex; align-items: center; gap: 48px; }
+    .marquee-track span::after { content: "●"; font-size: 8px; color: #a3a3a3; }
+    @keyframes scroll { to { transform: translateX(-50%); } }
+
+    /* ---------- Layout ---------- */
+    main { padding: 48px 0 80px; }
+    .cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 40px; align-items: start; }
+    .head-row { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+    .head-row h2 { font-size: 44px; }
+    .head-row p { color: var(--muted); font-size: 14px; }
+    .chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 24px; padding-bottom: 2px; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { flex: none; padding: 8px 15px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); font-size: 13px; font-weight: 600; transition: .15s; }
+    .chip:hover { border-color: var(--text); }
+    .chip.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    /* ---------- Fil (tweets → articles) ---------- */
+    .feed { columns: 2; column-gap: 20px; }
+    .post { break-inside: avoid; margin-bottom: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; display: block; }
+    .post:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,.08); }
+    .post.hide { display: none; }
+    .post .media { position: relative; background: var(--soft); overflow: hidden; }
+    .post .media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .post:hover .media img { transform: scale(1.03); }
+    .post .media .count { position: absolute; right: 10px; top: 10px; background: rgba(0,0,0,.7); color: #fff; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+    .post .body { padding: 16px 18px 18px; }
+    .tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .tag { font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; background: var(--soft); color: var(--muted); }
+    .tag.off { background: var(--text); color: var(--bg); }
+    .post h3 { font-size: 24px; }
+    .post .txt { margin-top: 10px; color: var(--muted); font-size: 14px; white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+    .post .foot { display: flex; align-items: center; gap: 14px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); }
+    .post .foot .x { margin-left: auto; font-weight: 700; color: var(--text); }
+    .post.dark { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
+    .post.dark .txt { color: #d4d4d4; -webkit-line-clamp: 12; }
+    .post.dark .tag { background: #222; color: #bbb; } .post.dark .tag.off { background: #fff; color: #0a0a0a; }
+    .post.dark .foot { border-color: #262626; color: #a3a3a3; } .post.dark .foot .x { color: #fff; }
+
+    /* ---------- Sidebar ---------- */
+    aside { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 84px; }
+    .box { background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+    .box-h { display: flex; justify-content: space-between; align-items: baseline; padding: 18px 18px 10px; }
+    .box-h h3 { font-size: 24px; }
+    .box-h small { color: var(--muted); font-size: 12px; }
+    .standings { list-style: none; padding: 0 8px 8px; font-variant-numeric: tabular-nums; max-height: 420px; overflow-y: auto; }
+    .standings li { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 10px; font-size: 14px; }
+    .standings li:nth-child(odd) { background: var(--soft); }
+    .standings .r { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .standings .n { font-weight: 600; }
+    .standings .p { font-family: Archivo, sans-serif; font-stretch: 70%; font-weight: 800; font-size: 17px; background: var(--text); color: var(--bg); min-width: 32px; text-align: center; border-radius: 7px; padding: 1px 6px; }
+    .standings li.ucl .r { color: var(--text); }
+    .standings li.ucl { box-shadow: inset 3px 0 var(--text); }
+    .standings li.rel { box-shadow: inset 3px 0 #a3a3a3; }
+    .src { padding: 0 18px 16px; font-size: 11.5px; color: var(--muted); }
+    .src a { text-decoration: underline; }
+
+    .fixtures { list-style: none; padding: 0 18px 8px; }
+    .fixtures li { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; padding: 11px 0; border-top: 1px solid var(--line); font-size: 14px; }
+    .fixtures li.past { color: var(--muted); }
+    .fixtures li.next { font-weight: 700; }
+    .fixtures .ha { font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--muted); }
+    .fixtures .d { font-size: 12.5px; color: var(--muted); text-align: right; }
+    .fixtures li.next .d { color: var(--text); }
+    .next-badge { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .08em; background: var(--text); color: var(--bg); padding: 2px 6px; border-radius: 5px; margin-left: 6px; vertical-align: 2px; }
+
+    .alert { background: #0a0a0a; color: #fff; border-radius: 20px; padding: 22px; }
+    .alert .who { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .alert .who img { width: 48px; height: 48px; border-radius: 50%; border: 1px solid #333; }
+    .alert .who b { display: block; font-size: 16px; }
+    .alert .who small { color: #a3a3a3; }
+    .alert p { color: #d4d4d4; font-size: 14px; }
+    .alert .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+    .alert .nums div { border: 1px solid #262626; border-radius: 12px; padding: 10px 12px; }
+    .alert .nums b { display: block; font-family: Archivo, sans-serif; font-stretch: 70%; font-weight: 800; font-size: 28px; line-height: 1.1; }
+    .alert .nums span { font-size: 12px; color: #a3a3a3; }
+    .alert form { display: flex; gap: 8px; margin-top: 14px; }
+    .alert input { flex: 1; min-width: 0; background: #1a1a1a; border: 1px solid #333; border-radius: 999px; padding: 11px 14px; color: #fff; font: inherit; font-size: 14px; }
+    .alert input::placeholder { color: #737373; }
+    .alert button[type=submit] { background: #fff; color: #0a0a0a; font-weight: 700; padding: 0 16px; border-radius: 999px; font-size: 14px; }
+    .alert .ok { display: none; margin-top: 14px; font-weight: 600; }
+
+    /* ---------- Footer ---------- */
+    footer { background: #0a0a0a; color: #a3a3a3; padding: 56px 0 32px; }
+    .foot-big { display: flex; align-items: center; gap: 14px; color: #fff; }
+    .foot-big svg { width: 64px; height: 64px; }
+    .foot-big span { font-family: Archivo, sans-serif; font-stretch: 62%; font-weight: 800; font-size: 64px; line-height: 1; }
+    .foot-grid { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+    .foot-grid p { margin-top: 10px; }
+    .socials { display: flex; gap: 10px; }
+    .socials a { border: 1px solid #333; color: #fff; border-radius: 999px; padding: 9px 16px; font-size: 14px; font-weight: 600; }
+    .socials a:hover { background: #fff; color: #0a0a0a; }
+    .legal { margin-top: 40px; padding-top: 20px; border-top: 1px solid #222; font-size: 12.5px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .legal a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+
+    /* ---------- Article ---------- */
+    dialog { border: 0; padding: 0; margin: auto; width: min(760px, calc(100% - 24px)); max-height: calc(100% - 32px); border-radius: 24px; background: var(--card); color: var(--text); box-shadow: 0 40px 100px rgba(0,0,0,.45); }
+    dialog::backdrop { background: rgba(0,0,0,.7); backdrop-filter: blur(6px); }
+    .art-media { display: grid; gap: 4px; background: #000; }
+    .art-media.n2, .art-media.n4 { grid-template-columns: 1fr 1fr; }
+    .art-media img { width: 100%; max-height: 70vh; object-fit: contain; background: #000; }
+    .art-media.n2 img, .art-media.n4 img { aspect-ratio: 1; object-fit: cover; }
+    .art { padding: 28px; }
+    .art .meta { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+    .art .meta img { width: 36px; height: 36px; border-radius: 50%; }
+    .art .meta b { color: var(--text); }
+    .art h1 { font-size: clamp(32px, 5vw, 48px); }
+    .art .txt { margin-top: 16px; font-size: 17px; white-space: pre-line; }
+    .art .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .art .actions a, .art .actions button { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; }
+    .art .actions .primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .close { position: sticky; top: 12px; float: right; margin: 12px 12px -48px 0; z-index: 2; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; font-size: 20px; line-height: 1; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1020px) {
+      .cols { grid-template-columns: minmax(0, 1fr); }
+      aside { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      aside .alert { grid-column: 1 / -1; }
+    }
+    @media (max-width: 820px) {
+      .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; gap: 0; background: #0a0a0a; padding: 4px 16px 16px; border-top: 1px solid #222; }
+      .nav.open { display: flex; }
+      .nav a { padding: 12px 0; border-bottom: 1px solid #1f1f1f; color: #fff; }
+      .burger { display: grid; }
+      .follow small { display: none; }
+      .hero { padding: 36px 0 44px; }
+      .hero-in { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+      .hero-img { aspect-ratio: 1; transform: none; }
+      .feed { columns: 1; }
+      aside { grid-template-columns: minmax(0, 1fr); }
+      .head-row h2 { font-size: 36px; }
+    }
+    @media (max-width: 420px) {
+      .countdown div { min-width: 0; flex: 1; }
+      .countdown b { font-size: 30px; }
+      .follow { padding: 9px 12px; }
+      .foot-big span { font-size: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo">
+    Maquette non officielle pour <b>@ActuFoot_</b> : les articles sont générés automatiquement à partir des vrais tweets du compte · par <a href="https://romainlgsgit.github.io" target="_blank" rel="noopener">Romain Legros</a>
+  </div>
+
+  <header class="top">
+    <div class="wrap bar">
+      <a href="#" class="logo" aria-label="Actu Foot — accueil">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M66 24 A28 28 0 1 0 66 76 M66 20 V82" fill="none" stroke="#fff" stroke-width="12"/></svg>
+        <span>FOOT</span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#fil">Le fil</a>
+        <a href="#classement">Classement</a>
+        <a href="#ldc">Ligue des champions</a>
+        <a href="#fil" data-go="Mercato">Mercato</a>
+        <a href="#fil" data-go="Ballon d'Or">Ballon d'Or</a>
+      </nav>
+      <div class="bar-r">
+        <button class="ibtn" id="theme" aria-label="Changer de thème">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <a class="follow" href="https://x.com/ActuFoot_" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8-9.2L1 2h7l4.8 6.3L18.9 2zm-1.2 18h1.9L7.4 4H5.4l12.3 16z"/></svg>
+          Suivre <small>8,8 M</small>
+        </a>
+        <button class="ibtn burger" id="burger" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- À la une : le tweet le plus fort du moment -->
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <div class="eyebrow"><span class="pill">À la une</span><span id="heroDate"></span></div>
+        <h1 class="cond">Il est minuit.</h1>
+        <p class="lead">Les votes pour le Ballon d’Or 🌕 2026 sont officiellement clôturés. L’issue ne peut plus être changée.
+Qui est-ce selon vous ? 🤔</p>
+        <div class="countdown" id="countdown" aria-label="Compte à rebours avant le Ballon d'Or">
+          <div><b data-u="d">00</b><span>jours</span></div>
+          <div><b data-u="h">00</b><span>heures</span></div>
+          <div><b data-u="m">00</b><span>min</span></div>
+          <div><b data-u="s">00</b><span>sec</span></div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-w" data-open="2104330342110769259">Lire l'article →</button>
+          <a class="btn-o" href="https://x.com/ActuFoot_/status/2104330342110769259" target="_blank" rel="noopener">Voir sur X ↗</a>
+          <div class="stats"><span>♥ 5,1 k</span><span>💬 404</span></div>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="https://pbs.twimg.com/media/HTQVSjwWkAAmtIq?format=jpg&name=medium" alt="Visuel Ballon d'Or 2026 publié par @ActuFoot_" />
+        <div class="src"><img src="https://pbs.twimg.com/profile_images/1860995948089847808/oFkrcyD-_normal.jpg" alt="" />@ActuFoot_</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-label="Derniers titres"><div class="marquee-track" id="marquee"></div></div>
+
+  <main class="wrap">
+    <div class="cols">
+      <section id="fil">
+        <div class="head-row">
+          <h2 class="cond">Le fil</h2>
+          <p>Chaque tweet publié devient un article, en temps réel.</p>
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="feed" id="feed"></div>
+      </section>
+
+      <aside>
+        <div class="alert">
+          <div class="who">
+            <img src="https://pbs.twimg.com/profile_images/1860995948089847808/oFkrcyD-_400x400.jpg" alt="Logo Actu Foot" />
+            <div><b>Actu Foot</b><small>@ActuFoot_ · depuis 2012</small></div>
+          </div>
+          <p>⚪️ Ne manquez rien de l'actu footballistique ! ⚫️</p>
+          <div class="nums">
+            <div><b>8,8 M</b><span>abonnés sur X</span></div>
+            <div><b>413 k</b><span>sur Threads</span></div>
+          </div>
+          <p>Reçois les officialisations dès qu'elles tombent.</p>
+          <form id="nl">
+            <input type="email" required placeholder="ton@email.fr" aria-label="Adresse email" />
+            <button type="submit">🔔 Activer</button>
+          </form>
+          <p class="ok" id="nlOk">✅ Alertes activées (démo, rien n'est enregistré)</p>
+        </div>
+
+        <div class="box" id="classement">
+          <div class="box-h"><h3 class="cond">Ligue 1</h3><small>Après la 5e journée</small></div>
+          <ol class="standings" id="standings"></ol>
+          <p class="src">Données issues du <a href="https://x.com/ActuFoot_/status/2101774630419595465" target="_blank" rel="noopener">visuel @ActuFoot_ du 20/09</a> · branchable sur une API pour une mise à jour automatique.</p>
+        </div>
+
+        <div class="box" id="ldc">
+          <div class="box-h"><h3 class="cond">PSG en LDC</h3><small>Phase de ligue</small></div>
+          <ul class="fixtures" id="fixtures"></ul>
+          <p class="src">D'après le <a href="https://x.com/ActuFoot_/status/2093656646165684425" target="_blank" rel="noopener">calendrier publié le 29/08</a>.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div class="foot-big">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M66 24 A28 28 0 1 0 66 76 M66 20 V82" fill="none" stroke="#fff" stroke-width="12"/></svg>
+            <span>FOOT</span>
+          </div>
+          <p>Ne manquez rien de l'actu footballistique.</p>
+        </div>
+        <div class="socials">
+          <a href="https://x.com/ActuFoot_" target="_blank" rel="noopener">X</a>
+          <a href="https://www.threads.com/@actufoot_" target="_blank" rel="noopener">Threads</a>
+        </div>
+      </div>
+      <div class="legal">
+        <span>Maquette non officielle réalisée à titre de démonstration. Tweets et visuels © @ActuFoot_.</span>
+        <span>Design &amp; développement : <a href="https://romainlgsgit.github.io" target="_blank" rel="noopener">Romain Legros</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <dialog id="dlg"><button class="close" id="close" aria-label="Fermer">×</button><div id="dlgBody"></div></dialog>
+
+  <script>
+    // Vrais tweets de @ActuFoot_ (récupérés le 04/10/2026). En production : synchronisation automatique.
+    const TWEETS = [
+ {
+  "id": "2105961389189931066",
+  "date": "2026-10-02T10:01:36.000Z",
+  "text": "🚨 OFFICIEL ! PASCAL GROSS 🇩🇪 EST ÉLU \"JOUEUR DU MOIS DE SEPTEMBRE\" EN PREMIER LEAGUE 🏴󠁧󠁢󠁥󠁮󠁧󠁿 !!! 🎖️\n\n📸 @PremierLeague",
+  "likes": 1090,
+  "replies": 32,
+  "media": [
+   "HTngteBXUAIIP_T"
+  ],
+  "ratio": [
+   0.8
+  ]
+ },
+ {
+  "id": "2104330342110769259",
+  "date": "2026-09-27T22:00:24.000Z",
+  "text": "IL EST MINUIT.\n\nLes votes pour le Ballon d’Or 🌕 2026 sont officiellement clôturés.\n\nL’issue ne peut plus être changée.\n\nQui est-ce selon vous ? 🤔\n\nRéponse officielle le 26 octobre. 🗓️",
+  "likes": 5079,
+  "replies": 404,
+  "media": [
+   "HTQVSjwWkAAmtIq"
+  ],
+  "ratio": [
+   0.688
+  ]
+ },
+ {
+  "id": "2101774630419595465",
+  "date": "2026-09-20T20:44:55.000Z",
+  "text": "🚨🚨 LE CLASSEMENT DE LA LIGUE 1 À L'ISSUE DE CETTE 5ÈME JOURNÉE !!! 📊\n\nMONACO EST SEUL EN TÊTE avec 13 points sur 15 possibles. ❤️🤍\n\nVainqueur du Classique ce soir, le PSG enchaîne une deuxième victoire en championnat et remonte à la 6ème place. ❤️💙\n\nDébut de saison …",
+  "likes": 2055,
+  "replies": 92,
+  "media": [
+   "HSsAgRNWcAAIe75"
+  ],
+  "ratio": [
+   0.8
+  ]
+ },
+ {
+  "id": "2093656646165684425",
+  "date": "2026-08-29T11:06:57.000Z",
+  "text": "🚨🚨 OFFICIEL ! LE CALENDRIER DU PSG EN LIGUE DES CHAMPIONS !!! 🗓️❤️💙\n\n🏠 vs Slovan Bratislava 🇸🇰\n🗓️ Mercredi 9 Septembre 2026\n\n✈️ vs Manchester City 🏴󠁧󠁢󠁥󠁮󠁧󠁿\n🗓️ Mercredi 14 Octobre 2026\n\n🏠 vs Barcelone 🇪🇸\n🗓️ Mardi 20 Octobre 2026\n\n🛫 vs Villarreal 🇪🇸\n🗓️ Mardi 3 Novembre 2026\n\n🏠 vs …",
+  "likes": 4223,
+  "replies": 71,
+  "media": [
+   "HQ4pnzvXMAAXcwe"
+  ],
+  "ratio": [
+   0.8
+  ]
+ },
+ {
+  "id": "2091625973141713100",
+  "date": "2026-08-23T20:37:47.000Z",
+  "text": "🚨🚨 OFFICIEL ! LE CLASSEMENT DE LA LIGUE 1 APRÈS LA PREMIÈRE JOURNÉE !!!!! 🇫🇷📊\n\nL’OM EST LEADER !!!! 🥇💙🤍",
+  "likes": 5753,
+  "replies": 194,
+  "media": [
+   "HQbyeTxXAAA2LiC",
+   "HQbyeivXYAAbZiF"
+  ],
+  "ratio": [
+   0.8
+  ]
+ },
+ {
+  "id": "2081010570002649254",
+  "date": "2026-07-25T13:35:57.000Z",
+  "text": "L’OL EST TRÈS CLAIREMENT LE CLUB FRANÇAIS LE + ACTIF SUR LE MERCATO EN CE MOMENT 🔥🦁\n\n✅ Mads Bistrup 🇩🇰 - 13,5 M€ bonus compris 💰\n\n✅ Julien Duranville 🇧🇪 - 8,5 M€ bonus compris\n\n✅ Lois Openda 🇧🇪 - Prêt sec de 3 M€\n\n✅ Mohamadi Ouedraogo 🇧🇫 - 2,8 M€ bonus compris \n\n✅ …",
+  "likes": 4412,
+  "replies": 144,
+  "media": [
+   "HOE8EwbWUAAWnAg",
+   "HOE8EwcX0AAAMIh",
+   "HOE8EwaXQAAdVf1",
+   "HOE8EwlXoAAOQ1h"
+  ],
+  "ratio": [
+   1.501
+  ]
+ },
+ {
+  "id": "2078970417377595457",
+  "date": "2026-07-19T22:29:07.000Z",
+  "text": "Qui remportera le Ballon d'Or 2026 ? 🌕",
+  "likes": 5227,
+  "replies": 1339,
+  "media": [
+   "HNn8ksnW4AALnBB"
+  ],
+  "ratio": [
+   1.438
+  ]
+ },
+ {
+  "id": "2078926440565760412",
+  "date": "2026-07-19T19:34:22.000Z",
+  "text": "🐐 x 💎",
+  "likes": 9727,
+  "replies": 92,
+  "media": [
+   "HNnUk6dXQAAnDPy"
+  ],
+  "ratio": [
+   0.8
+  ]
+ },
+ {
+  "id": "2077152257439666347",
+  "date": "2026-07-14T22:04:24.000Z",
+  "text": "🚨 Kylian Mbappé 🇫🇷 : « C’ÉTAIT UN RÊVE POUR NOUS D’ALLER EN FINALE… » 💔\n\n🎙️ @M6",
+  "likes": 13439,
+  "replies": 308,
+  "media": [
+   "HNOG-AOW4AA63OO"
+  ],
+  "ratio": [
+   0.8
+  ]
+ },
+ {
+  "id": "2073898397711438063",
+  "date": "2026-07-05T22:34:43.000Z",
+  "text": "🥁🇳🇴",
+  "likes": 5877,
+  "replies": 50,
+  "media": [
+   "HMf3jjSW8AAv8eN"
+  ],
+  "ratio": [
+   1.528
+  ]
+ },
+ {
+  "id": "2061510495283397020",
+  "date": "2026-06-01T18:09:37.000Z",
+  "text": "🚨🚨 LES FAVORIS DU MONDIAL 2026 SELON OPTA 📊🌍 :\n\n🥇 ESPAGNE 🇪🇸 - 16,12%\n🥈 FRANCE 🇫🇷 - 12,98%\n🥉 ANGLETERRE 🏴󠁧󠁢󠁥󠁮󠁧󠁿 - 11,18%\n\n4️⃣ Argentine 🇦🇷 - 10,36%\n5️⃣ Portugal 🇵🇹 - 7%\n6️⃣ Brésil 🇧🇷 - 6,61%\n7️⃣ Allemagne 🇩🇪 - 5,12%\n8️⃣ Pays-Bas 🇳🇱 - 3,62%\n9️⃣ Norvège 🇳🇴 - 3,51%\n🔟 Belgique 🇧🇪 - …",
+  "likes": 5412,
+  "replies": 274,
+  "media": [],
+  "ratio": []
+ }
+];
+
+    const AVATAR = 'https://pbs.twimg.com/profile_images/1860995948089847808/oFkrcyD-_normal.jpg';
+    const img = (id, size = 'medium') => `https://pbs.twimg.com/media/${id}?format=jpg&name=${size}`;
+    const url = id => `https://x.com/ActuFoot_/status/${id}`;
+    const $ = s => document.querySelector(s);
+    const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const k = n => n >= 1000 ? (n / 1000).toFixed(1).replace('.', ',').replace(',0', '') + ' k' : n;
+
+    function ago(iso) {
+      const s = (Date.now() - new Date(iso)) / 1000;
+      if (s < 3600) return `il y a ${Math.max(1, Math.round(s / 60))} min`;
+      if (s < 86400) return `il y a ${Math.round(s / 3600)} h`;
+      if (s < 86400 * 7) return `il y a ${Math.round(s / 86400)} j`;
+      return new Date(iso).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+    }
+
+    // Transforme un tweet en article : titre, chapô, catégories
+    const CATS = [
+      ["Ballon d'Or", /ballon d/i],
+      ['Ligue des champions', /ligue des champions/i],
+      ['Ligue 1', /ligue 1/i],
+      ['Mercato', /mercato/i],
+      ['Bleus', /mondial|🇫🇷 :|finale/i],
+      ['Premier League', /premier league/i],
+    ];
+    const posts = TWEETS.filter(t => t.id !== '2104330342110769259').map(t => {
+      const blocks = t.text.split(/\n\s*\n/);
+      let title = blocks[0].replace(/^[🚨💣\s]+/u, '').replace(/^OFFICIEL\s*!\s*/i, '');
+      const body = blocks.slice(1).join('\n\n');
+      const cats = CATS.filter(([, r]) => r.test(t.text)).map(([c]) => c);
+      const emojiOnly = !/[a-zà-ÿ]{3}/i.test(t.text);
+      if (emojiOnly) cats.push('Photo');
+      return { ...t, title, body, cats, official: /OFFICIEL/.test(t.text), emojiOnly };
+    });
+
+    // Marquee
+    const heads = posts.filter(p => !p.emojiOnly).map(p => `<span>${esc(p.title.replace(/\s*[🎖️📊🗓️❤️💙🤍🥇🔥🦁💔🤩]+/gu, ' ').slice(0, 90))}</span>`).join('');
+    $('#marquee').innerHTML = heads + heads;
+
+    // Filtres
+    const filters = ['Tout', 'Officiel', ...new Set(posts.flatMap(p => p.cats))];
+    $('#chips').innerHTML = filters.map((f, i) => `<button class="chip${i ? '' : ' on'}" data-f="${f}">${f}</button>`).join('');
+    function filter(f) {
+      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.f === f));
+      document.querySelectorAll('.post').forEach(el => {
+        const p = posts.find(x => x.id === el.dataset.open);
+        const show = f === 'Tout' || (f === 'Officiel' ? p.official : p.cats.includes(f));
+        el.classList.toggle('hide', !show);
+      });
+    }
+    $('#chips').addEventListener('click', e => e.target.dataset.f && filter(e.target.dataset.f));
+    document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', () => filter(a.dataset.go)));
+
+    // Fil
+    $('#feed').innerHTML = posts.map(p => {
+      const ratio = Math.min(Math.max(p.ratio[0] || 1, .8), 1.78);
+      const tags = `<div class="tags">${p.official ? '<span class="tag off">Officiel</span>' : ''}${p.cats.map(c => `<span class="tag">${c}</span>`).join('')}</div>`;
+      const media = p.media.length ? `<div class="media" style="aspect-ratio:${ratio}"><img loading="lazy" src="${img(p.media[0], 'small')}" alt="" />${p.media.length > 1 ? `<span class="count">+${p.media.length - 1}</span>` : ''}</div>` : '';
+      return `<article class="post${p.media.length ? '' : ' dark'}" data-open="${p.id}">
+        ${media}
+        <div class="body">${tags}
+          ${p.emojiOnly ? `<h3 class="cond" style="font-size:34px">${esc(p.text)}</h3>` : `<h3 class="cond">${esc(p.title)}</h3>`}
+          ${p.body ? `<p class="txt">${esc(p.body)}</p>` : ''}
+          <div class="foot"><span>${ago(p.date)}</span><span>♥ ${k(p.likes)}</span><span>💬 ${k(p.replies)}</span><a class="x" href="${url(p.id)}" target="_blank" rel="noopener">X ↗</a></div>
+        </div>
+      </article>`;
+    }).join('');
+
+    // Article
+    const dlg = $('#dlg');
+    document.addEventListener('click', e => {
+      if (e.target.closest('a')) return;
+      const el = e.target.closest('[data-open]'); if (!el) return;
+      const p = posts.find(x => x.id === el.dataset.open);
+      const n = p.media.length;
+      $('#dlgBody').innerHTML = `
+        ${n ? `<div class="art-media n${n >= 4 ? 4 : n}">${p.media.map(m => `<img src="${img(m, 'large')}" alt="" />`).join('')}</div>` : ''}
+        <div class="art">
+          <div class="meta"><img src="${AVATAR}" alt="" /><div><b>Actu Foot</b> · @ActuFoot_<br>${new Date(p.date).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' })}</div></div>
+          <div class="tags">${p.official ? '<span class="tag off">Officiel</span>' : ''}${p.cats.map(c => `<span class="tag">${c}</span>`).join('')}</div>
+          <h1 class="cond">${esc(p.emojiOnly ? p.text : p.title)}</h1>
+          ${p.body ? `<p class="txt">${esc(p.body)}</p>` : ''}
+          <div class="actions">
+            <a class="primary" href="${url(p.id)}" target="_blank" rel="noopener">Voir le tweet ↗</a>
+            <span style="align-self:center;color:var(--muted);font-size:14px">♥ ${k(p.likes)} · 💬 ${k(p.replies)}</span>
+            <button id="share" style="margin-left:auto">Partager</button>
+          </div>
+        </div>`;
+      $('#share').onclick = async () => {
+        try { navigator.share ? await navigator.share({ title: p.title, url: url(p.id) }) : await navigator.clipboard.writeText(url(p.id)); $('#share').textContent = 'Lien copié ✓'; } catch {}
+      };
+      dlg.showModal(); dlg.scrollTop = 0;
+    });
+    $('#close').onclick = () => dlg.close();
+    dlg.addEventListener('click', e => e.target === dlg && dlg.close());
+
+    // Compte à rebours jusqu'à l'annonce du Ballon d'Or (26 octobre 2026)
+    const target = new Date('2026-10-26T00:00:00+01:00');
+    $('#heroDate').textContent = 'Publié ' + ago('2026-09-27T22:00:24Z');
+    function tick() {
+      let s = Math.max(0, (target - Date.now()) / 1000);
+      const v = { d: s / 86400, h: s / 3600 % 24, m: s / 60 % 60, s: s % 60 };
+      document.querySelectorAll('#countdown b').forEach(b => b.textContent = String(Math.floor(v[b.dataset.u])).padStart(2, '0'));
+    }
+    tick(); setInterval(tick, 1000);
+
+    // Classement Ligue 1 après J5 (visuel @ActuFoot_ du 20/09/2026)
+    const L1 = [['Monaco', 13], ['Lyon', 11], ['Paris FC', 11], ['Lille', 10], ['Rennes', 10], ['Paris SG', 8], ['Angers', 7], ['Strasbourg', 7], ['Le Mans', 6],
+      ['Auxerre', 6], ['Brest', 5], ['Lorient', 5], ['Toulouse', 5], ['Nice', 5], ['Lens', 4], ['Troyes', 4], ['Marseille', 3], ['Le Havre', 2]];
+    $('#standings').innerHTML = L1.map(([n, p], i) =>
+      `<li class="${i < 4 ? 'ucl' : i >= 16 ? 'rel' : ''}"><span class="r">${i + 1}</span><span class="n">${n}</span><span class="p">${p}</span></li>`).join('');
+
+    // Calendrier LDC du PSG (tweet du 29/08/2026)
+    const UCL = [['DOM', 'Slovan Bratislava 🇸🇰', '2026-09-09'], ['EXT', 'Manchester City 🏴󠁧󠁢󠁥󠁮󠁧󠁿', '2026-10-14'], ['DOM', 'Barcelone 🇪🇸', '2026-10-20'], ['EXT', 'Villarreal 🇪🇸', '2026-11-03']];
+    const nextIdx = UCL.findIndex(([, , d]) => new Date(d + 'T23:59') > Date.now());
+    $('#fixtures').innerHTML = UCL.map(([ha, t, d], i) => `
+      <li class="${i < nextIdx || nextIdx < 0 ? 'past' : i === nextIdx ? 'next' : ''}">
+        <span class="ha">${ha}</span><span>${t}${i === nextIdx ? '<span class="next-badge">PROCHAIN</span>' : ''}</span>
+        <span class="d">${new Date(d).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
+      </li>`).join('');
+
+    // Newsletter, thème, menu
+    $('#nl').addEventListener('submit', e => { e.preventDefault(); e.target.style.display = 'none'; $('#nlOk').style.display = 'block'; });
+    const root = document.documentElement;
+    try { const t = localStorage.getItem('af-theme'); if (t) root.dataset.theme = t; } catch {}
+    $('#theme').onclick = () => {
+      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = dark ? 'light' : 'dark';
+      try { localStorage.setItem('af-theme', root.dataset.theme); } catch {}
+    };
+    $('#burger').onclick = () => $('#nav').classList.toggle('open');
+    $('#nav').addEventListener('click', e => e.target.tagName === 'A' && $('#nav').classList.remove('open'));
+  </script>
+</body>
+</html>
