@@ -643,7 +643,7 @@ async function changeWorld(toArcade) {
 function checkWorld() {
   if (warping) return;
   const top = arcade.getBoundingClientRect().top;
-  if (!inArcade && top < innerHeight * 0.97) changeWorld(true);
+  if (!inArcade && top < innerHeight * 0.9) changeWorld(true);
   else if (inArcade && top > innerHeight * 1.08) changeWorld(false);
 }
 
@@ -698,7 +698,7 @@ addEventListener('scroll', updateArcade, { passive: true });
 addEventListener('resize', setupWipe);
 setupWipe();
 // Page rechargée déjà dans l'arcade : pas d'animation
-if (arcade.getBoundingClientRect().top < innerHeight * 0.97) {
+if (arcade.getBoundingClientRect().top < innerHeight * 0.9) {
   inArcade = true;
   document.body.classList.add('arcade');
 }

@@ -240,7 +240,7 @@ main > section, main > footer { pointer-events: auto; }
 
 #barca {
   position: relative;
-  padding: 34vh 0 64px;
+  padding: 34vh 0 24vh;
   background: linear-gradient(to bottom, transparent 0, rgba(5, 6, 11, .7) 22vh, var(--bg) 48vh);
 }
 .section-head { max-width: 760px; margin-bottom: 72px; }
