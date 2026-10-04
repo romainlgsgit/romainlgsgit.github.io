@@ -17,9 +17,12 @@ const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
 const imgQueue = [];
 let imgActive = 0;
 const IMG_MAX = 8;
+let pauseBackground = false; // pendant le voyage automatique, seules les images urgentes passent
 function pumpImages() {
   while (imgActive < IMG_MAX && imgQueue.length) {
-    const { url, resolve } = imgQueue.shift();
+    const i = pauseBackground ? imgQueue.findIndex((j) => j.urgent) : 0;
+    if (i < 0) return;
+    const [{ url, resolve }] = imgQueue.splice(i, 1);
     imgActive++;
     fetch(url, { mode: 'cors' })
       .then((r) => (r.ok ? r.blob() : Promise.reject()))
@@ -31,7 +34,7 @@ function pumpImages() {
 function loadBitmap(url, urgent = false) {
   let job;
   const promise = new Promise((resolve) => {
-    job = { url, resolve };
+    job = { url, resolve, urgent };
     imgQueue[urgent ? 'unshift' : 'push'](job);
     pumpImages();
   });
@@ -40,8 +43,10 @@ function loadBitmap(url, urgent = false) {
 }
 // Une image préchargée « plus tard » devient urgente : on la remonte en tête de file
 function bumpBitmap(job) {
+  job.urgent = true;
   const i = imgQueue.indexOf(job);
   if (i > 0) { imgQueue.splice(i, 1); imgQueue.unshift(job); }
+  pumpImages();
 }
 
 const journey = document.getElementById('journey');
@@ -124,6 +129,8 @@ function updateOverlays(p) {
   const cin = smooth(range(p, 0.41, 0.49));
   const cout = 1 - smooth(range(p, 0.51, 0.6));
   setStyle(clouds, 'opacity', Math.min(cin, cout).toFixed(2));
+  // Invisibles : on les retire du rendu plutôt que de les composer pour rien
+  setStyle(clouds, 'visibility', Math.min(cin, cout) < 0.01 ? 'hidden' : 'visible');
   setStyle(clouds, 'transform', `scale(${(1 + range(p, 0.41, 0.6) * 1.6).toFixed(3)})`);
   // Plongée finale vers le sol : on agrandit le canvas sous les nuages
   const dive = p < SWITCH ? easeOut(range(p, 0.36, SWITCH)) * 0.9 : 0;
@@ -141,7 +148,7 @@ function setAltitude(meters) {
 let renderer = null;
 try {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, COARSE ? 1.25 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, COARSE ? 1.25 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 } catch (e) {
   document.documentElement.classList.add('no-webgl');
@@ -391,7 +398,6 @@ function makePatch({ z, lon0, lon1, lat0, lat1, radius, order }) {
   spin.add(mesh);
   patchMaterials.push(mat);
 
-  let pending = false;
   let started = false;
   return function load() {
     if (started) return;
@@ -403,12 +409,13 @@ function makePatch({ z, lon0, lon1, lat0, lat1, radius, order }) {
         loadBitmap(ESRI(z, x, y)).then((bmp) => {
           done++;
           if (bmp) g.drawImage(bmp, (x - tx0) * 256, (y - ty0) * 256);
-          if (!COARSE || done === total) mat.uniforms.ready.value = 1;
-          // Envoyer une grande texture au GPU coûte cher : sur téléphone, on le fait rarement
-          if (done === total) { tex.needsUpdate = true; return; }
-          if (!pending && !COARSE) {
-            pending = true;
-            setTimeout(() => { tex.needsUpdate = true; pending = false; }, 250);
+          // Une seule mise à jour de la texture, une fois toutes les images reçues :
+          // l'envoyer au GPU (avec ses mipmaps) à chaque image provoquait des à-coups
+          if (done === total) {
+            tex.needsUpdate = true;
+            // Envoi immédiat au GPU, avant que le visiteur ne lance le voyage
+            if (renderer) renderer.initTexture(tex);
+            mat.uniforms.ready.value = 1;
           }
         });
       }
@@ -430,7 +437,8 @@ const mctx = mapCanvas.getContext('2d');
 // Centre du terrain du Camp Nou
 const CN = { lat: 41.38088, lon: 2.12282 };
 const TILE_URL = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
-const Z_START = 6.5;
+// Zoom de départ de la carte, calé sur la vue du globe juste avant les nuages (recalculé au redimensionnement)
+let Z_START = 6.5;
 const Z_END = 18.4;
 const MAX_LEVEL = 18;
 
@@ -490,7 +498,12 @@ function drawMap(z, ang) {
   mctx.fillRect(0, 0, W, H);
   const target = Math.min(MAX_LEVEL, Math.max(0, Math.ceil(z - 0.15)));
   const R = Math.hypot(W, H) / 2;
-  for (let l = Math.max(0, target - (COARSE ? 2 : 4)); l <= target; l++) {
+  // Un niveau de base peu détaillé (déjà chargé) est toujours dessiné en dessous :
+  // s'il manque des images plus précises, on voit une carte floue, jamais un écran noir
+  const base = Math.min(target, Math.floor(Z_START) + 1);
+  const levels = [base];
+  for (let l = Math.max(base + 1, target - (COARSE ? 2 : 3)); l <= target; l++) levels.push(l);
+  for (const l of levels) {
     const s = 2 ** (z - l);
     const [cx, cy] = worldPx(l);
     const x0 = Math.floor((cx - R / s) / 256);
@@ -504,13 +517,30 @@ function drawMap(z, ang) {
     mctx.translate(-cx, -cy);
     for (let x = x0; x <= x1; x++) {
       for (let y = y0; y <= y1; y++) {
-        const im = getTile(l, x, y, l >= target - 2 && 'now');
+        const im = getTile(l, x, y, (l === base || l >= target - 2) && 'now');
         if (im) mctx.drawImage(im, x * 256, y * 256, 256 + 1 / s, 256 + 1 / s);
       }
     }
     mctx.restore();
   }
+  // Vignettage (assombrit les bords pour la lisibilité des textes)
+  if (!vignette || vignette.w !== W || vignette.h !== H) {
+    const top = mctx.createLinearGradient(0, 0, 0, H);
+    top.addColorStop(0, 'rgba(5,6,11,.55)');
+    top.addColorStop(0.22, 'rgba(5,6,11,0)');
+    top.addColorStop(0.62, 'rgba(5,6,11,0)');
+    top.addColorStop(1, 'rgba(5,6,11,.7)');
+    const rad = mctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.45, W / 2, H / 2, Math.hypot(W, H) * 0.6);
+    rad.addColorStop(0, 'rgba(5,6,11,0)');
+    rad.addColorStop(1, 'rgba(5,6,11,.45)');
+    vignette = { w: W, h: H, top, rad };
+  }
+  mctx.fillStyle = vignette.top;
+  mctx.fillRect(0, 0, W, H);
+  mctx.fillStyle = vignette.rad;
+  mctx.fillRect(0, 0, W, H);
 }
+let vignette = null;
 
 function renderGround(p) {
   const on = p >= SWITCH - 0.02;
@@ -541,7 +571,7 @@ function resize() {
   if (COARSE && innerWidth === lastW && Math.abs(innerHeight - lastH) < 160) return;
   lastW = innerWidth;
   lastH = innerHeight;
-  mapDpr = Math.min(devicePixelRatio || 1, COARSE ? 1.25 : 2);
+  mapDpr = Math.min(devicePixelRatio || 1, COARSE ? 1.25 : 1.5);
   mapCanvas.width = Math.round(innerWidth * mapDpr);
   mapCanvas.height = Math.round(innerHeight * mapDpr);
   mapDirty = true;
@@ -553,6 +583,10 @@ function resize() {
   spaceCam.aspect = w / h;
   spaceCam.fov = portrait ? 55 : 40;
   spaceCam.updateProjectionMatrix();
+  // Même échelle que le globe à la fin de sa plongée (altitude 0,42 rayon, canvas agrandi ×1,9)
+  const mppGlobe = (2 * 0.42 * 6371000 * Math.tan((spaceCam.fov * D) / 2)) / h / 1.9;
+  Z_START = clamp(Math.log2((156543.03 * Math.cos(CN.lat * D)) / mppGlobe), 5, 7.5);
+  mapDirty = true;
 }
 
 function renderSpace(p, t) {
@@ -652,8 +686,10 @@ function frame(now) {
     }
     // Les nuages masquent le passage de la carte au globe
     const ck = outroK === null ? 1 : outroK;
-    clouds.style.opacity = Math.min(smooth(range(ck, OUTRO_SWAP - 0.1, OUTRO_SWAP - 0.02)), 1 - smooth(range(ck, OUTRO_SWAP + 0.02, OUTRO_SWAP + 0.14))).toFixed(3);
-    clouds.style.transform = `scale(${(2.6 - range(ck, OUTRO_SWAP - 0.1, OUTRO_SWAP + 0.14) * 1.6).toFixed(3)})`;
+    const co = Math.min(smooth(range(ck, OUTRO_SWAP - 0.1, OUTRO_SWAP - 0.02)), 1 - smooth(range(ck, OUTRO_SWAP + 0.02, OUTRO_SWAP + 0.14)));
+    setStyle(clouds, 'opacity', co.toFixed(2));
+    setStyle(clouds, 'visibility', co < 0.01 ? 'hidden' : 'visible');
+    setStyle(clouds, 'transform', `scale(${(2.6 - range(ck, OUTRO_SWAP - 0.1, OUTRO_SWAP + 0.14) * 1.6).toFixed(3)})`);
     return;
   }
   setMapCenter(CN);
@@ -727,11 +763,15 @@ const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Le scroll est bloqué pendant le changement de monde
 const block = (e) => e.preventDefault();
+// On bloque les gestes sans masquer la barre de défilement : la masquer changeait la
+// largeur de la page et forçait un recalcul complet (gros à-coup au début des animations)
+const SCROLL_KEYS = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' ', 'Spacebar'];
+const blockKeys = (e) => { if (SCROLL_KEYS.includes(e.key)) e.preventDefault(); };
 function lockScroll(on) {
-  document.documentElement.style.overflow = on ? 'hidden' : '';
   const fn = on ? addEventListener : removeEventListener;
   fn('wheel', block, { passive: false });
   fn('touchmove', block, { passive: false });
+  fn('keydown', blockKeys);
 }
 function jumpTo(y) {
   window.scrollTo(0, y);
@@ -1164,6 +1204,16 @@ document.querySelectorAll('.postit').forEach((p) => {
 // Précharge les écrans pour un changement instantané
 ['reveil', 'assistant', 'examens-ia', 'resultats', 'espagnol'].forEach((n) => { new Image().src = `assets/img/etudeasy/${n}.webp`; });
 
+// Les images du premier niveau de la carte autour de Barcelone sont-elles arrivées ?
+function baseReady() {
+  const l = Math.floor(Z_START) + 1;
+  const [cx, cy] = worldPx(l, CN);
+  const tx = Math.floor(cx / 256);
+  const ty = Math.floor(cy / 256);
+  for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) if (!getTile(l, tx + dx, ty + dy, 'now')) return false;
+  return true;
+}
+
 /* ---------- Voyage automatique : un seul scroll suffit pour aller jusqu'au Camp Nou ---------- */
 const barca = document.getElementById('barca');
 let autoPlaying = false;
@@ -1174,13 +1224,39 @@ async function autoJourney() {
   lockScroll(true);
   frozen = true;
   if (!prefetched) prefetchTiles();
+  pauseBackground = true;
+  // Les niveaux de base de la carte passent en priorité pendant la phase « espace » :
+  // ils servent de filet de sécurité, pour ne jamais voir un écran noir ensuite
+  for (let l = Math.floor(Z_START); l <= Math.floor(Z_START) + 3; l++) {
+    const [cx, cy] = worldPx(l, CN);
+    const tx = Math.floor(cx / 256);
+    const ty = Math.floor(cy / 256);
+    for (let dx = -3; dx <= 3; dx++) for (let dy = -2; dy <= 2; dy++) getTile(l, tx + dx, ty + dy, 'now');
+  }
   const start = clamp(scrollY / journeyEnd);
   const ms = reduceMotion ? 10 : Math.max(1500, JOURNEY_MS * (1 - start));
-  await tween(ms, (k) => {
-    // Démarrage et arrivée en douceur, vitesse régulière au milieu
-    target = prog = lerp(start, 1, k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+  // Démarrage et arrivée en douceur ; si la carte n'est pas prête au passage des nuages,
+  // on patiente dans les nuages (2,5 s maximum) plutôt que d'afficher un écran vide
+  await new Promise((resolve) => {
+    let k = 0;
+    let last = performance.now();
+    let waited = 0;
+    const step = (now) => {
+      const dt = Math.min(100, now - last);
+      last = now;
+      const p = lerp(start, 1, k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2);
+      const atSwap = p > SWITCH - 0.015 && p < SWITCH + 0.01;
+      if (atSwap && !baseReady() && waited < 2500) waited += dt;
+      else k = Math.min(1, k + dt / ms);
+      target = prog = p;
+      if (k < 1) requestAnimationFrame(step);
+      else { target = prog = 1; resolve(); }
+    };
+    requestAnimationFrame(step);
   });
   jumpTo(journeyEnd);
+  pauseBackground = false;
+  pumpImages();
   frozen = false;
   lockScroll(false);
   // On glisse jusqu'aux projets Barça
@@ -1189,10 +1265,13 @@ async function autoJourney() {
   await tween(reduceMotion ? 10 : 1100, (k) => { window.scrollTo(0, lerp(from, to, ease(k))); readScroll(); });
   warping = false;
   autoPlaying = false;
+  autoEnded = performance.now();
 }
 // Déclenché par le premier geste vers le bas tant qu'on est dans le voyage
+let autoEnded = 0;
 function wantsAuto() {
-  return !autoPlaying && !warping && world === 1 && !frozen && scrollY < journeyEnd - 10;
+  // Pas de relance par l'inertie du geste juste après la fin du voyage
+  return !autoPlaying && !warping && world === 1 && !frozen && performance.now() - autoEnded > 1500 && scrollY < journeyEnd * 0.92;
 }
 addEventListener('wheel', (e) => {
   if (e.deltaY > 4 && wantsAuto()) { e.preventDefault(); autoJourney(); }
@@ -1235,8 +1314,8 @@ resize();
 setTimeout(loadEurope, 600);
 // Les images satellite de Barcelone se chargent pendant la lecture de la présentation
 setTimeout(() => { if (!prefetched) prefetchTiles(); }, 1500);
-// Sur téléphone, tout est préparé pendant la lecture de la présentation
-if (COARSE) setTimeout(loadCatalogne, 900);
+// Tout est préparé pendant la lecture de la présentation
+setTimeout(loadCatalogne, 900);
 
 // Aperçu figé d'une étape (développement) : ?p=0.75
 const qp = parseFloat(new URLSearchParams(location.search).get('p'));
