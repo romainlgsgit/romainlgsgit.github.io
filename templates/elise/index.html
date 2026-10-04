@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maison Élise — Template e-commerce mode femme</title>
+  <meta name="description" content="Template de démonstration d'une boutique en ligne de mode féminine, conçu par Romain Legros." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shop.css" />
+  <style>
+    :root {
+      --t-bg: #f7f2eb; --t-ink: #2b2420; --t-muted: #8a7f76; --t-line: rgba(43,36,32,.16); --t-panel: #ece4d9;
+      --t-accent: #b5653f; --t-accent-ink: #fff; --t-accent-strong: #b5653f;
+      --t-display: 'Cormorant Garamond', Georgia, serif; --t-display-w: 500; --t-body: 'Jost', system-ui, sans-serif;
+      --t-radius: 2px; --t-pill: 0;
+    }
+    body { font-weight: 300; }
+    .announce { text-align: center; padding: 10px 16px; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; border-bottom: 1px solid var(--t-line); }
+    header.top { position: sticky; top: 0; z-index: 50; background: rgba(247,242,235,.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--t-line); }
+    header.top .wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
+    header.top nav { display: flex; gap: 28px; font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; }
+    header.top nav a { position: relative; }
+    header.top nav a::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -4px; height: 1px; background: currentColor; transition: right .3s; }
+    header.top nav a:hover::after { right: 0; }
+    .logo { font-family: var(--t-display); font-size: 32px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; text-align: center; line-height: 1; }
+    .logo small { display: block; font-family: var(--t-body); font-size: 9.5px; letter-spacing: .5em; margin-top: 4px; color: var(--t-muted); }
+    .icons { display: flex; justify-content: flex-end; gap: 2px; }
+
+    .hero { display: grid; grid-template-columns: 1fr 1.05fr; min-height: min(86vh, 820px); }
+    .hero-text { display: flex; flex-direction: column; justify-content: center; padding: clamp(36px, 6vw, 90px); gap: 22px; }
+    .eyebrow { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--t-accent); }
+    .hero h1 { font-family: var(--t-display); font-weight: 400; font-size: clamp(52px, 7.4vw, 112px); line-height: .95; }
+    .hero h1 em { font-style: italic; color: var(--t-accent); }
+    .hero p { max-width: 420px; color: var(--t-muted); font-size: 17px; }
+    .hero-img { position: relative; overflow: hidden; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .btn-line { display: inline-flex; align-items: center; gap: 12px; font-size: 12.5px; letter-spacing: .2em; text-transform: uppercase; padding-bottom: 6px; border-bottom: 1px solid var(--t-ink); align-self: flex-start; }
+    .sh-btn { text-transform: uppercase; letter-spacing: .16em; font-size: 12.5px; font-weight: 500; }
+
+    section.block { padding: clamp(64px, 9vw, 120px) 0; }
+    .title { text-align: center; margin-bottom: 40px; }
+    .title h2 { font-family: var(--t-display); font-weight: 400; font-size: clamp(40px, 5vw, 64px); line-height: 1; }
+    .title h2 em { color: var(--t-accent); }
+    .title p { color: var(--t-muted); margin-top: 10px; }
+    .sh-toolbar { justify-content: center; }
+    .sh-toolbar-right { width: 100%; justify-content: center; }
+    #sh-filters button { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+    .sh-card-info { text-align: center; }
+    .sh-card-price { justify-content: center; }
+    .sh-card-info h3 { font-size: 21px; }
+    .sh-add-mini { align-self: center; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; }
+
+    .edito { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 90px); align-items: center; }
+    .edito img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+    .edito blockquote { font-family: var(--t-display); font-style: italic; font-size: clamp(30px, 3.6vw, 50px); line-height: 1.1; }
+    .edito cite { display: block; margin-top: 20px; font-style: normal; font-size: 12px; letter-spacing: .24em; text-transform: uppercase; color: var(--t-muted); }
+    .edito .txt { display: grid; gap: 26px; }
+
+    .atelier { position: relative; color: #fff; text-align: center; }
+    .atelier img { width: 100%; height: clamp(320px, 42vw, 520px); object-fit: cover; filter: brightness(.6); }
+    .atelier div { position: absolute; inset: 0; display: grid; place-content: center; gap: 14px; padding: 16px; }
+    .atelier h2 { font-family: var(--t-display); font-weight: 400; font-size: clamp(38px, 5vw, 68px); }
+    .atelier p { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; }
+
+    .engage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+    .engage h3 { font-family: var(--t-display); font-weight: 500; font-size: 26px; margin-bottom: 6px; }
+    .engage p { color: var(--t-muted); font-size: 15px; }
+
+    .news { text-align: center; border-top: 1px solid var(--t-line); }
+    .news form { display: flex; max-width: 460px; margin: 26px auto 0; border-bottom: 1px solid var(--t-ink); }
+    .news input { flex: 1; min-width: 0; padding: 14px 4px; border: 0; background: transparent; font: inherit; }
+    .news button { border: 0; background: none; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; padding: 0 6px; }
+    footer.foot { background: var(--t-ink); color: #cfc6bc; padding: 54px 0 40px; font-size: 13.5px; }
+    footer.foot .wrap { display: grid; gap: 14px; text-align: center; }
+    footer.foot .logo { color: #fff; font-size: 26px; }
+    footer.foot a { color: #fff; }
+    @media (max-width: 860px) {
+      header.top .wrap { grid-template-columns: auto 1fr auto; }
+      header.top nav { display: none; }
+      .logo { text-align: left; font-size: 24px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-img { order: -1; height: 56vh; }
+      .edito { grid-template-columns: 1fr; }
+      .engage { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Template e-commerce de démonstration, conçu par Romain Legros. Marque et produits fictifs. <a href="../../#boutique">← Retour au portfolio</a></div>
+  <p class="announce">Livraison offerte dès 150 € · Retours sous 30 jours</p>
+
+  <header class="top">
+    <div class="wrap">
+      <nav>
+        <a href="#shop" data-goto-cat="Robes">Robes</a>
+        <a href="#shop" data-goto-cat="Manteaux">Manteaux</a>
+        <a href="#shop" data-goto-cat="Sacs">Sacs</a>
+      </nav>
+      <a class="logo" href="#">Élise<small>Maison · Paris</small></a>
+      <div class="icons">
+        <a class="icon-btn" href="#shop" aria-label="Favoris"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg><span class="count" data-fav-count hidden></span></a>
+        <button class="icon-btn" type="button" data-open-cart aria-label="Panier"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7Z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg><span class="count" data-cart-count hidden></span></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Collection automne · hiver</span>
+      <h1>L'élégance<br /><em>sans effort.</em></h1>
+      <p>Des pièces intemporelles, coupées dans des matières nobles. Pensées pour être portées longtemps.</p>
+      <a class="btn-line" href="#shop">Découvrir la collection →</a>
+    </div>
+    <div class="hero-img"><img src="img/hero.webp" alt="" /></div>
+  </section>
+
+  <section class="block" id="shop">
+    <div class="wrap">
+      <div class="title"><h2>La <em>collection</em></h2><p>Robes, manteaux et maroquinerie de la saison</p></div>
+      <div class="sh-toolbar">
+        <div id="sh-filters"></div>
+        <div class="sh-toolbar-right">
+          <span id="sh-count"></span>
+          <select id="sh-sort" aria-label="Trier">
+            <option value="featured">Sélection</option>
+            <option value="asc">Prix croissant</option>
+            <option value="desc">Prix décroissant</option>
+            <option value="az">De A à Z</option>
+          </select>
+        </div>
+      </div>
+      <div id="sh-grid"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap edito">
+      <img src="img/look.webp" alt="" loading="lazy" />
+      <div class="txt">
+        <span class="eyebrow">L'esprit de la maison</span>
+        <blockquote>« Un vêtement réussi, c'est celui qu'on oublie qu'on porte. »<cite>Élise, fondatrice</cite></blockquote>
+        <p style="color:var(--t-muted)">Chaque pièce est dessinée à Paris et produite en petites séries dans des ateliers européens. Laine, lin et cuir sont choisis pour leur tenue dans le temps.</p>
+        <a class="btn-line" href="#shop" data-goto-cat="Manteaux">Voir les manteaux →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="atelier">
+    <img src="img/store.webp" alt="" loading="lazy" />
+    <div><p>Rendez-vous en boutique</p><h2>L'atelier, rue de Charonne</h2><p>Retrait gratuit · Retouches offertes</p></div>
+  </section>
+
+  <section class="block">
+    <div class="wrap engage">
+      <div><h3>Matières nobles</h3><p>Laine, lin, soie et cuir sélectionnés</p></div>
+      <div><h3>Petites séries</h3><p>Fabriquées en Europe, sans surstock</p></div>
+      <div><h3>Retouches offertes</h3><p>Pour un tombé parfait, à vos mesures</p></div>
+    </div>
+  </section>
+
+  <section class="block news">
+    <div class="wrap">
+      <span class="eyebrow">La lettre</span>
+      <div class="title" style="margin:14px 0 0"><h2>Restons en <em>contact</em></h2><p>Avant-premières, ventes privées et nouvelles collections.</p></div>
+      <form data-newsletter><input type="email" required placeholder="Votre adresse e-mail" aria-label="E-mail" /><button type="submit">S'inscrire</button></form>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <a class="logo" href="#">Élise</a>
+      <p>Template de démonstration conçu et développé par <a href="../../">Romain Legros</a>. Maison Élise est une marque fictive : aucun produit n'est réellement en vente.</p>
+      <p>Photos : Aiony Haust, Alex Gagareen, Alexandra Iva, Background Foto Pixell Design, Bundo Kim, Caroline Badran, Onur Senay, Reistor, Robert Chan, Ugluk Potroshitel et engin akyurt, via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>.</p>
+    </div>
+  </footer>
+
+  <script>
+    window.SHOP = {
+      key: 'elise', freeShipping: 150,
+      products: [
+        { id: 'robe-sable', name: 'Robe en lin Sable', cat: 'Robes', price: 129, img: 'img/p1.webp', badge: 'Nouveau', sizes: ['34','36','38','40','42'], desc: 'Robe droite sans manches en lin lavé, encolure ronde et poches discrètes. Légère et fraîche.' },
+        { id: 'robe-celadon', name: 'Robe d\'été Céladon', cat: 'Robes', price: 119, img: 'img/p2.webp', sizes: ['34','36','38','40'], desc: 'Robe midi à fines bretelles, taille froncée. Un vert d\'eau tout en douceur.' },
+        { id: 'robe-terracotta', name: 'Robe ceinturée Terracotta', cat: 'Robes', price: 139, img: 'img/p3.webp', sizes: ['36','38','40','42'], desc: 'Robe chemise boutonnée, ceinture à nouer et manches courtes. Coton épais.' },
+        { id: 'manteau-camel', name: 'Manteau ceinturé Camel', cat: 'Manteaux', price: 289, img: 'img/p4.webp', badge: 'Iconique', sizes: ['34','36','38','40','42'], desc: 'Manteau portefeuille en laine mélangée, ceinture amovible et col tailleur. La pièce forte de l\'hiver.' },
+        { id: 'trench-ivoire', name: 'Trench Ivoire', cat: 'Manteaux', price: 249, img: 'img/p5.webp', sizes: ['36','38','40'], desc: 'Trench croisé en gabardine de coton, pattes d\'épaule et ceinture. Intemporel.' },
+        { id: 'manteau-moutarde', name: 'Manteau long Miel', cat: 'Manteaux', price: 269, old: 329, img: 'img/p6.webp', badge: '-18 %', sizes: ['36','38','40','42'], desc: 'Manteau long à boutonnage caché, épaules structurées. Dernières tailles.' },
+        { id: 'cabas-cognac', name: 'Cabas en cuir Cognac', cat: 'Sacs', price: 189, img: 'img/p7.webp', desc: 'Cabas en cuir pleine fleur tanné végétal, anses longues et poche intérieure zippée.' },
+        { id: 'sac-poudre', name: 'Sac matelassé Poudré', cat: 'Sacs', price: 159, img: 'img/p8.webp', desc: 'Petit sac à main matelassé, fermoir doré et bandoulière amovible.' },
+        { id: 'blouse-rouge', name: 'Blouse col V Carmin', cat: 'Hauts', price: 89, img: 'img/p9.webp', sizes: ['34','36','38','40','42'], desc: 'Blouse fluide en crêpe, col V et manches longues. Un rouge profond qui illumine.' },
+      ],
+    };
+  </script>
+  <script src="../shop.js"></script>
+</body>
+</html>

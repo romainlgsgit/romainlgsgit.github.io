@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Éclat — Template e-commerce cosmétiques</title>
+  <meta name="description" content="Template de démonstration d'une boutique en ligne de soins et cosmétiques, conçu par Romain Legros." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../shop.css" />
+  <style>
+    :root {
+      --t-bg: #fdf6f1; --t-ink: #3a2a26; --t-muted: #8f7a72; --t-line: rgba(58,42,38,.13); --t-panel: #f5e6dc;
+      --t-accent: #e8836b; --t-accent-ink: #fff; --t-accent-strong: #d0654c;
+      --t-display: 'DM Serif Display', Georgia, serif; --t-display-w: 400; --t-body: 'DM Sans', system-ui, sans-serif;
+      --t-radius: 22px; --t-pill: 99px;
+    }
+    header.top { position: sticky; top: 0; z-index: 50; padding: 12px 0; }
+    header.top .wrap > div { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 8px 10px 8px 22px; border-radius: 99px; background: rgba(255,255,255,.82); backdrop-filter: blur(14px); box-shadow: 0 8px 30px rgba(58,42,38,.08); }
+    .logo { font-family: var(--t-display); font-size: 28px; }
+    .logo span { color: var(--t-accent); }
+    header.top nav { display: flex; gap: 6px; font-size: 14.5px; font-weight: 500; }
+    header.top nav a { padding: 8px 14px; border-radius: 99px; transition: background .2s; }
+    header.top nav a:hover { background: var(--t-panel); }
+    .icons { display: flex; }
+
+    .hero { padding: 12px 0 0; }
+    .hero-card { display: grid; grid-template-columns: 1.05fr 1fr; gap: 0; border-radius: 32px; overflow: hidden; background: linear-gradient(135deg, #f8d9c8, #fbe9df 55%, #f3d2c4); min-height: min(80vh, 720px); }
+    .hero-text { padding: clamp(32px, 6vw, 80px); display: flex; flex-direction: column; justify-content: center; gap: 20px; }
+    .pill { align-self: flex-start; padding: 7px 14px; border-radius: 99px; background: rgba(255,255,255,.7); font-size: 13px; font-weight: 600; }
+    .hero h1 { font-family: var(--t-display); font-weight: 400; font-size: clamp(50px, 6.6vw, 98px); line-height: .98; }
+    .hero h1 em { color: var(--t-accent-strong); }
+    .hero p { max-width: 430px; font-size: 17px; color: #6d5650; }
+    .hero-img { position: relative; }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .chip { position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.88); backdrop-filter: blur(8px); font-size: 13px; box-shadow: 0 10px 30px rgba(58,42,38,.12); }
+    .chip b { display: block; font-size: 14px; }
+    .chip i { width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff4c9, #f2b94a); flex: none; }
+    .chip.c1 { left: 18px; bottom: 26px; }
+    .chip.c2 { right: 18px; top: 26px; }
+    .chip.c2 i { background: radial-gradient(circle at 35% 35%, #fff, #f3b8a6); }
+    .ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+    .sh-btn.light { background: rgba(255,255,255,.7); color: var(--t-ink); }
+
+    section.block { padding: clamp(60px, 8vw, 110px) 0; }
+    .title { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+    .title h2 { font-family: var(--t-display); font-weight: 400; font-size: clamp(38px, 5vw, 62px); line-height: 1; }
+    .title h2 em { color: var(--t-accent-strong); }
+    .title p { color: var(--t-muted); max-width: 380px; }
+
+    .routine { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step { padding: 26px; border-radius: var(--t-radius); background: #fff; box-shadow: 0 10px 30px rgba(58,42,38,.06); }
+    .step span { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--t-panel); font-family: var(--t-display); font-size: 20px; margin-bottom: 14px; }
+    .step h3 { font-family: var(--t-display); font-weight: 400; font-size: 25px; margin-bottom: 6px; }
+    .step p { color: var(--t-muted); font-size: 15px; }
+    .step a { display: inline-block; margin-top: 12px; font-weight: 600; font-size: 14px; color: var(--t-accent-strong); }
+
+    .sh-card-img { box-shadow: 0 10px 30px rgba(58,42,38,.06); }
+    .sh-card-info h3 { font-size: 20px; }
+
+    .texture { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .texture > * { border-radius: 32px; overflow: hidden; }
+    .texture img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; }
+    .texture .txt { background: var(--t-ink); color: #fbeee6; padding: clamp(30px, 5vw, 64px); display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+    .texture h2 { font-family: var(--t-display); font-weight: 400; font-size: clamp(36px, 4.4vw, 58px); line-height: 1.02; }
+    .texture h2 em { color: #f3a38c; }
+    .texture ul { list-style: none; display: grid; gap: 10px; color: #e6d3c9; }
+    .texture li::before { content: '✦  '; color: #f3a38c; }
+
+    .news { margin-top: 10px; }
+    .news-card { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 24px; padding: clamp(28px, 5vw, 56px); border-radius: 32px; background: var(--t-panel); }
+    .news-card h2 { font-family: var(--t-display); font-weight: 400; font-size: clamp(32px, 4vw, 50px); line-height: 1.05; }
+    .news form { display: flex; gap: 8px; padding: 6px; border-radius: 99px; background: #fff; }
+    .news input { flex: 1; min-width: 0; padding: 0 16px; border: 0; background: transparent; font: inherit; }
+    footer.foot { padding: 50px 0 40px; font-size: 13.5px; color: var(--t-muted); }
+    footer.foot .wrap { display: grid; gap: 12px; }
+    footer.foot a { color: var(--t-ink); font-weight: 600; }
+    @media (max-width: 860px) {
+      header.top nav { display: none; }
+      .hero-card { grid-template-columns: 1fr; }
+      .hero-img { height: 50vh; order: -1; }
+      .routine, .texture, .news-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Template e-commerce de démonstration, conçu par Romain Legros. Marque et produits fictifs. <a href="../../#boutique">← Retour au portfolio</a></div>
+
+  <header class="top">
+    <div class="wrap"><div>
+      <a class="logo" href="#">éclat<span>.</span></a>
+      <nav>
+        <a href="#shop" data-goto-cat="Soins visage">Soins visage</a>
+        <a href="#shop" data-goto-cat="Huiles &amp; sérums">Huiles &amp; sérums</a>
+        <a href="#shop" data-goto-cat="Maquillage">Maquillage</a>
+        <a href="#routine">Ma routine</a>
+      </nav>
+      <div class="icons">
+        <a class="icon-btn" href="#shop" aria-label="Favoris"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg><span class="count" data-fav-count hidden></span></a>
+        <button class="icon-btn" type="button" data-open-cart aria-label="Panier"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.3 11a2 2 0 0 1-2 1.8H8.3a2 2 0 0 1-2-1.8Z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg><span class="count" data-cart-count hidden></span></button>
+      </div>
+    </div></div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-card">
+        <div class="hero-text">
+          <span class="pill">✦ Formules clean · Fabriqué en France</span>
+          <h1>Une peau qui<br /><em>respire l'éclat.</em></h1>
+          <p>Des soins aux actifs naturels, testés sous contrôle dermatologique, pour une routine simple et efficace.</p>
+          <div class="ctas">
+            <a class="sh-btn" href="#shop">Découvrir les soins</a>
+            <a class="sh-btn light" href="#routine">Trouver ma routine</a>
+          </div>
+        </div>
+        <div class="hero-img">
+          <img src="img/hero.webp" alt="" />
+          <div class="chip c1"><i></i><div><b>Vitamine C 15 %</b>Teint lumineux</div></div>
+          <div class="chip c2"><i></i><div><b>98 % naturel</b>Origine naturelle</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="routine">
+    <div class="wrap">
+      <div class="title"><h2>Ta routine en<br /><em>3 étapes</em></h2><p>Nettoyer, traiter, nourrir. Le geste juste, sans superflu.</p></div>
+      <div class="routine">
+        <div class="step"><span>1</span><h3>Nettoyer</h3><p>Un gel doux qui élimine les impuretés sans tirer.</p><a href="#shop" data-goto-cat="Soins visage">Voir les nettoyants →</a></div>
+        <div class="step"><span>2</span><h3>Traiter</h3><p>Un sérum concentré pour cibler l'éclat ou les imperfections.</p><a href="#shop" data-goto-cat="Huiles &amp; sérums">Voir les sérums →</a></div>
+        <div class="step"><span>3</span><h3>Nourrir</h3><p>Une crème ou un baume pour protéger la barrière cutanée.</p><a href="#shop" data-goto-cat="Soins visage">Voir les crèmes →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="shop" style="padding-top:0">
+    <div class="wrap">
+      <div class="title"><h2>Nos <em>essentiels</em></h2></div>
+      <div class="sh-toolbar">
+        <div id="sh-filters"></div>
+        <div class="sh-toolbar-right">
+          <span id="sh-count"></span>
+          <select id="sh-sort" aria-label="Trier">
+            <option value="featured">Nos favoris</option>
+            <option value="asc">Prix croissant</option>
+            <option value="desc">Prix décroissant</option>
+            <option value="az">De A à Z</option>
+          </select>
+        </div>
+      </div>
+      <div id="sh-grid"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap texture">
+      <img src="img/look.webp" alt="" loading="lazy" />
+      <div class="txt">
+        <h2>Des textures qui<br /><em>donnent envie.</em></h2>
+        <ul>
+          <li>Sans parfum ajouté ni silicones</li>
+          <li>Flacons en verre recyclable</li>
+          <li>Recharges disponibles pour nos best-sellers</li>
+          <li>Jamais testé sur les animaux</li>
+        </ul>
+        <a class="sh-btn light" href="#shop" style="align-self:flex-start">Composer mon panier</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block news" style="padding-top:0">
+    <div class="wrap">
+      <div class="news-card">
+        <h2>-15 % sur ta première commande</h2>
+        <form data-newsletter><input type="email" required placeholder="Ton adresse e-mail" aria-label="E-mail" /><button class="sh-btn" type="submit">J'en profite</button></form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <a class="logo" href="#">éclat<span>.</span></a>
+      <p>Template de démonstration conçu et développé par <a href="../../">Romain Legros</a>. Éclat est une marque fictive : aucun produit n'est réellement en vente.</p>
+      <p>Photos : Anirudh, Birgith Roosipuu, CRYSTALWEED cannabis, Content Pixie, Evangeline Sarney, Eveling Salazar, Laura Jaeger, Marek Studzinski, Nataliya Melnychuk, Point Normal, ibnu ihza et pmv chamara, via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>.</p>
+    </div>
+  </footer>
+
+  <script>
+    window.SHOP = {
+      key: 'eclat', freeShipping: 60, labels: { size: 'Format' },
+      products: [
+        { id: 'gel-peche', name: 'Gel nettoyant Pêche', cat: 'Soins visage', price: 24, img: 'img/p1.webp', badge: 'Best-seller', sizes: ['150 ml','300 ml'], desc: 'Gel lavant doux à l\'extrait de pêche, qui nettoie sans dessécher. Pour tous types de peaux.' },
+        { id: 'creme-nuage', name: 'Crème riche Nuage', cat: 'Soins visage', price: 38, img: 'img/p2.webp', desc: 'Crème hydratante à la texture fouettée, céramides et beurre de karité. Confort 24 h.' },
+        { id: 'serum-c', name: 'Sérum éclat Vitamine C', cat: 'Huiles & sérums', price: 42, img: 'img/p3.webp', badge: 'Nouveau', desc: 'Sérum concentré à 15 % de vitamine C stabilisée pour un teint plus lumineux et unifié.' },
+        { id: 'huile-ambre', name: 'Huile ambrée réparatrice', cat: 'Huiles & sérums', price: 36, img: 'img/p4.webp', desc: 'Mélange d\'huiles végétales de rose musquée et de jojoba. Nourrit et apaise.' },
+        { id: 'elixir', name: 'Élixir botanique', cat: 'Huiles & sérums', price: 45, img: 'img/p5.webp', desc: 'Huile sèche aux fleurs de camomille et de calendula, pour le visage et le cou.' },
+        { id: 'baume-nuit', name: 'Baume de nuit', cat: 'Soins visage', price: 52, old: 64, img: 'img/p6.webp', badge: '-20 %', desc: 'Baume régénérant à l\'acide hyaluronique, qui agit pendant le sommeil.' },
+        { id: 'masque-miel', name: 'Masque au miel', cat: 'Soins visage', price: 34, img: 'img/p7.webp', desc: 'Masque nourrissant au miel et à l\'avoine. 10 minutes, deux fois par semaine.' },
+        { id: 'rouge-nude', name: 'Rouge à lèvres Nude', cat: 'Maquillage', price: 22, img: 'img/p8.webp', sizes: ['Nude rosé','Bois de rose','Caramel'], desc: 'Rouge satiné enrichi en huile de jojoba, pour des lèvres confortables toute la journée.', },
+        { id: 'trio-levres', name: 'Trio lèvres Corail', cat: 'Maquillage', price: 54, img: 'img/p9.webp', desc: 'Coffret de trois rouges à lèvres dans des teintes corail, rose et pêche.' },
+      ],
+    };
+  </script>
+  <script src="../shop.js"></script>
+</body>
+</html>

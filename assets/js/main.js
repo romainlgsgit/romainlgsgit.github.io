@@ -609,13 +609,39 @@ function jumpTo(y) {
   readScroll();
 }
 
-let inArcade = false;
+/* ---------- Les trois mondes ---------- */
+const boutique = document.getElementById('boutique');
+const shopfront = document.getElementById('shopfront');
+const sfScene = shopfront.querySelector('.sf-scene');
+const sfDoor = shopfront.querySelector('.sf-door');
+const sfL = shopfront.querySelector('.sf-l');
+const sfR = shopfront.querySelector('.sf-r');
+const WORLD_START = { 2: () => arcade.offsetTop, 3: () => boutique.offsetTop };
+const WORLD_TOP = { 2: arcade, 3: boutique };
+
+let world = 1;
 let warping = false;
-async function changeWorld(toArcade) {
-  warping = true;
-  // Après un clic dans le menu, on garde la destination ; sinon on se cale au début du monde
-  const from = scrollY;
-  lockScroll(true);
+
+function setWorld(n) {
+  world = n;
+  document.body.classList.toggle('arcade', n === 2);
+  document.body.classList.toggle('boutique', n === 3);
+}
+
+// Une fois l'écran couvert, on se place dans le bon monde : au début si on avance,
+// un peu avant la fin si on recule. Une destination choisie dans le menu est conservée.
+function landIn(n, from) {
+  const forward = n > world;
+  setWorld(n);
+  const start = n === 1 ? 0 : WORLD_START[n]();
+  const end = n === 3 ? Infinity : WORLD_START[n + 1]();
+  if (forward) jumpTo(Math.max(from, start));
+  else jumpTo(Math.min(from, end - innerHeight * 1.25));
+}
+
+/* Transition 1 ↔ 2 : pixels + écran « WORLD » */
+async function pixelWarp(to, from) {
+  const toArcade = to === 2;
   wsSmall.textContent = toArcade ? 'Univers 02' : 'Univers 01';
   wsBig.textContent = toArcade ? 'WORLD 2' : 'WORLD 1';
   wsSub.textContent = toArcade ? 'Jeux vidéo' : 'FC Barcelona';
@@ -623,9 +649,7 @@ async function changeWorld(toArcade) {
   const speed = reduceMotion ? 0.01 : toArcade ? 1 : 0.7;
 
   await tween(520 * speed, (k) => drawWipe(ease(k), 0));
-  inArcade = toArcade;
-  document.body.classList.toggle('arcade', toArcade);
-  jumpTo(toArcade ? Math.max(from, arcade.offsetTop) : Math.min(from, arcade.offsetTop - innerHeight * 1.25));
+  landIn(to, from);
   warpScreen.style.visibility = 'visible';
   await tween(180 * speed, (k) => { warpScreen.style.opacity = k; });
   await pause(toArcade ? 900 * speed : 550 * speed);
@@ -633,24 +657,75 @@ async function changeWorld(toArcade) {
   warpScreen.style.visibility = 'hidden';
   await tween(560 * speed, (k) => drawWipe(1, ease(k)));
   wipe.style.visibility = 'hidden';
+}
 
+/* Transition vers / depuis la boutique : la façade, puis les portes qui s'ouvrent */
+function sceneAt(y, scale, doorOpen, alpha = 1) {
+  sfScene.style.transform = `translateY(${y}%) scale(${scale})`;
+  sfL.style.transform = `rotateY(${-doorOpen * 105}deg)`;
+  sfR.style.transform = `rotateY(${doorOpen * 105}deg)`;
+  shopfront.style.opacity = alpha;
+}
+function aimAtDoor() {
+  const r = sfDoor.getBoundingClientRect();
+  sfScene.style.transformOrigin = `${r.left + r.width / 2}px ${r.top + r.height * 0.55}px`;
+}
+async function doorWarp(to, from) {
+  const speed = reduceMotion ? 0.01 : 1;
+  shopfront.style.visibility = 'visible';
+  sfScene.style.transformOrigin = '50% 50%';
+  sceneAt(0, 1, 0);
+  aimAtDoor();
+
+  if (to === 3) {
+    // On arrive devant le magasin, les portes s'ouvrent, on entre
+    await tween(520 * speed, (k) => sceneAt(100 * (1 - ease(k)), 1, 0));
+    landIn(3, from);
+    await pause(260 * speed);
+    await tween(760 * speed, (k) => sceneAt(0, 1 + 0.12 * ease(k), ease(k)));
+    await tween(640 * speed, (k) => sceneAt(0, 1.12 + 2.4 * ease(k), 1, 1 - smooth(range(k, 0.35, 1))));
+  } else {
+    // On ressort : recul depuis l'intérieur, les portes se referment, la façade s'éloigne
+    await tween(420 * speed, (k) => sceneAt(0, 3.5 - 2.38 * ease(k), 1, smooth(k)));
+    await tween(520 * speed, (k) => sceneAt(0, 1.12 - 0.12 * ease(k), 1 - ease(k)));
+    landIn(to, from);
+    await pause(180 * speed);
+    await tween(460 * speed, (k) => sceneAt(100 * ease(k), 1, 0));
+  }
+  shopfront.style.visibility = 'hidden';
+  shopfront.style.opacity = 1;
+}
+
+async function changeWorld(to) {
+  warping = true;
+  const from = scrollY;
+  lockScroll(true);
+  if (to === 3 || world === 3) await doorWarp(to, from);
+  else await pixelWarp(to, from);
   lockScroll(false);
   warping = false;
   checkWorld();
 }
 
-// Entrée : dès la fin de la page du monde Barça. Sortie : quand l'arcade est ressortie de l'écran par le bas.
+// On entre dans un monde dès la fin de la page du précédent ;
+// on en ressort quand sa section est repassée sous le bas de l'écran.
+function wantedWorld() {
+  for (const n of [3, 2]) {
+    const top = WORLD_TOP[n].getBoundingClientRect().top;
+    if (top < innerHeight * (world >= n ? 1.08 : 0.9)) return n;
+  }
+  return 1;
+}
 function checkWorld() {
   if (warping) return;
-  const top = arcade.getBoundingClientRect().top;
-  if (!inArcade && top < innerHeight * 0.9) changeWorld(true);
-  else if (inArcade && top > innerHeight * 1.08) changeWorld(false);
+  const w = wantedWorld();
+  if (w !== world) changeWorld(w);
 }
 
 let bestScore = 0;
 function updateArcade() {
   checkWorld();
-  if (!inArcade) return;
+  if (world !== 2) return;
   bestScore = Math.max(bestScore, Math.floor(Math.max(0, scrollY - arcade.offsetTop + innerHeight) / 4) * 10);
   scoreEl.textContent = String(bestScore).padStart(6, '0');
 }
@@ -697,11 +772,8 @@ document.querySelectorAll('.trailer[data-yt]').forEach((btn) => {
 addEventListener('scroll', updateArcade, { passive: true });
 addEventListener('resize', setupWipe);
 setupWipe();
-// Page rechargée déjà dans l'arcade : pas d'animation
-if (arcade.getBoundingClientRect().top < innerHeight * 0.9) {
-  inArcade = true;
-  document.body.classList.add('arcade');
-}
+// Page rechargée au milieu d'un monde : pas d'animation
+setWorld(wantedWorld());
 updateArcade();
 
 /* ==========================================================

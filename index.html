@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Romain Legros — Portfolio</title>
-  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade pour découvrir mes projets web, mobile et jeux vidéo." />
+  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade et la boutique pour découvrir mes projets web, mobile, jeux vidéo et e-commerce." />
   <meta name="theme-color" content="#05060b" />
   <meta property="og:title" content="Romain Legros — Portfolio" />
-  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis dans une borne d'arcade : mes projets web, mobile et jeux vidéo." />
+  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis dans une borne d'arcade et une boutique : mes projets web, mobile, jeux vidéo et e-commerce." />
   <meta property="og:image" content="https://romainlgsgit.github.io/assets/img/screen-notes.webp" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2026100405" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026100407" />
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
   </script>
@@ -28,6 +28,34 @@
   </div>
   <div id="clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <canvas id="pixelwipe" aria-hidden="true"></canvas>
+  <div id="shopfront" aria-hidden="true">
+    <div class="sf-scene">
+      <div class="sf-awning"><div class="sf-stripes"></div><div class="sf-scallop"></div></div>
+      <div class="sf-sign"><small>Univers 03</small><b>La Boutique</b><span>Vente en ligne · Depuis Normandie</span></div>
+      <div class="sf-body">
+        <div class="sf-window"><svg viewBox="0 0 300 220" aria-hidden="true">
+          <line x1="20" y1="30" x2="280" y2="30" stroke="#b8925a" stroke-width="5" stroke-linecap="round"/>
+          <g fill="none" stroke="#6b5a45" stroke-width="2.5"><path d="M70 30v10M70 40l-24 14h48Z"/><path d="M150 30v10M150 40l-24 14h48Z"/><path d="M230 30v10M230 40l-24 14h48Z"/></g>
+          <path d="M50 54h40l12 30-10 4v110H48V88l-10-4Z" fill="#c9704d"/>
+          <path d="M126 54h48l-4 40 26 104H104l26-104Z" fill="#e9dcc8"/>
+          <path d="M206 54h48l14 58-12 4-4-30v112h-44V86l-4 30-12-4Z" fill="#2f4a42"/>
+        </svg></div>
+        <div class="sf-door">
+          <div class="sf-inside"><i></i></div>
+          <div class="sf-leaf sf-l"><i class="sf-handle"></i><span class="sf-open">Ouvert</span></div>
+          <div class="sf-leaf sf-r"><i class="sf-handle"></i></div>
+        </div>
+        <div class="sf-window"><svg viewBox="0 0 300 220" aria-hidden="true">
+          <line x1="20" y1="30" x2="280" y2="30" stroke="#b8925a" stroke-width="5" stroke-linecap="round"/>
+          <g fill="none" stroke="#6b5a45" stroke-width="2.5"><path d="M70 30v10M70 40l-24 14h48Z"/><path d="M150 30v10M150 40l-24 14h48Z"/><path d="M230 30v10M230 40l-24 14h48Z"/></g>
+          <path d="M50 54h40l12 30-10 4v110H48V88l-10-4Z" fill="#c9704d"/>
+          <path d="M126 54h48l-4 40 26 104H104l26-104Z" fill="#e9dcc8"/>
+          <path d="M206 54h48l14 58-12 4-4-30v112h-44V86l-4 30-12-4Z" fill="#2f4a42"/>
+        </svg></div>
+      </div>
+      <div class="sf-step"></div>
+    </div>
+  </div>
   <div id="warp-screen" aria-hidden="true">
     <p class="ws-small" id="ws-small">Univers 02</p>
     <p class="ws-big" id="ws-big">WORLD 2</p>
@@ -41,6 +69,7 @@
       <span class="hud-arcade" aria-hidden="true"><b class="oneup">1UP</b> <span id="score">000000</span> <span class="hud-coin"></span>×<span id="coins">00</span></span>
       <a href="#barca">Projets Barça</a>
       <a href="#arcade">Jeux vidéo</a>
+      <a href="#boutique">Boutique</a>
       <a href="mailto:legrosromainpro@gmail.com" class="nav-cta">Contact</a>
     </nav>
   </header>
@@ -360,6 +389,111 @@
       </div>
     </section>
 
+    <!-- ========== UNIVERS 03 : VENTE EN LIGNE ========== -->
+    <section id="boutique">
+      <div class="wrap">
+
+        <header class="bq-head">
+          <span class="bq-kicker">Univers 03 · Vente en ligne</span>
+          <h2>Bienvenue dans<br /><em>la boutique.</em></h2>
+          <p>Je conçois des sites e-commerce complets&nbsp;: catalogue, fiches produits, panier, paiement et gestion des commandes. Voici une boutique que j'ai réalisée, et trois modèles de démonstration que tu peux essayer.</p>
+        </header>
+
+        <!-- EN VITRINE : COUP D'FOLIES -->
+        <article class="vitrine">
+          <div class="vitrine-frame">
+            <span class="vitrine-label">En vitrine</span>
+            <a class="vitrine-glass" href="https://coupdfolies.fr" target="_blank" rel="noopener" aria-label="Visiter Coup d'folies">
+              <img class="v-desk" src="assets/img/shop/coupdfolies.webp" alt="Page d'accueil de Coup d'folies" loading="lazy" />
+              <img class="v-phone" src="assets/img/shop/coupdfolies-mobile.webp" alt="Coup d'folies sur mobile" loading="lazy" />
+            </a>
+          </div>
+          <div class="vitrine-info">
+            <span class="bq-kicker">Site e-commerce · Mode femme</span>
+            <h3>Coup d'folies</h3>
+            <p>Une boutique en ligne de mode féminine, de la page d'accueil au panier&nbsp;: catalogue par catégories (vêtements, accessoires, chaussures), fiches produits, favoris, bandeau d'offres, rubrique «&nbsp;Dernières chances&nbsp;» et inscription à la newsletter. Le tout pensé pour le mobile.</p>
+            <ul class="tags">
+              <li>Catalogue</li><li>Panier &amp; favoris</li><li>Codes promo</li><li>Newsletter</li><li>Responsive</li>
+            </ul>
+            <a class="bq-btn" href="https://coupdfolies.fr" target="_blank" rel="noopener">Visiter la boutique ↗</a>
+          </div>
+        </article>
+
+        <!-- LE PORTANT : TEMPLATES -->
+        <div class="rack-head">
+          <span class="bq-kicker">Le portant</span>
+          <h3>Trois templates à <em>essayer</em></h3>
+          <p>Des boutiques de démonstration que j'ai conçues pour montrer différents styles. Chacune est un vrai site cliquable&nbsp;: filtres, fiche produit, choix de taille, favoris et panier.</p>
+        </div>
+        <div class="rack">
+          <div class="rail" aria-hidden="true"></div>
+          <a class="hanger" href="templates/stride/" target="_blank" rel="noopener">
+            <svg class="hook" viewBox="0 0 120 60" aria-hidden="true"><path d="M60 4a8 8 0 1 1 8 8c-4 0-8 3-8 8v6M60 26 8 56h104Z"/></svg>
+            <div class="garment">
+              <img src="assets/img/shop/tpl-stride.webp" alt="Aperçu du template STRIDE" loading="lazy" />
+              <div class="garment-info">
+                <span class="price-tag">Streetwear</span>
+                <h4>STRIDE</h4>
+                <p>Sneakers et streetwear&nbsp;: noir, jaune néon et typographie XXL.</p>
+                <span class="open">Essayer la démo ↗</span>
+              </div>
+            </div>
+          </a>
+          <a class="hanger" href="templates/elise/" target="_blank" rel="noopener">
+            <svg class="hook" viewBox="0 0 120 60" aria-hidden="true"><path d="M60 4a8 8 0 1 1 8 8c-4 0-8 3-8 8v6M60 26 8 56h104Z"/></svg>
+            <div class="garment">
+              <img src="assets/img/shop/tpl-elise.webp" alt="Aperçu du template Maison Élise" loading="lazy" />
+              <div class="garment-info">
+                <span class="price-tag">Mode femme</span>
+                <h4>Maison Élise</h4>
+                <p>Prêt-à-porter chic&nbsp;: style éditorial, serif élégante et tons crème.</p>
+                <span class="open">Essayer la démo ↗</span>
+              </div>
+            </div>
+          </a>
+          <a class="hanger" href="templates/eclat/" target="_blank" rel="noopener">
+            <svg class="hook" viewBox="0 0 120 60" aria-hidden="true"><path d="M60 4a8 8 0 1 1 8 8c-4 0-8 3-8 8v6M60 26 8 56h104Z"/></svg>
+            <div class="garment">
+              <img src="assets/img/shop/tpl-eclat.webp" alt="Aperçu du template Éclat" loading="lazy" />
+              <div class="garment-info">
+                <span class="price-tag">Cosmétiques</span>
+                <h4>Éclat</h4>
+                <p>Soins et beauté&nbsp;: formes arrondies, pêche et routine en 3 étapes.</p>
+                <span class="open">Essayer la démo ↗</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- TICKET DE CAISSE -->
+        <div class="checkout">
+          <div class="receipt" aria-label="Ce que je peux créer">
+            <p class="r-head">Romain Legros<br /><small>Création de boutiques en ligne<br />Normandie · France</small></p>
+            <p class="r-sep" aria-hidden="true"></p>
+            <ul>
+              <li><span>Design sur-mesure</span><b>✓</b></li>
+              <li><span>Catalogue &amp; fiches produits</span><b>✓</b></li>
+              <li><span>Panier, favoris, codes promo</span><b>✓</b></li>
+              <li><span>Paiement en ligne sécurisé</span><b>✓</b></li>
+              <li><span>Suivi des commandes &amp; stocks</span><b>✓</b></li>
+              <li><span>Version mobile soignée</span><b>✓</b></li>
+              <li><span>Référencement (SEO)</span><b>✓</b></li>
+            </ul>
+            <p class="r-sep" aria-hidden="true"></p>
+            <p class="r-total"><span>Total</span><span>Sur devis</span></p>
+            <p class="r-thanks">Merci de votre visite&nbsp;!</p>
+            <p class="r-barcode" aria-hidden="true"></p>
+          </div>
+          <div class="checkout-cta">
+            <span class="bq-kicker">Passage en caisse</span>
+            <h3>Ta boutique en ligne,<br /><em>clé en main.</em></h3>
+            <p>Tu as des produits à vendre&nbsp;? Je m'occupe du design, du développement et de la mise en ligne, avec un site rapide et simple à gérer au quotidien.</p>
+            <a class="bq-btn" href="mailto:legrosromainpro@gmail.com?subject=Projet%20de%20site%20e-commerce">Demander un devis</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="wrap">
         <p>Un projet, une idée de site&nbsp;? <a href="mailto:legrosromainpro@gmail.com">legrosromainpro@gmail.com</a></p>
@@ -367,12 +501,13 @@
         <p class="credits">
           Imagerie satellite © Esri, Maxar, Earthstar Geographics ·
           Terre : textures NASA via Three.js ·
-          Jeux et trailers : RL Studios
+          Jeux et trailers : RL Studios ·
+          Photos des templates : Unsplash
         </p>
       </div>
     </footer>
   </main>
 
-  <script type="module" src="assets/js/main.js?v=2026100405"></script>
+  <script type="module" src="assets/js/main.js?v=2026100407"></script>
 </body>
 </html>
