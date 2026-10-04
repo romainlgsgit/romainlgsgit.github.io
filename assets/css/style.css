@@ -822,7 +822,7 @@ body.boutique .muted, body.boutique .footer .credits, body.boutique .footer .cre
 
 /* ---------- Le cahier ---------- */
 #etudeasy {
-  position: relative; padding: 120px 0 110px; color: var(--ec-ink);
+  position: relative; padding: 120px 0 34vh; color: var(--ec-ink);
   /* Grands carreaux Seyès, marge rouge */
   background:
     linear-gradient(90deg, transparent calc(clamp(16px, 6vw, 90px) - 1px), var(--ec-red) calc(clamp(16px, 6vw, 90px) - 1px), var(--ec-red) clamp(16px, 6vw, 90px), transparent clamp(16px, 6vw, 90px)),
@@ -924,9 +924,161 @@ body.ecole .topbar nav a:not(.nav-cta):hover { color: var(--ec-ink); }
 body.ecole .topbar .nav-cta { background: var(--ec-violet); color: #fff; }
 body.ecole .footer { background: var(--ec-ink); border-top: 0; }
 
+/* ==========================================================
+   Univers 05 & 06 : exemples F1 et tennis (site + appli)
+   ========================================================== */
+.w-head { max-width: 760px; margin: 0 auto 70px; text-align: center; position: relative; }
+.w-kicker { font: 600 11.5px var(--mono); letter-spacing: .18em; text-transform: uppercase; }
+.w-head h2 { font-size: clamp(54px, 8.6vw, 116px); line-height: .9; margin: 18px 0 22px; }
+.w-head p { font-size: clamp(16px, 1.5vw, 18.5px); }
+.w-note { text-align: center; font-size: 13.5px; margin-top: 50px; opacity: .7; }
+.duo { position: relative; display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(28px, 4vw, 56px); align-items: start; }
+.duo article { display: flex; flex-direction: column; gap: 14px; }
+.duo-tag { align-self: flex-start; padding: 6px 12px; border-radius: 6px; font: 700 11.5px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.duo h3 { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.05; margin-top: 8px; }
+.duo article > p { font-size: 15.5px; }
+.duo-feats { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+.duo-feats li { padding: 6px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; }
+.duo-btn { align-self: flex-start; margin-top: 4px; padding: 13px 20px; border-radius: 10px; font-weight: 700; font-size: 14.5px; transition: transform .2s var(--ease); }
+.duo-btn:hover { transform: translateY(-2px); }
+.duo-browser { display: block; border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px rgba(0, 0, 0, .35); transition: transform .4s var(--ease); }
+.duo-browser:hover { transform: translateY(-6px); }
+.duo-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: #1d1d24; }
+.duo-bar i { width: 10px; height: 10px; border-radius: 50%; background: #3e3e4a; }
+.duo-bar span { margin-left: 10px; padding: 3px 12px; border-radius: 6px; background: rgba(255, 255, 255, .07); color: #aaa; font: 11.5px var(--mono); }
+.duo-browser img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+.duo-phone {
+  position: relative; align-self: center; width: 300px; height: 650px; padding: 10px; border-radius: 46px;
+  background: linear-gradient(145deg, #34343f, #0d0d12); box-shadow: 0 30px 60px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.duo-phone iframe { display: block; width: 390px; height: 844px; border: 0; border-radius: 47px; transform: scale(.7179); transform-origin: 0 0; background: #000; }
+
+/* F1 : asphalte, vibreurs rouges et blancs */
+#f1 {
+  position: relative; padding: 130px 0 34vh; color: #f3f3f6; overflow: hidden;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E"),
+    radial-gradient(70% 50% at 50% 0%, rgba(225, 6, 0, .22), transparent 70%),
+    #141418;
+  font-family: 'Titillium Web', var(--body);
+}
+#f1 .kerb { position: absolute; top: 0; left: 0; right: 0; height: 22px; background: repeating-linear-gradient(90deg, #e10600 0 60px, #f3f3f3 60px 120px); box-shadow: 0 6px 18px rgba(0, 0, 0, .4); }
+#f1 .kerb::after { content: ''; position: absolute; left: 0; right: 0; bottom: -60px; height: 4px; background: repeating-linear-gradient(90deg, #fff 0 40px, transparent 40px 80px); opacity: .25; }
+#f1 .w-kicker { color: #ff3b30; }
+#f1 .w-head h2 { font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -.02em; }
+#f1 .w-head h2 em { color: #ff2d2d; }
+#f1 .w-head p, #f1 .duo article > p { color: #a7a7b3; }
+#f1 .duo-tag { background: #e10600; color: #fff; }
+#f1 .duo h3 { font-weight: 900; font-style: italic; text-transform: uppercase; }
+#f1 .duo-feats li { background: rgba(255, 255, 255, .07); color: #ddd; }
+#f1 .duo-btn { background: #e10600; color: #fff; }
+#f1 .duo-phone { box-shadow: 0 30px 70px rgba(225, 6, 0, .25), inset 0 0 0 1px rgba(255, 255, 255, .12); }
+
+/* Tennis : terre battue et lignes blanches */
+#tennis {
+  position: relative; padding: 130px 0 34vh; color: #fff8f0; overflow: hidden;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #c4532c, #b44a26);
+  font-family: 'Outfit', var(--body);
+}
+#tennis .court-lines { position: absolute; inset: 60px clamp(12px, 4vw, 60px); border: 4px solid rgba(255, 255, 255, .55); pointer-events: none; }
+#tennis .court-lines::before { content: ''; position: absolute; top: 0; bottom: 0; left: 12%; right: 12%; border-left: 4px solid rgba(255, 255, 255, .55); border-right: 4px solid rgba(255, 255, 255, .55); }
+#tennis .court-lines::after { content: ''; position: absolute; left: 12%; right: 12%; top: 50%; border-top: 4px solid rgba(255, 255, 255, .55); }
+#tennis .w-kicker { color: #d7f249; }
+#tennis .w-head h2 { font-weight: 800; letter-spacing: -.04em; text-shadow: 0 6px 30px rgba(0, 0, 0, .15); }
+#tennis .w-head h2 em { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; color: #d7f249; }
+#tennis .w-head p, #tennis .duo article > p { color: #ffe6d6; }
+#tennis .duo article { padding: 26px; border-radius: 26px; background: rgba(40, 18, 8, .28); backdrop-filter: blur(4px); }
+#tennis .duo-tag { background: #d7f249; color: #16231d; }
+#tennis .duo h3 { font-weight: 800; letter-spacing: -.02em; }
+#tennis .duo-feats li { background: rgba(255, 255, 255, .16); }
+#tennis .duo-btn { background: #fff; color: #16231d; }
+
+/* Fin : retour dans l'espace */
+#contact { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 110px 0 80px; color: #fff; }
+.end-card {
+  max-width: 560px; padding: clamp(26px, 4vw, 44px); border-radius: 28px;
+  background: rgba(14, 15, 26, .72); border: 1px solid var(--line-2); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45);
+}
+.end-card .w-kicker { color: var(--or); }
+.end-card h2 { font-family: var(--display); font-stretch: 112%; font-weight: 900; font-size: clamp(40px, 5.6vw, 72px); line-height: .95; letter-spacing: -.04em; margin: 14px 0 16px; }
+.end-card h2 em { font-style: normal; background: linear-gradient(100deg, #ff4f8b, #b388ff 50%, #4f9dff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.end-card > p { color: var(--muted); font-size: 17px; margin-bottom: 22px; }
+.end-me { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.end-me img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 2px solid rgba(255, 255, 255, .2); }
+.end-me b { display: block; font-size: 18px; }
+.end-me span { color: var(--muted); font-size: 14px; }
+.end-mail {
+  display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 20px; border-radius: 16px;
+  background: linear-gradient(100deg, var(--grana), var(--blau)); font-weight: 700; font-size: clamp(15px, 1.6vw, 17px); word-break: break-all;
+  box-shadow: 0 12px 34px rgba(165, 0, 68, .4); transition: transform .2s var(--ease);
+}
+.end-mail:hover { transform: translateY(-2px); }
+.end-mail svg { width: 20px; height: 20px; flex: none; }
+.end-link { display: inline-block; margin-top: 14px; color: var(--muted); font-size: 14.5px; border-bottom: 1px solid var(--line-2); }
+.end-link:hover { color: #fff; }
+.end-worlds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); }
+.end-worlds a { padding: 7px 12px; border-radius: 99px; background: rgba(255, 255, 255, .07); font-size: 13.5px; transition: background .2s; }
+.end-worlds a:hover { background: rgba(255, 255, 255, .16); }
+
+/* ---------- Transitions F1, tennis, espace ---------- */
+#f1-intro, #tennis-intro, #liftoff { position: fixed; inset: 0; z-index: 44; pointer-events: none; visibility: hidden; overflow: hidden; }
+.f1-reveal { position: absolute; inset: 0; background: linear-gradient(#1a1a20, #0e0e12); }
+.f1-reveal::after { content: ''; position: absolute; left: 0; right: 0; top: 62%; height: 6px; background: repeating-linear-gradient(90deg, #fff 0 70px, transparent 70px 140px); opacity: .35; }
+.f1-lights { position: absolute; top: 18%; left: 50%; transform: translateX(-50%); display: flex; gap: clamp(8px, 1.6vw, 18px); padding: 14px 18px; border-radius: 14px; background: #08080a; box-shadow: 0 10px 30px rgba(0, 0, 0, .6); }
+.f1-lights i { width: clamp(30px, 5vw, 56px); height: clamp(30px, 5vw, 56px); border-radius: 50%; background: #2a0d0d; box-shadow: inset 0 0 0 3px #1a1a1a; transition: background .08s, box-shadow .08s; }
+.f1-lights i.on { background: radial-gradient(circle at 40% 35%, #ff8a80, #ff1a1a 45%, #b30000); box-shadow: 0 0 30px #ff1a1a, inset 0 0 0 3px #1a1a1a; }
+.f1-label { position: absolute; top: calc(18% + clamp(80px, 9vw, 110px)); left: 0; right: 0; text-align: center; font: 900 italic clamp(18px, 2.6vw, 30px) 'Titillium Web', sans-serif; text-transform: uppercase; color: #fff; letter-spacing: .04em; }
+.f1-runner { position: absolute; top: 46%; left: 0; width: min(70vw, 760px); will-change: transform; }
+.f1-car { width: 100%; display: block; filter: drop-shadow(0 18px 14px rgba(0, 0, 0, .5)); }
+.f1-streaks { position: absolute; right: 88%; top: 18%; width: 140vw; height: 64%; background: repeating-linear-gradient(180deg, rgba(255, 255, 255, .55) 0 2px, transparent 2px 13px); -webkit-mask: linear-gradient(90deg, transparent, #000); mask: linear-gradient(90deg, transparent, #000); }
+
+.tn-court { position: absolute; inset: 0; background: linear-gradient(#c4532c, #b44a26); }
+.tn-lines { position: absolute; inset: 8% 10%; border: 5px solid rgba(255, 255, 255, .85); }
+.tn-lines::before { content: ''; position: absolute; top: 0; bottom: 0; left: 13%; right: 13%; border-left: 5px solid rgba(255, 255, 255, .85); border-right: 5px solid rgba(255, 255, 255, .85); }
+.tn-lines::after { content: ''; position: absolute; left: 13%; right: 13%; top: 0; bottom: 0; background: linear-gradient(rgba(255, 255, 255, .85), rgba(255, 255, 255, .85)) 50% 50% / 100% 5px no-repeat, linear-gradient(rgba(255, 255, 255, .85), rgba(255, 255, 255, .85)) 50% 50% / 5px 50% no-repeat; }
+.tn-net { position: absolute; top: 4%; bottom: 4%; left: 50%; width: 10px; margin-left: -5px; background: repeating-linear-gradient(#f3f3f3 0 3px, #2a2a2a 3px 9px); box-shadow: 0 0 0 2px #f3f3f3, 8px 0 14px rgba(0, 0, 0, .3); }
+.tn-label { position: absolute; top: 12%; left: 0; right: 0; text-align: center; font: 800 clamp(22px, 3vw, 36px) 'Outfit', sans-serif; color: #fff; text-shadow: 0 4px 20px rgba(0, 0, 0, .3); }
+.tn-ball, .tn-shadow { position: absolute; left: 0; top: 0; border-radius: 50%; will-change: transform; }
+.tn-ball {
+  width: 80px; height: 80px; margin: -40px 0 0 -40px;
+  background: radial-gradient(circle at 35% 30%, #f4ff9c, #d7f249 45%, #a8c51f);
+  box-shadow: inset -6px -8px 14px rgba(0, 0, 0, .18);
+  overflow: hidden;
+}
+.tn-ball::before, .tn-ball::after { content: ''; position: absolute; width: 80px; height: 80px; border: 4px solid rgba(255, 255, 255, .9); border-radius: 50%; top: 0; }
+.tn-ball::before { left: -56px; }
+.tn-ball::after { right: -56px; }
+.tn-shadow { width: 80px; height: 26px; margin: -13px 0 0 -40px; background: radial-gradient(rgba(0, 0, 0, .35), transparent 70%); }
+
+#liftoff { background: #000; }
+#liftoff canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lo-label { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font: 900 clamp(26px, 4vw, 54px) var(--display); font-stretch: 112%; letter-spacing: -.03em; color: #fff; }
+
+/* ---------- Thèmes du site ---------- */
+body.f1-mode { background: #141418; }
+body.f1-mode .topbar.solid { background: rgba(14, 14, 18, .9); border-color: #e10600; border-bottom-width: 3px; }
+body.f1-mode .logo { font-family: 'Titillium Web', sans-serif; font-style: italic; }
+body.f1-mode .topbar .nav-cta { background: #e10600; color: #fff; }
+body.f1-mode .footer { background: #0e0e12; }
+body.tennis-mode { background: #b44a26; }
+body.tennis-mode .topbar.solid { background: rgba(22, 35, 29, .9); border-color: #d7f249; }
+body.tennis-mode .logo span { color: #d7f249; }
+body.tennis-mode .topbar .nav-cta { background: #d7f249; color: #16231d; }
+body.tennis-mode .footer { background: #16231d; }
+body.espace { background: #020308; }
+body.espace .footer { background: transparent; border-top-color: var(--line); }
+@media (max-width: 1180px) { .topbar nav a:not(.nav-cta) { display: none; } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .level-grid { grid-template-columns: 1fr; }
+  .duo { grid-template-columns: 1fr; gap: 60px; }
+  .duo-app { align-items: center; text-align: center; }
+  .duo-app .duo-tag, .duo-app .duo-btn { align-self: center; }
+  .duo-app .duo-feats { justify-content: center; }
   .ec-intro-grid, .ec-demo-grid, .ec-you { grid-template-columns: 1fr; }
   .ec-intro-grid { margin-bottom: 90px; }
   .ec-phones { height: clamp(380px, 95vw, 520px); }
@@ -944,6 +1096,14 @@ body.ecole .footer { background: var(--ec-ink); border-top: 0; }
 }
 @media (max-width: 640px) {
   .topbar nav a:not(.nav-cta) { display: none; }
+  .duo-phone { width: 270px; height: 585px; padding: 9px; border-radius: 42px; }
+  .duo-phone iframe { transform: scale(.6462); }
+  #tennis .duo article { padding: 18px; }
+  #tennis .court-lines { inset: 30px 8px; }
+  #tennis .court-lines::before, #tennis .court-lines::after { display: none; }
+  .tn-ball, .tn-ball::before, .tn-ball::after { width: 60px; height: 60px; }
+  .tn-ball { margin: -30px 0 0 -30px; }
+  .tn-ball::before { left: -42px; } .tn-ball::after { right: -42px; }
   .postits { grid-template-columns: 1fr 1fr; gap: 14px; }
   .postit { padding: 16px 12px; font-size: 13px; }
   .postit b { font-size: 22px; }

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Court Central — Template site de club de tennis</title>
+  <meta name="description" content="Template de démonstration d'un site de club de tennis avec réservation de courts, conçu par Romain Legros." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #f7f3ea; --ink: #16231d; --muted: #66706a; --line: rgba(22,35,29,.12); --clay: #c8552d; --green: #1f5c46; --ball: #d7f249; --card: #fff; --font: 'Outfit', system-ui, sans-serif; --serif: 'Instrument Serif', Georgia, serif; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+    .wrap { max-width: 1220px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+    .demo-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 14px; padding: 8px 16px; background: var(--ink); color: #eee; font-size: 12.5px; text-align: center; }
+    .demo-bar a { color: #fff; font-weight: 700; border-bottom: 1px solid currentColor; }
+
+    header.top { position: absolute; left: 0; right: 0; z-index: 10; color: #fff; }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -.01em; }
+    .logo i { width: 28px; height: 28px; border-radius: 50%; background: var(--ball); position: relative; overflow: hidden; }
+    .logo i::before, .logo i::after { content: ''; position: absolute; width: 28px; height: 28px; border: 2px solid #fff; border-radius: 50%; top: 0; }
+    .logo i::before { left: -18px; } .logo i::after { right: -18px; }
+    header.top nav { display: flex; gap: 28px; font-weight: 500; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 99px; background: var(--ball); color: var(--ink); font-weight: 700; transition: transform .15s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.dark { background: var(--ink); color: #fff; }
+    .btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    .hero { position: relative; min-height: min(92vh, 820px); display: flex; align-items: flex-end; color: #fff; overflow: hidden; border-radius: 0 0 32px 32px; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,20,15,.8), rgba(10,20,15,.1) 60%); }
+    .hero .wrap { position: relative; z-index: 1; width: 100%; padding-bottom: clamp(36px, 6vw, 70px); display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; }
+    .hero h1 { font-weight: 800; font-size: clamp(48px, 8vw, 112px); line-height: .9; letter-spacing: -.04em; }
+    .hero h1 em { font-family: var(--serif); font-weight: 400; font-style: italic; color: var(--ball); letter-spacing: -.01em; }
+    .hero p { max-width: 420px; font-size: 18px; opacity: .9; margin: 18px 0 24px; }
+    .stats { display: flex; gap: 12px; }
+    .stats div { padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.12); backdrop-filter: blur(10px); min-width: 110px; }
+    .stats b { display: block; font-size: 32px; line-height: 1; }
+    .stats span { font-size: 13px; opacity: .85; }
+
+    section.block { padding: clamp(64px, 8vw, 110px) 0; }
+    .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 32px; }
+    .head h2 { font-weight: 800; font-size: clamp(36px, 5vw, 64px); line-height: .95; letter-spacing: -.035em; }
+    .head h2 em { font-family: var(--serif); font-weight: 400; font-style: italic; color: var(--clay); }
+    .head p { color: var(--muted); max-width: 380px; }
+
+    /* Réservation */
+    .booking { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; }
+    .booking > * { min-width: 0; }
+    .panel { padding: clamp(18px, 3vw, 28px); border-radius: 24px; background: var(--card); box-shadow: 0 20px 50px rgba(22,35,29,.07); }
+    .label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 10px; }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 22px; }
+    .days button { padding: 10px 4px; border-radius: 14px; border: 1px solid var(--line); text-align: center; line-height: 1.2; }
+    .days button b { display: block; font-size: 20px; }
+    .days button span { font-size: 12px; color: var(--muted); text-transform: capitalize; }
+    .days button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .days button.on span { color: #c8d3cd; }
+    .surfaces { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+    .surfaces button { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 99px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; }
+    .surfaces button i { width: 12px; height: 12px; border-radius: 3px; background: var(--s); }
+    .surfaces button.on { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+    .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+    .slots button { padding: 12px 6px; border-radius: 12px; background: #eef3e9; font-weight: 600; font-variant-numeric: tabular-nums; transition: transform .15s, background .2s; }
+    .slots button small { display: block; font-size: 11.5px; font-weight: 500; color: var(--muted); }
+    .slots button:hover:not(:disabled) { transform: translateY(-2px); background: #e1ecd8; }
+    .slots button:disabled { background: transparent; border: 1px dashed var(--line); color: #b3b9b5; cursor: not-allowed; text-decoration: line-through; }
+    .slots button:disabled small { color: #c3c8c5; }
+    .slots button.on { background: var(--green); color: #fff; }
+    .slots button.on small { color: #cfe5da; }
+    .summary { display: flex; flex-direction: column; gap: 14px; }
+    .court-pic { border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 10; }
+    .court-pic img { width: 100%; height: 100%; object-fit: cover; }
+    .summary dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 15px; }
+    .summary dt { color: var(--muted); }
+    .summary dd { font-weight: 600; text-align: right; }
+    .total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; border-top: 1px dashed var(--line); }
+    .total b { font-size: 28px; }
+    .players { display: flex; align-items: center; gap: 10px; }
+    .players button { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); font-size: 18px; }
+
+    /* Cours */
+    .courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .course { border-radius: 24px; overflow: hidden; background: var(--card); box-shadow: 0 20px 50px rgba(22,35,29,.06); }
+    .course img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+    .course div { padding: 20px 22px 24px; }
+    .course .tag { display: inline-block; padding: 4px 10px; border-radius: 99px; background: #f2e3d9; color: var(--clay); font-size: 12.5px; font-weight: 700; }
+    .course h3 { font-size: 23px; margin: 10px 0 6px; letter-spacing: -.01em; }
+    .course p { color: var(--muted); font-size: 15px; }
+
+    /* Tarifs */
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+    .plan { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 28px; border-radius: 24px; background: var(--card); border: 1px solid var(--line); }
+    .plan.hot { background: var(--green); color: #fff; border-color: var(--green); }
+    .plan .badge { position: absolute; top: -12px; right: 22px; padding: 5px 12px; border-radius: 99px; background: var(--ball); color: var(--ink); font-size: 12.5px; font-weight: 700; }
+    .plan h3 { font-size: 20px; }
+    .plan .price { font-size: 48px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+    .plan .price small { font-size: 16px; font-weight: 500; opacity: .7; }
+    .plan ul { list-style: none; display: grid; gap: 8px; font-size: 15px; flex: 1; }
+    .plan li::before { content: '●  '; color: var(--ball); -webkit-text-stroke: 1px var(--green); }
+    .plan.hot li::before { -webkit-text-stroke: 0; }
+    .plan .btn { justify-content: center; }
+
+    .club { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; }
+    .club img { border-radius: 24px; width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .club h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(38px, 4.6vw, 62px); line-height: 1; margin-bottom: 18px; }
+    .club p { color: var(--muted); margin-bottom: 14px; }
+    footer { padding: 46px 0; background: var(--ink); color: #b8c2bc; font-size: 13.5px; border-radius: 32px 32px 0 0; }
+    footer .wrap { display: grid; gap: 10px; }
+    footer a { color: #fff; }
+
+    .modal { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgba(10,20,15,.5); opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+    .modal.open { opacity: 1; visibility: visible; }
+    .modal-card { width: min(420px, 100%); padding: 30px; border-radius: 26px; background: var(--card); text-align: center; transform: scale(.95); transition: transform .25s; }
+    .modal.open .modal-card { transform: none; }
+    .modal-card .ball { width: 70px; height: 70px; margin: 0 auto 16px; border-radius: 50%; background: var(--ball); display: grid; place-items: center; font-size: 30px; animation: bounce .8s ease-in-out infinite alternate; }
+    @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+    .modal-card h3 { font-size: 26px; margin-bottom: 8px; }
+    .modal-card p { color: var(--muted); margin-bottom: 20px; }
+    @media (max-width: 880px) {
+      header.top nav { display: none; }
+      .booking, .club { grid-template-columns: 1fr; }
+      .courses, .plans { grid-template-columns: 1fr; }
+      .days { grid-template-columns: repeat(7, minmax(44px, 1fr)); overflow-x: auto; }
+      .stats { width: 100%; }
+      .stats div { flex: 1; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Template de démonstration conçu par Romain Legros. Club fictif : aucune réservation n'est enregistrée. <a href="../../#tennis">← Retour au portfolio</a></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#"><i></i>Court Central</a>
+      <nav><a href="#reserver">Réserver</a><a href="#cours">Cours &amp; stages</a><a href="#tarifs">Adhésion</a><a href="#club">Le club</a></nav>
+      <a class="btn" href="#reserver">Réserver un court</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="../img-tennis/hero.webp" alt="" />
+    <div class="wrap">
+      <div>
+        <h1>Jeu, set<br />et <em>match.</em></h1>
+        <p>Huit courts en terre battue et en résine, éclairés jusqu'à 23 h. Réserve en trois clics, viens jouer.</p>
+        <a class="btn" href="#reserver">Réserver maintenant</a>
+      </div>
+      <div class="stats"><div><b>8</b><span>courts</span></div><div><b>420</b><span>membres</span></div><div><b>7j/7</b><span>8 h – 23 h</span></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="reserver">
+    <div class="wrap">
+      <div class="head"><h2>Réserve<br />ton <em>court</em></h2><p>Choisis un jour, une surface et un créneau d'une heure. Les créneaux barrés sont déjà pris.</p></div>
+      <div class="booking">
+        <div class="panel">
+          <p class="label">Jour</p>
+          <div class="days" id="days"></div>
+          <p class="label">Surface</p>
+          <div class="surfaces" id="surfaces">
+            <button class="on" type="button" data-s="terre" style="--s:#c8552d"><i></i>Terre battue</button>
+            <button type="button" data-s="resine" style="--s:#2f74c0"><i></i>Résine</button>
+            <button type="button" data-s="couvert" style="--s:#1f5c46"><i></i>Couvert</button>
+          </div>
+          <p class="label">Créneau</p>
+          <div class="slots" id="slots"></div>
+        </div>
+        <aside class="panel summary">
+          <div class="court-pic"><img id="court-img" src="../img-tennis/red.webp" alt="" /></div>
+          <dl>
+            <dt>Jour</dt><dd id="s-day">—</dd>
+            <dt>Surface</dt><dd id="s-surf">Terre battue</dd>
+            <dt>Créneau</dt><dd id="s-slot">À choisir</dd>
+            <dt>Court</dt><dd id="s-court">—</dd>
+            <dt>Joueurs</dt><dd><span class="players"><button type="button" id="minus" aria-label="Moins">−</button><b id="nb">2</b><button type="button" id="plus" aria-label="Plus">+</button></span></dd>
+          </dl>
+          <div class="total"><span>Total</span><b id="price">0 €</b></div>
+          <button class="btn dark" id="book" type="button" disabled style="justify-content:center">Confirmer la réservation</button>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="cours" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Cours <em>&amp; stages</em></h2><p>Du mini-tennis à la compétition, encadrés par nos moniteurs diplômés d'État.</p></div>
+      <div class="courses">
+        <article class="course"><img src="../img-tennis/balls.webp" alt="" loading="lazy" /><div><span class="tag">Dès 5 ans</span><h3>École de tennis</h3><p>Le mercredi et le samedi, par groupes de niveau. Raquettes prêtées.</p></div></article>
+        <article class="course"><img src="../img-tennis/serve.webp" alt="" loading="lazy" /><div><span class="tag">Adultes</span><h3>Cours collectifs</h3><p>Une heure par semaine, en soirée, pour progresser à son rythme.</p></div></article>
+        <article class="course"><img src="../img-tennis/top.webp" alt="" loading="lazy" /><div><span class="tag">Vacances</span><h3>Stages intensifs</h3><p>Cinq jours de technique, de matchs et de préparation physique.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="tarifs" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Adhésion <em>annuelle</em></h2><p>Licence comprise, réservation en illimité selon la formule.</p></div>
+      <div class="plans">
+        <div class="plan"><h3>Jeune</h3><p class="price">120 €<small> / an</small></p><ul><li>Moins de 18 ans</li><li>4 réservations par semaine</li><li>Accès aux tournois internes</li></ul><a class="btn" href="#reserver">Adhérer</a></div>
+        <div class="plan hot"><span class="badge">Le plus choisi</span><h3>Adulte</h3><p class="price">240 €<small> / an</small></p><ul><li>Réservations illimitées</li><li>Invitations : 10 par an</li><li>-20 % sur les cours collectifs</li></ul><a class="btn" href="#reserver">Adhérer</a></div>
+        <div class="plan"><h3>Famille</h3><p class="price">520 €<small> / an</small></p><ul><li>Jusqu'à 4 personnes</li><li>Réservations illimitées</li><li>Stage d'été offert pour un enfant</li></ul><a class="btn" href="#reserver">Adhérer</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="club" style="padding-top:0">
+    <div class="wrap club">
+      <img src="../img-tennis/aerial.webp" alt="" loading="lazy" />
+      <div>
+        <h2>Un club, une famille.</h2>
+        <p>Tournois internes chaque mois, soirées double mixte le vendredi et un club-house ouvert après chaque match.</p>
+        <p>Parking gratuit, vestiaires rénovés et location de matériel sur place.</p>
+        <a class="btn dark" href="#reserver">Venir jouer</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>Template de démonstration conçu et développé par <a href="../../">Romain Legros</a>. Court Central est un club fictif : aucune réservation n'est enregistrée.</p>
+      <p>Photos : Aleksandr Galichkin, Anastasia Chistik, Andreas Rasmussen, Andrew Heald, Ben Hershey, Darko Nesic, Martin Sanchez, Moises Alex, Paolo Bendandi et Welcome, via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>.</p>
+    </div>
+  </footer>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="ball">🎾</div>
+      <h3>C'est réservé !</h3>
+      <p id="m-text"></p>
+      <button class="btn dark" type="button" id="m-close">Parfait</button>
+    </div>
+  </div>
+
+  <script>
+    const SURF = { terre: ['Terre battue', [1, 2, 3, 4], 'red', 16], resine: ['Résine', [5, 6], 'blue', 14], couvert: ['Couvert', [7, 8], 'stadium', 20] };
+    const state = { day: 0, surf: 'terre', slot: null, players: 2 };
+    const days = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
+    const fmtDay = (d) => d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    document.getElementById('days').innerHTML = days.map((d, i) => `<button type="button" data-day="${i}" class="${i === 0 ? 'on' : ''}"><span>${i === 0 ? 'auj.' : d.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '')}</span><b>${d.getDate()}</b></button>`).join('');
+
+    // Disponibilités pseudo-aléatoires mais stables pour un jour et une surface donnés
+    function taken(day, surf, h) {
+      let x = (day + 1) * 97 + surf.length * 31 + h * 13;
+      x = Math.sin(x) * 10000;
+      return x - Math.floor(x) < (h >= 18 && h <= 20 ? 0.6 : 0.3);
+    }
+    function render() {
+      const now = new Date();
+      const [name, courts, img, price] = SURF[state.surf];
+      document.getElementById('slots').innerHTML = [...Array(15)].map((_, k) => {
+        const h = 8 + k;
+        const past = state.day === 0 && h <= now.getHours();
+        const busy = past || taken(state.day, state.surf, h);
+        const free = courts.length - (busy ? courts.length : (h % courts.length === 0 ? 1 : 0));
+        return `<button type="button" data-h="${h}" ${busy ? 'disabled' : ''} class="${state.slot === h ? 'on' : ''}">${h} h<small>${busy ? 'Complet' : `${free} court${free > 1 ? 's' : ''}`}</small></button>`;
+      }).join('');
+      document.getElementById('s-day').textContent = fmtDay(days[state.day]);
+      document.getElementById('s-surf').textContent = name;
+      document.getElementById('court-img').src = `../img-tennis/${img}.webp`;
+      document.getElementById('s-slot').textContent = state.slot ? `${state.slot} h – ${state.slot + 1} h` : 'À choisir';
+      document.getElementById('s-court').textContent = state.slot ? `Court n° ${courts[state.slot % courts.length]}` : '—';
+      document.getElementById('nb').textContent = state.players;
+      document.getElementById('price').textContent = state.slot ? `${price * state.players / 2} €` : '0 €';
+      document.getElementById('book').disabled = !state.slot;
+    }
+    document.getElementById('days').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-day]'); if (!b) return;
+      state.day = +b.dataset.day; state.slot = null;
+      document.querySelectorAll('[data-day]').forEach((x) => x.classList.toggle('on', x === b));
+      render();
+    });
+    document.getElementById('surfaces').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-s]'); if (!b) return;
+      state.surf = b.dataset.s; state.slot = null;
+      document.querySelectorAll('[data-s]').forEach((x) => x.classList.toggle('on', x === b));
+      render();
+    });
+    document.getElementById('slots').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-h]'); if (!b || b.disabled) return;
+      state.slot = +b.dataset.h; render();
+    });
+    document.getElementById('plus').addEventListener('click', () => { state.players = Math.min(4, state.players + 1); render(); });
+    document.getElementById('minus').addEventListener('click', () => { state.players = Math.max(1, state.players - 1); render(); });
+    const modal = document.getElementById('modal');
+    document.getElementById('book').addEventListener('click', () => {
+      document.getElementById('m-text').textContent = `${document.getElementById('s-court').textContent}, ${fmtDay(days[state.day])} à ${state.slot} h. (Démo : rien n'est réellement réservé.)`;
+      modal.classList.add('open');
+    });
+    document.getElementById('m-close').addEventListener('click', () => { modal.classList.remove('open'); state.slot = null; render(); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+    render();
+  </script>
+</body>
+</html>

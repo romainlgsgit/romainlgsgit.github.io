@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ACE — Template application tennis</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #0f1d17; --card: #172a21; --card2: #1e3529; --line: rgba(255,255,255,.08); --ink: #f2f7f3; --muted: #8fa699; --ball: #d7f249; --clay: #e0703f; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body { background: radial-gradient(60% 50% at 50% 30%, #23402f, #070c09 75%); color: var(--ink); font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; display: grid; place-items: center; overflow: hidden; }
+    button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+    .app { position: relative; width: min(100vw, 430px); height: min(100dvh, 900px); background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+    @media (min-width: 500px) and (min-height: 700px) { .app { border-radius: 40px; box-shadow: 0 0 0 10px #18221d, 0 40px 100px rgba(0,0,0,.6); height: min(92dvh, 880px); } }
+    .status { display: flex; justify-content: space-between; padding: 14px 26px 6px; font-weight: 700; font-size: 14px; }
+    .bar-top { display: flex; align-items: center; justify-content: space-between; padding: 6px 20px 12px; }
+    .logo { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 24px; letter-spacing: -.02em; }
+    .logo i { width: 22px; height: 22px; border-radius: 50%; background: var(--ball); box-shadow: inset 4px 0 0 -2px #fff; }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--ball), #7cc96a); display: grid; place-items: center; color: var(--bg); font-weight: 800; font-size: 14px; }
+    main { flex: 1; overflow-y: auto; padding: 0 16px 16px; scrollbar-width: none; }
+    main::-webkit-scrollbar { display: none; }
+    .view { display: none; }
+    .view.on { display: block; animation: in .3s; }
+    @keyframes in { from { opacity: 0; transform: translateY(8px); } }
+    h2.sec { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 14px 4px 10px; }
+
+    /* Tableau d'affichage */
+    .board { border-radius: 20px; background: var(--card); overflow: hidden; }
+    .board-head { display: flex; justify-content: space-between; padding: 12px 16px; font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .board-head b { color: var(--ball); }
+    .prow { display: grid; grid-template-columns: 16px 1fr repeat(3, 26px) 52px; align-items: center; gap: 8px; padding: 14px 16px; }
+    .prow + .prow { border-top: 1px solid var(--line); }
+    .prow .srv { width: 10px; height: 10px; border-radius: 50%; background: var(--ball); opacity: 0; transition: opacity .3s; }
+    .prow.serving .srv { opacity: 1; }
+    .prow .name { font-weight: 700; font-size: 17px; line-height: 1.1; }
+    .prow .name small { display: block; color: var(--muted); font-weight: 500; font-size: 12px; }
+    .prow .set { text-align: center; font-weight: 700; font-size: 18px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .prow .set.cur { color: var(--ink); }
+    .prow .set.won { color: var(--ball); }
+    .prow .pts { justify-self: end; min-width: 50px; padding: 6px 0; border-radius: 10px; background: var(--card2); text-align: center; font-weight: 900; font-size: 20px; font-variant-numeric: tabular-nums; }
+    .prow .pts.flash { animation: flash .5s; }
+    @keyframes flash { 30% { background: var(--ball); color: var(--bg); } }
+
+    .court { position: relative; margin: 12px 0; border-radius: 20px; padding: 14px; background: #2d6a4f; }
+    .court svg { display: block; width: 100%; }
+    .court .ball { position: absolute; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: var(--ball); box-shadow: 0 6px 6px -2px rgba(0,0,0,.4); transition: left .45s cubic-bezier(.3,.7,.3,1), top .45s cubic-bezier(.3,.7,.3,1); }
+    .court .msg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.6); padding: 8px 16px; border-radius: 99px; background: var(--ball); color: var(--bg); font-weight: 900; font-size: 18px; opacity: 0; transition: opacity .25s, transform .25s; pointer-events: none; white-space: nowrap; }
+    .court .msg.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pt-btn { padding: 16px 10px; border-radius: 16px; background: var(--card2); font-weight: 700; font-size: 15px; transition: transform .1s, background .2s; }
+    .pt-btn b { display: block; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+    .pt-btn:active { transform: scale(.97); background: #284a39; }
+    .row2 { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 10px; }
+    .auto { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 16px; background: var(--card); font-weight: 600; }
+    .reset { padding: 12px 16px; border-radius: 16px; background: var(--card); color: var(--muted); font-weight: 600; }
+    .switch { appearance: none; width: 44px; height: 26px; border-radius: 13px; background: #3a5246; position: relative; cursor: pointer; transition: background .2s; }
+    .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s; }
+    .switch:checked { background: var(--ball); }
+    .switch:checked::after { transform: translateX(18px); }
+    .stats { display: grid; gap: 10px; padding: 16px; border-radius: 20px; background: var(--card); }
+    .stat { display: grid; grid-template-columns: 34px 1fr 34px; gap: 10px; align-items: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .stat span:last-child { text-align: right; }
+    .stat p { text-align: center; font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
+    .stat .bars { display: flex; height: 6px; gap: 3px; }
+    .stat .bars i { border-radius: 3px; background: var(--ball); transition: flex .4s; }
+    .stat .bars i + i { background: #5a7a6a; }
+
+    /* Réserver */
+    .club-card { display: flex; gap: 12px; align-items: center; padding: 14px; border-radius: 18px; background: var(--card); margin-bottom: 10px; }
+    .club-card .pic { width: 64px; height: 64px; border-radius: 14px; background-size: cover; background-position: center; flex: none; }
+    .club-card h3 { font-size: 16px; }
+    .club-card p { color: var(--muted); font-size: 13px; }
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; scrollbar-width: none; }
+    .chips button { flex: none; padding: 8px 14px; border-radius: 99px; background: var(--card); font-weight: 600; font-size: 14px; }
+    .chips button.on { background: var(--ball); color: var(--bg); }
+    .slotlist { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .slotlist button { padding: 12px 4px; border-radius: 12px; background: var(--card2); font-weight: 700; }
+    .slotlist button small { display: block; font-size: 11px; color: var(--muted); font-weight: 500; }
+    .slotlist button:disabled { opacity: .3; cursor: not-allowed; }
+    .slotlist button.on { background: var(--ball); color: var(--bg); }
+    .slotlist button.on small { color: var(--bg); }
+    .cta { width: 100%; margin-top: 14px; padding: 15px; border-radius: 16px; background: var(--ball); color: var(--bg); font-weight: 800; font-size: 16px; }
+    .cta:disabled { opacity: .35; cursor: not-allowed; }
+
+    /* Profil */
+    .me { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 20px; background: linear-gradient(135deg, #2d6a4f, var(--card)); }
+    .me .avatar { width: 56px; height: 56px; font-size: 20px; }
+    .me h3 { font-size: 20px; }
+    .me p { color: #cfe0d6; font-size: 13.5px; }
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
+    .kpi { padding: 14px 10px; border-radius: 16px; background: var(--card); text-align: center; }
+    .kpi b { display: block; font-size: 24px; font-weight: 900; }
+    .kpi span { font-size: 12px; color: var(--muted); }
+    .ring { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: center; padding: 16px; border-radius: 20px; background: var(--card); }
+    .ring svg { width: 110px; height: 110px; transform: rotate(-90deg); }
+    .ring circle { fill: none; stroke-width: 10; }
+    .ring p { color: var(--muted); font-size: 14px; }
+    .ring b { display: block; font-size: 30px; color: var(--ink); }
+    .match { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 14px; background: var(--card); margin-bottom: 8px; font-size: 14.5px; }
+    .match .w { color: var(--ball); font-weight: 800; }
+    .match .l { color: var(--clay); font-weight: 800; }
+
+    nav.tabs { display: grid; grid-template-columns: repeat(3, 1fr); padding: 8px 8px calc(10px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(15,29,23,.96); }
+    nav.tabs button { display: grid; justify-items: center; gap: 2px; padding: 6px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+    nav.tabs svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    nav.tabs button.on { color: var(--ball); }
+    .toast { position: absolute; left: 12px; right: 12px; top: 52px; z-index: 5; padding: 12px 16px; border-radius: 16px; background: rgba(36,58,46,.97); box-shadow: 0 12px 30px rgba(0,0,0,.5); font-weight: 600; transform: translateY(calc(-100% - 70px)); transition: transform .45s cubic-bezier(.2,.7,.1,1); }
+    .toast.show { transform: none; }
+    .demo { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); color: #7d8f85; font: 12px system-ui, sans-serif; text-align: center; }
+    .demo a { color: #cfe0d6; }
+    @media (max-width: 500px), (max-height: 700px) { .demo { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="status"><span id="clock">14:00</span><span>●●● 5G ▮</span></div>
+    <div class="bar-top"><span class="logo"><i></i>ACE</span><span class="avatar">RL</span></div>
+    <div class="toast" id="toast"></div>
+
+    <main>
+      <section class="view on" id="v-match">
+        <div class="board">
+          <div class="board-head"><span>Match amical · Court n° 3</span><b id="state">En cours</b></div>
+          <div class="prow" id="p0"><i class="srv"></i><span class="name">Romain L.<small>Toi</small></span><span class="set"></span><span class="set"></span><span class="set"></span><span class="pts">0</span></div>
+          <div class="prow" id="p1"><i class="srv"></i><span class="name">Hugo M.<small>Adversaire</small></span><span class="set"></span><span class="set"></span><span class="set"></span><span class="pts">0</span></div>
+        </div>
+
+        <div class="court" id="court">
+          <svg viewBox="0 0 360 170" aria-hidden="true">
+            <rect x="6" y="6" width="348" height="158" fill="#3d8c66" stroke="#fff" stroke-width="2"/>
+            <line x1="6" y1="26" x2="354" y2="26" stroke="#fff" stroke-width="2"/><line x1="6" y1="144" x2="354" y2="144" stroke="#fff" stroke-width="2"/>
+            <line x1="96" y1="26" x2="96" y2="144" stroke="#fff" stroke-width="2"/><line x1="264" y1="26" x2="264" y2="144" stroke="#fff" stroke-width="2"/>
+            <line x1="96" y1="85" x2="264" y2="85" stroke="#fff" stroke-width="2"/>
+            <line x1="180" y1="2" x2="180" y2="168" stroke="#e8f0eb" stroke-width="4"/>
+          </svg>
+          <span class="ball" id="ball" style="left:50%;top:50%"></span>
+          <span class="msg" id="msg"></span>
+        </div>
+
+        <div class="controls">
+          <button class="pt-btn" type="button" data-pt="0"><b>Point pour</b>Romain</button>
+          <button class="pt-btn" type="button" data-pt="1"><b>Point pour</b>Hugo</button>
+        </div>
+        <div class="row2">
+          <label class="auto">Lecture automatique<input class="switch" type="checkbox" id="auto" checked /></label>
+          <button class="reset" type="button" id="reset">Rejouer</button>
+        </div>
+
+        <h2 class="sec">Statistiques du match</h2>
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <section class="view" id="v-book">
+        <h2 class="sec">Clubs près de toi</h2>
+        <div class="club-card"><span class="pic" style="background-image:url(../img-tennis/red.webp)"></span><div><h3>Court Central</h3><p>Terre battue · 1,2 km · 16 € / h</p></div></div>
+        <h2 class="sec">Jour</h2>
+        <div class="chips" id="bdays"></div>
+        <h2 class="sec">Créneaux disponibles</h2>
+        <div class="slotlist" id="bslots"></div>
+        <button class="cta" type="button" id="bgo" disabled>Réserver</button>
+      </section>
+
+      <section class="view" id="v-me">
+        <div class="me"><span class="avatar">RL</span><div><h3>Romain Legros</h3><p>Classement 30/1 · Membre depuis 2021</p></div></div>
+        <div class="kpis"><div class="kpi"><b>42</b><span>Matchs</span></div><div class="kpi"><b>67 %</b><span>Victoires</span></div><div class="kpi"><b>5</b><span>Série</span></div></div>
+        <div class="ring">
+          <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" stroke="#24402f"/><circle cx="60" cy="60" r="50" stroke="#d7f249" stroke-dasharray="314" stroke-dashoffset="104" stroke-linecap="round"/></svg>
+          <div><p>Taux de victoire<b>67 %</b></p><p>28 victoires · 14 défaites</p></div>
+        </div>
+        <h2 class="sec">Derniers matchs</h2>
+        <div class="match"><span>vs Hugo M.</span><span>6-4 7-5</span><span class="w">V</span></div>
+        <div class="match"><span>vs Sarah K.</span><span>3-6 6-4 10-7</span><span class="w">V</span></div>
+        <div class="match"><span>vs Paul D.</span><span>4-6 2-6</span><span class="l">D</span></div>
+        <div class="match"><span>vs Inès B.</span><span>6-1 6-3</span><span class="w">V</span></div>
+      </section>
+    </main>
+
+    <nav class="tabs" aria-label="Navigation">
+      <button class="on" type="button" data-v="v-match"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3 2.6 3 10.2 0 12.8M18.4 5.6c-3 2.6-3 10.2 0 12.8"/></svg>Match</button>
+      <button type="button" data-v="v-book"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Réserver</button>
+      <button type="button" data-v="v-me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</button>
+    </nav>
+  </div>
+  <p class="demo">Prototype d'application de démonstration conçu par Romain Legros · données fictives · <a href="../../#tennis">retour au portfolio</a></p>
+
+  <script>
+    /* ---------- Comptage officiel du tennis ---------- */
+    const LABEL = ['0', '15', '30', '40'];
+    let M;
+    function newMatch() {
+      M = { sets: [[0, 0]], pts: [0, 0], tb: false, server: 0, over: false, stats: { pts: [0, 0], aces: [0, 0], breaks: [0, 0], games: [0, 0] } };
+    }
+    function point(w) {
+      if (M.over) return;
+      const l = 1 - w;
+      M.stats.pts[w]++;
+      if (w === M.server && Math.random() < 0.12) { M.stats.aces[w]++; say('Ace !'); }
+      M.pts[w]++;
+      const set = M.sets[M.sets.length - 1];
+      const target = M.tb ? 7 : 4;
+      if (M.pts[w] >= target && M.pts[w] - M.pts[l] >= 2) {
+        // Jeu gagné
+        if (!M.tb && w !== M.server) { M.stats.breaks[w]++; say('Break !'); }
+        set[w]++;
+        M.stats.games[w]++;
+        M.pts = [0, 0];
+        M.server = 1 - M.server;
+        if (M.tb) { M.tb = false; endSet(w); }
+        else if (set[w] >= 6 && set[w] - set[l] >= 2) endSet(w);
+        else if (set[0] === 6 && set[1] === 6) { M.tb = true; say('Tie-break'); }
+        else say('Jeu');
+      }
+      draw(w);
+    }
+    function endSet(w) {
+      const won = M.sets.filter(([a, b]) => (w === 0 ? a > b : b > a)).length;
+      if (won === 2) { M.over = true; say(w === 0 ? 'Victoire !' : 'Défaite…'); toast(w === 0 ? '🏆 Tu remportes le match !' : 'Hugo remporte le match.'); return; }
+      say('Set !');
+      M.sets.push([0, 0]);
+    }
+    function ptLabel(p) {
+      if (M.tb) return String(M.pts[p]);
+      const [a, b] = [M.pts[p], M.pts[1 - p]];
+      if (a >= 3 && b >= 3) return a === b ? '40' : a > b ? 'AV' : '40';
+      return LABEL[Math.min(a, 3)];
+    }
+
+    const ball = document.getElementById('ball');
+    const msg = document.getElementById('msg');
+    let msgT;
+    function say(t) {
+      msg.textContent = t; msg.classList.add('show');
+      clearTimeout(msgT); msgT = setTimeout(() => msg.classList.remove('show'), 900);
+    }
+    const toastEl = document.getElementById('toast');
+    let toastT;
+    function toast(t) { toastEl.textContent = t; toastEl.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), 2600); }
+
+    function draw(w) {
+      [0, 1].forEach((p) => {
+        const row = document.getElementById(`p${p}`);
+        row.classList.toggle('serving', M.server === p && !M.over);
+        const cells = row.querySelectorAll('.set');
+        cells.forEach((c, i) => {
+          const s = M.sets[i];
+          c.textContent = s ? s[p] : '';
+          c.classList.toggle('cur', i === M.sets.length - 1 && !M.over);
+          c.classList.toggle('won', !!s && (i < M.sets.length - 1 || M.over) && s[p] > s[1 - p]);
+        });
+        const pts = row.querySelector('.pts');
+        pts.textContent = M.over ? '–' : ptLabel(p);
+        if (p === w) { pts.classList.remove('flash'); void pts.offsetWidth; pts.classList.add('flash'); }
+      });
+      document.getElementById('state').textContent = M.over ? 'Terminé' : M.tb ? 'Tie-break' : `Set ${M.sets.length}`;
+      // La balle part dans le camp du perdant du point
+      if (w !== undefined) {
+        const x = w === 0 ? 62 + Math.random() * 30 : 8 + Math.random() * 30;
+        ball.style.left = `${x}%`;
+        ball.style.top = `${18 + Math.random() * 64}%`;
+      }
+      const s = M.stats;
+      const rows = [['Points gagnés', s.pts], ['Aces', s.aces], ['Breaks', s.breaks], ['Jeux gagnés', s.games]];
+      document.getElementById('stats').innerHTML = rows.map(([n, [a, b]]) => {
+        const t = a + b || 1;
+        return `<div class="stat"><span>${a}</span><div><p>${n}</p><div class="bars"><i style="flex:${a || (a + b ? 0.001 : 1)}"></i><i style="flex:${b || (a + b ? 0.001 : 1)}"></i></div></div><span>${b}</span></div>`;
+      }).join('');
+    }
+
+    document.querySelectorAll('[data-pt]').forEach((b) => b.addEventListener('click', () => { document.getElementById('auto').checked = false; point(+b.dataset.pt); }));
+    document.getElementById('reset').addEventListener('click', () => { newMatch(); draw(); toast('Nouveau match lancé'); });
+    setInterval(() => {
+      if (!document.getElementById('auto').checked) return;
+      if (M.over) { if (!M.restart) { M.restart = true; setTimeout(() => { newMatch(); draw(); }, 2500); } return; }
+      // Le serveur gagne un peu plus souvent ses points
+      point(Math.random() < (M.server === 0 ? 0.6 : 0.42) ? 0 : 1);
+    }, 1300);
+    newMatch(); draw();
+
+    /* ---------- Réservation ---------- */
+    const bdays = [...Array(6)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
+    let bd = 0, bs = null;
+    const daysEl = document.getElementById('bdays');
+    daysEl.innerHTML = bdays.map((d, i) => `<button type="button" data-d="${i}" class="${i === 0 ? 'on' : ''}">${i === 0 ? "Aujourd'hui" : d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric' })}</button>`).join('');
+    function slots() {
+      const now = new Date().getHours();
+      document.getElementById('bslots').innerHTML = [...Array(15)].map((_, k) => {
+        const h = 8 + k;
+        let x = Math.sin((bd + 1) * 53 + h * 7) * 10000; x -= Math.floor(x);
+        const off = (bd === 0 && h <= now) || x < 0.35;
+        return `<button type="button" data-h="${h}" ${off ? 'disabled' : ''} class="${bs === h ? 'on' : ''}">${h}:00<small>${off ? 'Pris' : '16 €'}</small></button>`;
+      }).join('');
+      document.getElementById('bgo').disabled = bs === null;
+      document.getElementById('bgo').textContent = bs === null ? 'Réserver' : `Réserver ${bs}:00 – ${bs + 1}:00`;
+    }
+    daysEl.addEventListener('click', (e) => { const b = e.target.closest('[data-d]'); if (!b) return; bd = +b.dataset.d; bs = null; daysEl.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b)); slots(); });
+    document.getElementById('bslots').addEventListener('click', (e) => { const b = e.target.closest('[data-h]'); if (!b || b.disabled) return; bs = +b.dataset.h; slots(); });
+    document.getElementById('bgo').addEventListener('click', () => { toast(`✅ Court réservé à ${bs}:00 (démo)`); bs = null; slots(); });
+    slots();
+
+    /* ---------- Onglets et horloge ---------- */
+    document.querySelectorAll('[data-v]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-v]').forEach((x) => x.classList.toggle('on', x === b));
+      document.querySelectorAll('.view').forEach((v) => v.classList.toggle('on', v.id === b.dataset.v));
+      document.querySelector('main').scrollTop = 0;
+    }));
+    const clock = () => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); };
+    clock(); setInterval(clock, 10000);
+  </script>
+</body>
+</html>

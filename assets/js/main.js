@@ -513,6 +513,31 @@ function renderSpace(p, t) {
   atmoMat.uniforms.strength.value = lerp(1, 0.35, range(tE, 0.7, 1));
 
   setAltitude(alt * 6371000);
+  marker.position.copy(BCN_MARK);
+  renderer.render(space, spaceCam);
+}
+
+// Fin du voyage : la Terre tourne doucement, le repère est posé sur la Normandie
+const BCN_MARK = latLon(BCN.lat, BCN.lon, 1.012);
+const NORMANDIE = { lat: 49.18, lon: -0.37 };
+const NORM_MARK = latLon(NORMANDIE.lat, NORMANDIE.lon, 1.012);
+const normVec = latLon(NORMANDIE.lat, NORMANDIE.lon);
+const ryN = Math.atan2(-normVec.x, normVec.z);
+const rxN = Math.atan2(normVec.y, Math.hypot(normVec.x, normVec.z));
+function renderOutro(t) {
+  spaceCam.position.set(0, 0, 4.4);
+  spaceCam.lookAt(0, 0, 0);
+  if (portrait) earth.position.set(0, -1.75, 0);
+  else earth.position.set(1.7, -0.05, 0);
+  const sway = reduceMotion ? 0 : Math.sin(t * 0.12) * 0.5;
+  spin.rotation.set(rxN * 0.8, ryN + sway, 0);
+  cloudMesh.rotation.y = reduceMotion ? 0 : t * 0.004;
+  cloudMesh.material.opacity = 0.8;
+  stars.rotation.y = t * 0.002;
+  marker.position.copy(NORM_MARK);
+  marker.material.opacity = 1;
+  marker.scale.setScalar(0.05 * (1 + 0.25 * Math.sin(t * 4)));
+  atmoMat.uniforms.strength.value = 1;
   renderer.render(space, spaceCam);
 }
 
@@ -528,6 +553,12 @@ function frame(now) {
   updateOverlays(prog);
   if (prog > 0.02) loadCatalogne();
   if (!prefetched && prog > 0.2) prefetchTiles();
+  if (world === LAST) {
+    ground.style.visibility = 'hidden';
+    canvas.style.visibility = 'visible';
+    if (renderer) renderOutro(t);
+    return;
+  }
   if (scrollY > journeyEnd + innerHeight * 1.2) return; // la section projets couvre tout
   canvas.style.visibility = prog < SWITCH + 0.01 ? 'visible' : 'hidden';
   if (renderer && prog < SWITCH + 0.01) renderSpace(Math.min(prog, SWITCH), t);
@@ -617,9 +648,12 @@ const sfDoor = shopfront.querySelector('.sf-door');
 const sfL = shopfront.querySelector('.sf-l');
 const sfR = shopfront.querySelector('.sf-r');
 const ecole = document.getElementById('etudeasy');
-const WORLD_START = { 2: () => arcade.offsetTop, 3: () => boutique.offsetTop, 4: () => ecole.offsetTop };
-const WORLD_TOP = { 2: arcade, 3: boutique, 4: ecole };
-const LAST = 4;
+const f1 = document.getElementById('f1');
+const tennis = document.getElementById('tennis');
+const fin = document.getElementById('contact');
+const WORLD_TOP = { 2: arcade, 3: boutique, 4: ecole, 5: f1, 6: tennis, 7: fin };
+const WORLD_START = Object.fromEntries(Object.entries(WORLD_TOP).map(([n, el]) => [n, () => el.offsetTop]));
+const LAST = 7;
 
 let world = 1;
 let warping = false;
@@ -629,6 +663,15 @@ function setWorld(n) {
   document.body.classList.toggle('arcade', n === 2);
   document.body.classList.toggle('boutique', n === 3);
   document.body.classList.toggle('ecole', n === 4);
+  document.body.classList.toggle('f1-mode', n === 5);
+  document.body.classList.toggle('tennis-mode', n === 6);
+  document.body.classList.toggle('espace', n === 7);
+  // Les prototypes d'applis ne tournent que dans leur univers
+  document.querySelectorAll('.duo-phone iframe').forEach((f) => {
+    const on = f.closest('section') === WORLD_TOP[n];
+    if (on && !f.src) f.src = f.dataset.src;
+    else if (!on && f.src) f.removeAttribute('src');
+  });
 }
 
 // Une fois l'écran couvert, on se place dans le bon monde : au début si on avance,
@@ -738,11 +781,140 @@ async function chalkWarp(to, from) {
   board.style.visibility = 'hidden';
 }
 
+const NAMES = { 1: 'FC Barcelona', 2: 'Jeux vidéo', 3: 'E-commerce', 4: 'EtudEasy', 5: 'Formule 1', 6: 'Tennis', 7: "Retour dans l'espace" };
+const label = (n) => (n === 7 ? NAMES[7] : `Univers 0${n} · ${NAMES[n]}`);
+
+/* Formule 1 : feux de départ, puis la voiture traverse l'écran et dévoile le monde */
+const f1Intro = document.getElementById('f1-intro');
+const f1Reveal = f1Intro.querySelector('.f1-reveal');
+const f1Lights = [...f1Intro.querySelectorAll('.f1-lights i')];
+const f1Runner = f1Intro.querySelector('.f1-runner');
+const f1Label = document.getElementById('f1-label');
+async function carWarp(to, from) {
+  const speed = reduceMotion ? 0.01 : 1;
+  f1Label.textContent = label(to);
+  f1Intro.style.visibility = 'visible';
+  f1Intro.style.opacity = 0;
+  f1Reveal.style.clipPath = 'inset(0 0 0 0)';
+  f1Runner.style.transform = 'translateX(-110%)';
+  f1Lights.forEach((l) => l.classList.remove('on'));
+  f1Label.style.opacity = 1;
+  await tween(260 * speed, (k) => { f1Intro.style.opacity = k; });
+  landIn(to, from);
+  for (const l of f1Lights) { l.classList.add('on'); await pause(150 * speed); }
+  await pause(320 * speed);
+  f1Lights.forEach((l) => l.classList.remove('on'));
+  // La voiture passe : derrière elle, l'écran s'ouvre sur le nouveau monde
+  const w = f1Runner.offsetWidth;
+  await tween(780 * speed, (k) => {
+    const e = k * k * (2.2 - 1.2 * k);
+    const x = -w * 1.1 + (innerWidth + w * 2.2) * e;
+    f1Runner.style.transform = `translateX(${x}px)`;
+    const cut = clamp((x + w * 0.15) / innerWidth) * 100;
+    f1Reveal.style.clipPath = `inset(0 0 0 ${cut}%)`;
+    f1Label.style.opacity = 1 - clamp(k * 2.5);
+    document.querySelector('.f1-lights').style.opacity = 1 - clamp(k * 2.5);
+  });
+  document.querySelector('.f1-lights').style.opacity = 1;
+  f1Intro.style.visibility = 'hidden';
+}
+
+/* Tennis : la balle rebondit sur le court, fonce vers l'écran, puis s'efface */
+const tnIntro = document.getElementById('tennis-intro');
+const tnBall = tnIntro.querySelector('.tn-ball');
+const tnShadow = tnIntro.querySelector('.tn-shadow');
+const tnLabel = document.getElementById('tn-label');
+async function ballWarp(to, from) {
+  const speed = reduceMotion ? 0.01 : 1;
+  tnLabel.textContent = label(to);
+  tnIntro.style.visibility = 'visible';
+  tnIntro.style.opacity = 0;
+  tnBall.style.opacity = 1;
+  const W = innerWidth;
+  const H = innerHeight;
+  const place = (x, y, h, sc) => {
+    tnBall.style.transform = `translate(${x}px, ${y - h}px) scale(${sc}) rotate(${x}deg)`;
+    tnShadow.style.transform = `translate(${x}px, ${y + 30 * sc}px) scale(${Math.max(0.3, 1 - h / 400) * sc})`;
+    tnShadow.style.opacity = Math.max(0, 1 - h / 500);
+  };
+  place(-80, H * 0.72, 260, 1);
+  await tween(240 * speed, (k) => { tnIntro.style.opacity = k; });
+  landIn(to, from);
+  // Deux rebonds sur la terre battue
+  await tween(1050 * speed, (k) => {
+    const x = lerp(-80, W * 0.5, k);
+    const y = lerp(H * 0.72, H * 0.6, k);
+    const b = k < 0.55 ? k / 0.55 : (k - 0.55) / 0.45;
+    const amp = k < 0.55 ? 300 : 150;
+    const h = Math.abs(Math.sin(b * Math.PI)) * amp * (k < 0.55 ? 1 : 1);
+    place(x, y, k < 0.08 ? 260 * (1 - k / 0.08) + h : h, 1);
+  });
+  // Elle fonce vers nous et couvre l'écran
+  const big = (Math.hypot(W, H) / 80) * 2.4;
+  await tween(520 * speed, (k) => {
+    const e = k * k;
+    place(W * 0.5, lerp(H * 0.6, H * 0.5, e), 0, 1 + big * e);
+    tnShadow.style.opacity = 1 - k;
+  });
+  tnIntro.querySelector('.tn-court').style.opacity = 0;
+  tnLabel.style.opacity = 0;
+  await tween(380 * speed, (k) => { tnBall.style.opacity = 1 - k; });
+  tnIntro.querySelector('.tn-court').style.opacity = 1;
+  tnLabel.style.opacity = 1;
+  tnIntro.style.visibility = 'hidden';
+}
+
+/* Fin : saut dans l'hyperespace, puis la Terre */
+const lift = document.getElementById('liftoff');
+const lc = document.getElementById('liftoff-canvas');
+const lctx = lc.getContext('2d');
+const loLabel = document.getElementById('lo-label');
+async function spaceWarp(to, from) {
+  const speed = reduceMotion ? 0.01 : 1;
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  lc.width = innerWidth * dpr;
+  lc.height = innerHeight * dpr;
+  lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cx = innerWidth / 2;
+  const cy = innerHeight / 2;
+  const starsW = [...Array(420)].map(() => ({ a: Math.random() * Math.PI * 2, r: Math.random() * 40 + 4, v: Math.random() * 0.8 + 0.4 }));
+  loLabel.textContent = to === 7 ? NAMES[7] : label(to);
+  lift.style.visibility = 'visible';
+  lift.style.opacity = 0;
+  let zoom = 0;
+  const draw = (k) => {
+    lctx.fillStyle = 'rgba(0,0,0,.35)';
+    lctx.fillRect(0, 0, innerWidth, innerHeight);
+    lctx.strokeStyle = '#fff';
+    zoom = k;
+    for (const st of starsW) {
+      const r0 = st.r * (1 + zoom * 30 * st.v);
+      const r1 = r0 * (1 + 0.08 + zoom * 0.5);
+      lctx.globalAlpha = Math.min(1, 0.3 + zoom);
+      lctx.lineWidth = 1 + zoom * 1.5;
+      lctx.beginPath();
+      lctx.moveTo(cx + Math.cos(st.a) * r0, cy + Math.sin(st.a) * r0);
+      lctx.lineTo(cx + Math.cos(st.a) * r1, cy + Math.sin(st.a) * r1);
+      lctx.stroke();
+    }
+    lctx.globalAlpha = 1;
+  };
+  await tween(260 * speed, (k) => { lift.style.opacity = k; draw(k * 0.1); });
+  landIn(to, from);
+  await tween(1100 * speed, (k) => draw(0.1 + ease(k) * 0.9));
+  await tween(520 * speed, (k) => { lift.style.opacity = 1 - k; draw(1 - k * 0.5); });
+  lift.style.visibility = 'hidden';
+}
+
 async function changeWorld(to) {
   warping = true;
   const from = scrollY;
   lockScroll(true);
-  if (to === 4 || world === 4) await chalkWarp(to, from);
+  const pair = (n) => to === n || world === n;
+  if (pair(7)) await spaceWarp(to, from);
+  else if (pair(6)) await ballWarp(to, from);
+  else if (pair(5)) await carWarp(to, from);
+  else if (to === 4 || world === 4) await chalkWarp(to, from);
   else if (to === 3 || world === 3) await doorWarp(to, from);
   else await pixelWarp(to, from);
   lockScroll(false);
@@ -753,7 +925,7 @@ async function changeWorld(to) {
 // On entre dans un monde dès la fin de la page du précédent ;
 // on en ressort quand sa section est repassée sous le bas de l'écran.
 function wantedWorld() {
-  for (const n of [4, 3, 2]) {
+  for (const n of [7, 6, 5, 4, 3, 2]) {
     const top = WORLD_TOP[n].getBoundingClientRect().top;
     if (top < innerHeight * (world >= n ? 1.08 : 0.9)) return n;
   }

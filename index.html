@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Romain Legros — Portfolio</title>
-  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade, l'univers e-commerce et l'école pour découvrir mes projets web, mobile, jeux vidéo et e-commerce." />
+  <meta name="description" content="Romain Legros, développeur web & mobile basé en Normandie. Un voyage de l'espace jusqu'au Camp Nou puis dans l'arcade, l'e-commerce, l'école, la F1 et le tennis pour découvrir mes projets web, mobile, jeux vidéo et e-commerce." />
   <meta name="theme-color" content="#05060b" />
   <meta property="og:title" content="Romain Legros — Portfolio" />
-  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis dans une borne d'arcade, l'univers e-commerce et une salle de classe : mes projets web, mobile, jeux vidéo et e-commerce." />
+  <meta property="og:description" content="De l'espace jusqu'au Camp Nou, puis à travers l'arcade, l'e-commerce, l'école, la F1 et le tennis : mes projets web, mobile, jeux vidéo et e-commerce." />
   <meta property="og:image" content="https://romainlgsgit.github.io/assets/img/screen-notes.webp" />
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2026100409" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Caveat:wght@500;700&family=Titillium+Web:ital,wght@0,600;0,900;1,900&family=Outfit:wght@400;600;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026100410" />
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
   </script>
@@ -65,6 +65,33 @@
       <div class="cb-tray"><i></i><i></i><b></b></div>
     </div>
   </div>
+  <div id="f1-intro" aria-hidden="true">
+    <div class="f1-reveal"></div>
+    <div class="f1-lights"><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="f1-label" id="f1-label">Univers 05 · Formule 1</p>
+    <div class="f1-runner"><div class="f1-streaks"></div><svg class="f1-car" viewBox="0 0 640 150" aria-hidden="true">
+      <rect x="16" y="20" width="62" height="15" rx="3" fill="#111"/><rect x="34" y="34" width="9" height="52" fill="#111"/>
+      <path d="M40 94 L70 70 L180 62 L232 40 L300 40 L332 58 L420 70 L560 86 L604 96 L604 106 L60 110 Z" fill="#e10600"/>
+      <path d="M120 90 L560 93 L592 100 L120 100 Z" fill="#fff"/>
+      <path d="M240 40 L262 20 L286 24 L292 40 Z" fill="#a80000"/>
+      <circle cx="322" cy="50" r="11" fill="#ffd400"/>
+      <path d="M288 60 Q330 28 374 62" stroke="#1b1b1b" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <text x="380" y="88" font-family="Titillium Web, Arial, sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#fff">RL</text>
+      <path d="M545 114 L634 114 L634 122 L540 122 Z" fill="#111"/><rect x="616" y="96" width="7" height="26" fill="#111"/>
+      <circle cx="140" cy="104" r="38" fill="#141414"/><circle cx="140" cy="104" r="21" fill="#3a3a3a"/><circle cx="140" cy="104" r="6" fill="#e10600"/>
+      <circle cx="500" cy="108" r="33" fill="#141414"/><circle cx="500" cy="108" r="18" fill="#3a3a3a"/><circle cx="500" cy="108" r="5" fill="#e10600"/>
+    </svg></div>
+  </div>
+  <div id="tennis-intro" aria-hidden="true">
+    <div class="tn-court"><div class="tn-lines"></div><div class="tn-net"></div></div>
+    <p class="tn-label" id="tn-label">Univers 06 · Tennis</p>
+    <span class="tn-shadow"></span>
+    <span class="tn-ball"></span>
+  </div>
+  <div id="liftoff" aria-hidden="true">
+    <canvas id="liftoff-canvas"></canvas>
+    <p class="lo-label" id="lo-label">Retour dans l'espace</p>
+  </div>
   <div id="warp-screen" aria-hidden="true">
     <p class="ws-small" id="ws-small">Univers 02</p>
     <p class="ws-big" id="ws-big">WORLD 2</p>
@@ -80,7 +107,9 @@
       <a href="#arcade">Jeux vidéo</a>
       <a href="#boutique">E-commerce</a>
       <a href="#etudeasy">Application</a>
-      <a href="mailto:legrosromainpro@gmail.com" class="nav-cta">Contact</a>
+      <a href="#f1">F1</a>
+      <a href="#tennis">Tennis</a>
+      <a href="#contact" class="nav-cta">Contact</a>
     </nav>
   </header>
 
@@ -600,6 +629,97 @@
       </div>
     </section>
 
+    <!-- ========== UNIVERS 05 : EXEMPLE FORMULE 1 ========== -->
+    <section id="f1">
+      <div class="kerb" aria-hidden="true"></div>
+      <div class="wrap">
+        <header class="w-head">
+          <span class="w-kicker">Univers 05 · Exemple · Formule 1</span>
+          <h2>Pole<br /><em>position.</em></h2>
+          <p>Ce que je peux créer pour un média, une écurie ou une communauté de fans de sport auto&nbsp;: un site web et une application mobile, imaginés pour l'exemple et entièrement cliquables.</p>
+        </header>
+        <div class="duo">
+          <article class="duo-site">
+            <span class="duo-tag">Site web</span>
+            <a class="duo-browser" href="templates/pitwall/" target="_blank" rel="noopener">
+              <div class="duo-bar"><i></i><i></i><i></i><span>pitwall.fr</span></div>
+              <img src="assets/img/shop/tpl-pitwall.webp" alt="Aperçu du site PITWALL" loading="lazy" />
+            </a>
+            <h3>PITWALL, le site</h3>
+            <p>Un média F1&nbsp;: compte à rebours avant la prochaine course, dernier podium, classements pilotes et écuries animés, calendrier de la saison et actus.</p>
+            <ul class="duo-feats"><li>Compte à rebours en direct</li><li>Classements pilotes / écuries</li><li>Calendrier défilant</li><li>Responsive</li></ul>
+            <a class="duo-btn" href="templates/pitwall/" target="_blank" rel="noopener">Ouvrir le site ↗</a>
+          </article>
+          <article class="duo-app">
+            <span class="duo-tag">Application mobile</span>
+            <div class="duo-phone"><iframe title="PITWALL, l'appli : prototype interactif" data-src="templates/pitwall-app/" loading="lazy" tabindex="-1"></iframe></div>
+            <h3>PITWALL, l'appli</h3>
+            <p>Le live dans la poche&nbsp;: les voitures roulent sur la carte du circuit, la tour des temps se met à jour et une notification tombe à chaque dépassement.</p>
+            <ul class="duo-feats"><li>Course simulée en temps réel</li><li>Notifications de dépassement</li><li>Écurie favorite</li><li>4 onglets</li></ul>
+            <a class="duo-btn" href="templates/pitwall-app/" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a>
+          </article>
+        </div>
+        <p class="w-note">Exemples fictifs créés pour le portfolio&nbsp;: écuries, pilotes et résultats sont inventés.</p>
+      </div>
+    </section>
+
+    <!-- ========== UNIVERS 06 : EXEMPLE TENNIS ========== -->
+    <section id="tennis">
+      <div class="court-lines" aria-hidden="true"></div>
+      <div class="wrap">
+        <header class="w-head">
+          <span class="w-kicker">Univers 06 · Exemple · Tennis</span>
+          <h2>Jeu, set<br /><em>et match.</em></h2>
+          <p>Un site de club avec réservation de courts, et une application pour compter les points et réserver depuis son téléphone. Deux exemples prêts à essayer.</p>
+        </header>
+        <div class="duo">
+          <article class="duo-site">
+            <span class="duo-tag">Site web</span>
+            <a class="duo-browser" href="templates/courtcentral/" target="_blank" rel="noopener">
+              <div class="duo-bar"><i></i><i></i><i></i><span>courtcentral.fr</span></div>
+              <img src="assets/img/shop/tpl-courtcentral.webp" alt="Aperçu du site Court Central" loading="lazy" />
+            </a>
+            <h3>Court Central, le site</h3>
+            <p>Le site d'un club de tennis&nbsp;: réservation d'un court en trois clics (jour, surface, créneau, nombre de joueurs), cours et stages, formules d'adhésion.</p>
+            <ul class="duo-feats"><li>Réservation de courts</li><li>Créneaux en temps réel</li><li>Prix calculé automatiquement</li><li>Responsive</li></ul>
+            <a class="duo-btn" href="templates/courtcentral/" target="_blank" rel="noopener">Ouvrir le site ↗</a>
+          </article>
+          <article class="duo-app">
+            <span class="duo-tag">Application mobile</span>
+            <div class="duo-phone"><iframe title="ACE, l'appli : prototype interactif" data-src="templates/ace-app/" loading="lazy" tabindex="-1"></iframe></div>
+            <h3>ACE, l'appli</h3>
+            <p>Une appli pour joueurs&nbsp;: tableau de score avec le vrai comptage du tennis (avantage, tie-break, sets), statistiques du match, réservation et profil.</p>
+            <ul class="duo-feats"><li>Comptage officiel des points</li><li>Statistiques en direct</li><li>Réservation mobile</li><li>Profil et historique</li></ul>
+            <a class="duo-btn" href="templates/ace-app/" target="_blank" rel="noopener">Ouvrir en plein écran ↗</a>
+          </article>
+        </div>
+        <p class="w-note">Exemples fictifs créés pour le portfolio&nbsp;: aucune réservation n'est enregistrée.</p>
+      </div>
+    </section>
+
+    <!-- ========== FIN : RETOUR DANS L'ESPACE ========== -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="end-card">
+          <span class="w-kicker">Fin du voyage</span>
+          <h2>Merci d'avoir<br /><em>fait le tour.</em></h2>
+          <p>Un site, une application, une boutique en ligne&nbsp;? Parlons de ton projet.</p>
+          <div class="end-me">
+            <img src="photo.jpg" alt="Romain Legros" width="72" height="72" />
+            <div><b>Romain Legros</b><span>Développeur web &amp; mobile · Normandie</span></div>
+          </div>
+          <a class="end-mail" href="mailto:legrosromainpro@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            legrosromainpro@gmail.com
+          </a>
+          <a class="end-link" href="https://github.com/romainlgsgit" target="_blank" rel="noopener">GitHub · romainlgsgit ↗</a>
+          <nav class="end-worlds" aria-label="Revisiter un univers">
+            <a href="#top">🚀 Espace</a><a href="#barca">⚽ Barça</a><a href="#arcade">👾 Jeux</a><a href="#boutique">🛍️ E-commerce</a><a href="#etudeasy">🎓 EtudEasy</a><a href="#f1">🏎️ F1</a><a href="#tennis">🎾 Tennis</a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="wrap">
         <p>Un projet, une idée de site&nbsp;? <a href="mailto:legrosromainpro@gmail.com">legrosromainpro@gmail.com</a></p>
@@ -614,6 +734,6 @@
     </footer>
   </main>
 
-  <script type="module" src="assets/js/main.js?v=2026100409"></script>
+  <script type="module" src="assets/js/main.js?v=2026100410"></script>
 </body>
 </html>

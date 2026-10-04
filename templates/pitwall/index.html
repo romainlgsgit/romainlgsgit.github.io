@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PITWALL — Template site Formule 1</title>
+  <meta name="description" content="Template de démonstration d'un site d'actualité Formule 1, conçu par Romain Legros." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,900&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #0b0b0f; --bg2: #15151c; --line: rgba(255,255,255,.1); --ink: #f5f5f7; --muted: #9a9aa6; --red: #ff2d2d; --font: 'Titillium Web', system-ui, sans-serif; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+    .demo-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 14px; padding: 8px 16px; background: #fff; color: #111; font: 500 12.5px/1.4 system-ui, sans-serif; text-align: center; }
+    .demo-bar a { font-weight: 700; border-bottom: 1px solid currentColor; }
+
+    header.top { position: sticky; top: 0; z-index: 30; background: rgba(11,11,15,.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 20px; }
+    .logo { font-weight: 900; font-style: italic; font-size: 26px; letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; }
+    .logo i { width: 26px; height: 16px; background: repeating-linear-gradient(90deg, var(--red) 0 6px, transparent 6px 9px); transform: skewX(-20deg); }
+    header.top nav { display: flex; gap: 26px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; }
+    header.top nav a:hover { color: var(--red); }
+    .live-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 4px; background: var(--red); font-weight: 700; font-size: 13px; text-transform: uppercase; }
+    .live-pill::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 50% { opacity: .2; } }
+
+    .hero { position: relative; min-height: min(86vh, 780px); display: flex; align-items: flex-end; overflow: hidden; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 4%, rgba(11,11,15,.4) 55%, rgba(11,11,15,.2)), linear-gradient(90deg, rgba(11,11,15,.85), transparent 65%); }
+    .hero .wrap { position: relative; z-index: 1; width: 100%; padding-bottom: 60px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; font-size: 13px; color: var(--red); }
+    .hero h1 { font-weight: 900; font-style: italic; text-transform: uppercase; font-size: clamp(46px, 8vw, 110px); line-height: .9; letter-spacing: -.02em; margin: 12px 0 22px; }
+    .countdown { display: flex; gap: 10px; margin-bottom: 26px; }
+    .countdown div { min-width: 82px; padding: 12px 10px; text-align: center; background: rgba(255,255,255,.08); border: 1px solid var(--line); border-radius: 8px; backdrop-filter: blur(6px); }
+    .countdown b { display: block; font-size: 38px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+    .countdown span { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 6px; background: var(--red); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 14px; border: 0; transition: transform .15s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,.35); }
+
+    section.block { padding: clamp(56px, 7vw, 96px) 0; }
+    .head { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+    .head h2 { font-weight: 900; font-style: italic; text-transform: uppercase; font-size: clamp(32px, 4.4vw, 54px); line-height: 1; }
+    .head h2::before { content: ''; display: block; width: 46px; height: 5px; background: var(--red); margin-bottom: 14px; transform: skewX(-20deg); }
+
+    /* Podium */
+    .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: end; }
+    .pod { position: relative; padding: 22px; border-radius: 10px; background: var(--bg2); border-top: 4px solid var(--c); overflow: hidden; }
+    .pod b.pos { position: absolute; right: 14px; top: 2px; font-size: 90px; font-weight: 900; font-style: italic; color: rgba(255,255,255,.06); line-height: 1; }
+    .pod p { color: var(--muted); font-size: 14px; }
+    .pod h3 { font-size: 26px; font-weight: 700; line-height: 1.1; margin: 4px 0; }
+    .pod .time { font-variant-numeric: tabular-nums; font-weight: 600; }
+    .pod:nth-child(1) { min-height: 210px; }
+    .pod:nth-child(2) { min-height: 180px; order: -1; }
+    .pod:nth-child(3) { min-height: 160px; }
+
+    /* Classements */
+    .tabs { display: inline-flex; padding: 4px; border-radius: 8px; background: var(--bg2); }
+    .tabs button { padding: 10px 18px; border: 0; border-radius: 6px; background: none; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: .06em; color: var(--muted); }
+    .tabs button.on { background: var(--red); color: #fff; }
+    .standings { list-style: none; border-radius: 12px; overflow: hidden; background: var(--bg2); }
+    .standings li { display: grid; grid-template-columns: 48px 6px 1fr minmax(80px, 34%) 64px; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .standings li:last-child { border: 0; }
+    .standings .p { font-weight: 900; font-size: 20px; font-style: italic; color: var(--muted); }
+    .standings li:nth-child(-n+3) .p { color: #fff; }
+    .standings .bar { width: 6px; height: 30px; border-radius: 3px; background: var(--c); }
+    .standings .n b { display: block; font-size: 17px; }
+    .standings .n span { color: var(--muted); font-size: 13px; }
+    .standings .track { height: 6px; border-radius: 3px; background: rgba(255,255,255,.07); overflow: hidden; }
+    .standings .track i { display: block; height: 100%; background: var(--c); border-radius: 3px; transition: width .8s cubic-bezier(.2,.7,.1,1); }
+    .standings .pts { text-align: right; font-weight: 900; font-size: 20px; font-variant-numeric: tabular-nums; }
+
+    /* Calendrier */
+    .cal { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 1fr); gap: 14px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; }
+    .gp { scroll-snap-align: start; padding: 20px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--line); }
+    .gp.next { border-color: var(--red); background: linear-gradient(160deg, rgba(255,45,45,.18), var(--bg2) 60%); }
+    .gp .r { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+    .gp .flag { font-size: 30px; margin: 10px 0 4px; }
+    .gp h3 { font-size: 21px; line-height: 1.15; }
+    .gp p { color: var(--muted); font-size: 14px; }
+    .gp .st { display: inline-block; margin-top: 12px; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,.08); }
+    .gp.next .st { background: var(--red); }
+
+    /* Actus */
+    .news { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; }
+    .card { position: relative; border-radius: 12px; overflow: hidden; background: var(--bg2); }
+    .card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform .5s; }
+    .card:hover img { transform: scale(1.05); }
+    .card div { padding: 16px 18px 20px; }
+    .card .tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--red); }
+    .card h3 { font-size: 20px; line-height: 1.2; margin-top: 4px; }
+    .card.big { grid-row: span 2; }
+    .card.big img { aspect-ratio: auto; height: 100%; position: absolute; inset: 0; }
+    .card.big div { position: absolute; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, rgba(0,0,0,.9)); padding-top: 80px; }
+    .card.big h3 { font-size: 30px; }
+    .card.big { min-height: 420px; }
+
+    .app-cta { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: clamp(28px, 5vw, 56px); border-radius: 16px; background: linear-gradient(120deg, var(--red), #9b0f1f); }
+    .app-cta h2 { font-weight: 900; font-style: italic; text-transform: uppercase; font-size: clamp(28px, 3.6vw, 46px); line-height: 1; }
+    .app-cta p { opacity: .85; margin-top: 8px; }
+    .app-cta .btn { background: #fff; color: #111; }
+    footer { padding: 40px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+    footer .wrap { display: grid; gap: 10px; }
+    footer a { color: #fff; }
+    @media (max-width: 820px) {
+      header.top nav { display: none; }
+      .podium, .news { grid-template-columns: 1fr; }
+      .pod:nth-child(2) { order: 0; }
+      .card.big { min-height: 340px; }
+      .standings li { grid-template-columns: 34px 5px 1fr 54px; gap: 10px; }
+      .standings .track { display: none; }
+      .countdown div { min-width: 66px; }
+      .countdown b { font-size: 28px; }
+      .app-cta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Template de démonstration conçu par Romain Legros. Site fictif : écuries, pilotes et résultats sont inventés. <a href="../../#f1">← Retour au portfolio</a></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#"><i></i>PITWALL</a>
+      <nav><a href="#resultats">Résultats</a><a href="#classement">Classement</a><a href="#calendrier">Calendrier</a><a href="#actus">Actus</a></nav>
+      <span class="live-pill">Live</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="../img-f1/hero.webp" alt="" />
+    <div class="wrap">
+      <span class="eyebrow">Prochaine course · Manche 8</span>
+      <h1 id="next-name">Grand Prix<br />de Monaco</h1>
+      <div class="countdown" id="countdown" aria-label="Compte à rebours">
+        <div><b data-u="d">00</b><span>Jours</span></div>
+        <div><b data-u="h">00</b><span>Heures</span></div>
+        <div><b data-u="m">00</b><span>Min</span></div>
+        <div><b data-u="s">00</b><span>Sec</span></div>
+      </div>
+      <a class="btn" href="#calendrier">Voir le programme</a>
+      <a class="btn ghost" href="#classement">Classement</a>
+    </div>
+  </section>
+
+  <section class="block" id="resultats">
+    <div class="wrap">
+      <div class="head"><h2>Dernier podium</h2><p style="color:var(--muted)">Grand Prix d'Espagne · Barcelone</p></div>
+      <div class="podium">
+        <div class="pod" style="--c:#ff2d2d"><b class="pos">1</b><p>Scuderia Rossa</p><h3>Luca Moretti</h3><p class="time">1:32:41.118</p></div>
+        <div class="pod" style="--c:#2d7dff"><b class="pos">2</b><p>Blue Arrow Racing</p><h3>Noah Lindqvist</h3><p class="time">+ 2.904 s</p></div>
+        <div class="pod" style="--c:#ff8a00"><b class="pos">3</b><p>Papaya GP</p><h3>Théo Marchand</h3><p class="time">+ 7.551 s</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="classement" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Classement</h2>
+        <div class="tabs" role="tablist"><button class="on" type="button" data-tab="drivers">Pilotes</button><button type="button" data-tab="teams">Écuries</button></div>
+      </div>
+      <ol class="standings" id="standings"></ol>
+    </div>
+  </section>
+
+  <section class="block" id="calendrier" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Calendrier</h2><p style="color:var(--muted)">Fais défiler →</p></div>
+      <div class="cal" id="cal"></div>
+    </div>
+  </section>
+
+  <section class="block" id="actus" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><h2>Actus</h2></div>
+      <div class="news">
+        <a class="card big" href="#"><img src="../img-f1/curb.webp" alt="" loading="lazy" /><div><span class="tag">Analyse</span><h3>Comment la Scuderia Rossa a retrouvé sa vitesse en qualifications</h3></div></a>
+        <a class="card" href="#"><img src="../img-f1/pitlane.webp" alt="" loading="lazy" /><div><span class="tag">Stratégie</span><h3>Arrêts aux stands : la course au chrono sous les 2 secondes</h3></div></a>
+        <a class="card" href="#"><img src="../img-f1/helmet.webp" alt="" loading="lazy" /><div><span class="tag">Interview</span><h3>Théo Marchand : « Monaco, c'est la course de l'année »</h3></div></a>
+        <a class="card" href="#"><img src="../img-f1/tyre.webp" alt="" loading="lazy" /><div><span class="tag">Technique</span><h3>Pneus tendres ou médiums : le casse-tête du week-end</h3></div></a>
+        <a class="card" href="#"><img src="../img-f1/dusk.webp" alt="" loading="lazy" /><div><span class="tag">Calendrier</span><h3>Une nouvelle course de nuit au programme de la saison</h3></div></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap app-cta">
+      <div><h2>Le live dans ta poche</h2><p>Timing en direct, positions sur la carte du circuit et notifications à chaque dépassement.</p></div>
+      <a class="btn" href="../pitwall-app/">Voir l'application</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>Template de démonstration conçu et développé par <a href="../../">Romain Legros</a>. PITWALL est un site fictif, sans lien avec la Formule 1 : écuries, pilotes et résultats sont inventés.</p>
+      <p>Photos : Isaac Maffeis, Jesper Giortz-Behrens, Louis Verplancken, Maurice Sahl, Nick van der Vegt, Sandis Kovaļovs et jules mas, via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Données fictives
+    const TEAMS = { rossa: ['Scuderia Rossa', '#ff2d2d'], arrow: ['Blue Arrow Racing', '#2d7dff'], papaya: ['Papaya GP', '#ff8a00'], silver: ['Silver Star', '#27d3c3'], alpine: ['Alpenglow', '#ff5fb0'], verde: ['Verde Racing', '#2fbf5b'] };
+    const DRIVERS = [
+      ['Luca Moretti', 'rossa', 156], ['Noah Lindqvist', 'arrow', 148], ['Théo Marchand', 'papaya', 131], ['Kenji Aoyama', 'silver', 118],
+      ['Mateo Rivera', 'rossa', 102], ['Elias Brandt', 'arrow', 87], ['Oscar Whitfield', 'papaya', 79], ['Hugo Lefèvre', 'alpine', 54],
+      ['Rafael Costa', 'silver', 47], ['Jonas Keller', 'verde', 31],
+    ];
+    const list = document.getElementById('standings');
+    function render(kind) {
+      let rows;
+      if (kind === 'drivers') rows = DRIVERS.map(([n, t, p]) => ({ name: n, sub: TEAMS[t][0], c: TEAMS[t][1], pts: p }));
+      else {
+        const sums = {};
+        DRIVERS.forEach(([, t, p]) => { sums[t] = (sums[t] || 0) + p; });
+        rows = Object.entries(sums).sort((a, b) => b[1] - a[1]).map(([t, p]) => ({ name: TEAMS[t][0], sub: `${DRIVERS.filter((d) => d[1] === t).length} pilotes`, c: TEAMS[t][1], pts: p }));
+      }
+      const max = rows[0].pts;
+      list.innerHTML = rows.map((r, i) => `<li style="--c:${r.c}"><span class="p">${i + 1}</span><span class="bar"></span><span class="n"><b>${r.name}</b><span>${r.sub}</span></span><span class="track"><i style="width:0"></i></span><span class="pts">${r.pts}</span></li>`).join('');
+      requestAnimationFrame(() => list.querySelectorAll('.track i').forEach((el, i) => { el.style.width = `${(rows[i].pts / max) * 100}%`; }));
+    }
+    document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-tab]').forEach((x) => x.classList.toggle('on', x === b));
+      render(b.dataset.tab);
+    }));
+    render('drivers');
+
+    // Calendrier : les dates sont calculées autour d'aujourd'hui pour que la démo reste « vivante »
+    const GPS = [['Bahreïn', 'Sakhir', '🇧🇭'], ['Australie', 'Melbourne', '🇦🇺'], ['Japon', 'Suzuka', '🇯🇵'], ['Miami', 'Miami', '🇺🇸'], ['Italie', 'Imola', '🇮🇹'], ['Canada', 'Montréal', '🇨🇦'], ['Espagne', 'Barcelone', '🇪🇸'], ['Monaco', 'Monte-Carlo', '🇲🇨'], ['Grande-Bretagne', 'Silverstone', '🇬🇧'], ['Belgique', 'Spa-Francorchamps', '🇧🇪'], ['Pays-Bas', 'Zandvoort', '🇳🇱'], ['Italie', 'Monza', '🇮🇹']];
+    const NEXT = 7;
+    const now = new Date();
+    const race = new Date(now);
+    race.setDate(now.getDate() + ((7 - now.getDay()) % 7 || 7) + 7);
+    race.setHours(15, 0, 0, 0);
+    const fmt = (d) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    document.getElementById('cal').innerHTML = GPS.map(([pays, ville, flag], i) => {
+      const d = new Date(race); d.setDate(race.getDate() + (i - NEXT) * 14);
+      const st = i < NEXT ? 'Terminé' : i === NEXT ? 'Prochain' : 'À venir';
+      return `<article class="gp ${i === NEXT ? 'next' : ''}"><p class="r">Manche ${i + 1} · ${fmt(d)}</p><p class="flag">${flag}</p><h3>Grand Prix ${pays === 'Miami' ? 'de Miami' : `de ${pays}`}</h3><p>${ville}</p><span class="st">${st}</span></article>`;
+    }).join('');
+    const cal = document.getElementById('cal');
+    cal.scrollLeft = cal.querySelector('.gp.next').offsetLeft - cal.offsetLeft - 20;
+
+    // Compte à rebours
+    const cd = Object.fromEntries([...document.querySelectorAll('#countdown b')].map((b) => [b.dataset.u, b]));
+    const pad = (n) => String(n).padStart(2, '0');
+    function tick() {
+      let s = Math.max(0, Math.floor((race - Date.now()) / 1000));
+      cd.d.textContent = pad(Math.floor(s / 86400)); s %= 86400;
+      cd.h.textContent = pad(Math.floor(s / 3600)); s %= 3600;
+      cd.m.textContent = pad(Math.floor(s / 60));
+      cd.s.textContent = pad(s % 60);
+    }
+    tick(); setInterval(tick, 1000);
+  </script>
+</body>
+</html>
