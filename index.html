@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css?v=2026100402" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2026100403" />
   <script type="importmap">
     { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
   </script>
@@ -29,9 +29,9 @@
   <div id="clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <canvas id="pixelwipe" aria-hidden="true"></canvas>
   <div id="warp-screen" aria-hidden="true">
-    <p class="ws-small">Univers 02</p>
-    <p class="ws-big">WORLD 2</p>
-    <p class="ws-sub">Jeux vidéo</p>
+    <p class="ws-small" id="ws-small">Univers 02</p>
+    <p class="ws-big" id="ws-big">WORLD 2</p>
+    <p class="ws-sub" id="ws-sub">Jeux vidéo</p>
     <p class="ws-lives"><span class="ws-heart"></span> × 3</p>
   </div>
 
@@ -225,7 +225,7 @@
       <div class="warp-hint">
         <span class="warp-coin" aria-hidden="true"></span>
         <p>Insert coin</p>
-        <span>Continue de scroller pour changer de monde</span>
+        <span>Continue de scroller pour entrer dans le monde 2</span>
       </div>
     </section>
 
@@ -366,10 +366,6 @@
           </div>
         </article>
 
-        <div class="game-over">
-          <p class="px-kicker">To be continued</p>
-          <p class="go-title">NEXT WORLD<br />LOADING<span class="dots" aria-hidden="true"></span></p>
-        </div>
       </div>
     </section>
 
@@ -386,6 +382,6 @@
     </footer>
   </main>
 
-  <script type="module" src="assets/js/main.js?v=2026100402"></script>
+  <script type="module" src="assets/js/main.js?v=2026100403"></script>
 </body>
 </html>

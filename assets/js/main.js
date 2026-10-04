@@ -535,71 +535,123 @@ function frame(now) {
 }
 
 /* ==========================================================
-   Univers 02 : transition en pixels puis mode arcade
+   Univers 02 : changement de monde en pixels, puis mode arcade
    ========================================================== */
 document.documentElement.classList.add('js');
-const warp = document.getElementById('warp');
 const arcade = document.getElementById('arcade');
 const wipe = document.getElementById('pixelwipe');
 const wctx = wipe.getContext('2d');
 const warpScreen = document.getElementById('warp-screen');
+const wsSmall = document.getElementById('ws-small');
+const wsBig = document.getElementById('ws-big');
+const wsSub = document.getElementById('ws-sub');
 const scoreEl = document.getElementById('score');
 const coinsEl = document.getElementById('coins');
 const WIPE_BG = '#07051a';
 const WIPE_SPARK = ['#ffcc33', '#8f7bff', '#4fe3ff', '#ff4d6d', '#a50044', '#004d98'];
 
-// Une case de la grille = 1 pixel du canvas, agrandi sans lissage
+let cell = 38;
 let order = [];
-let wcols = 0;
-let lastWipeKey = '';
 function setupWipe() {
-  const cell = innerWidth < 640 ? 26 : 38;
-  wcols = Math.ceil(innerWidth / cell);
-  const wrows = Math.ceil(innerHeight / cell);
-  wipe.width = wcols;
-  wipe.height = wrows;
-  wipe.style.width = `${wcols * cell}px`;
-  wipe.style.height = `${wrows * cell}px`;
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  cell = innerWidth < 640 ? 26 : 38;
+  wipe.width = Math.round(innerWidth * dpr);
+  wipe.height = Math.round(innerHeight * dpr);
+  wctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const cols = Math.ceil(innerWidth / cell);
+  const rows = Math.ceil(innerHeight / cell);
   // Balayage en diagonale, avec du bruit pour l'effet « pixels qui tombent »
   order = [];
-  for (let y = 0; y < wrows; y++) {
-    for (let x = 0; x < wcols; x++) order.push([x, y, (x + y) / (wcols + wrows) + Math.random() * 0.35]);
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) order.push([x * cell, y * cell, (x + y) / (cols + rows) + Math.random() * 0.35]);
   }
   order.sort((a, b) => a[2] - b[2]);
-  lastWipeKey = '';
 }
 
-function drawWipe(t) {
-  const fill = ease(range(t, 0, 0.42));
-  const clear = ease(range(t, 0.58, 0.9));
-  const visible = fill > 0 && clear < 1;
-  wipe.style.visibility = visible ? 'visible' : 'hidden';
+// fill : 0 → 1 recouvre l'écran ; clear : 0 → 1 le découvre
+function drawWipe(fill, clear) {
   const n = order.length;
   const a = Math.floor(clear * n);
   const b = Math.floor(fill * n);
-  const key = `${a}:${b}`;
-  if (!visible || key === lastWipeKey) return;
-  lastWipeKey = key;
+  wctx.clearRect(0, 0, innerWidth, innerHeight);
   const edge = Math.max(1, Math.floor(n * 0.05));
-  wctx.clearRect(0, 0, wipe.width, wipe.height);
   for (let i = a; i < b; i++) {
-    const front = i >= b - edge || (clear > 0 && i < a + edge);
+    const front = (fill < 1 && i >= b - edge) || (clear > 0 && i < a + edge);
     wctx.fillStyle = front ? WIPE_SPARK[(i * 7) % WIPE_SPARK.length] : WIPE_BG;
-    wctx.fillRect(order[i][0], order[i][1], 1, 1);
+    wctx.fillRect(order[i][0], order[i][1], cell + 0.5, cell + 0.5);
   }
+}
+
+function tween(ms, step) {
+  return new Promise((resolve) => {
+    const t0 = performance.now();
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / ms);
+      step(k);
+      if (k < 1) requestAnimationFrame(tick);
+      else resolve();
+    };
+    requestAnimationFrame(tick);
+  });
+}
+const pause = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Le scroll est bloqué pendant le changement de monde
+const block = (e) => e.preventDefault();
+function lockScroll(on) {
+  document.documentElement.style.overflow = on ? 'hidden' : '';
+  const fn = on ? addEventListener : removeEventListener;
+  fn('wheel', block, { passive: false });
+  fn('touchmove', block, { passive: false });
+}
+function jumpTo(y) {
+  window.scrollTo(0, y);
+  readScroll();
+}
+
+let inArcade = false;
+let warping = false;
+async function changeWorld(toArcade) {
+  warping = true;
+  // Après un clic dans le menu, on garde la destination ; sinon on se cale au début du monde
+  const from = scrollY;
+  lockScroll(true);
+  wsSmall.textContent = toArcade ? 'Univers 02' : 'Univers 01';
+  wsBig.textContent = toArcade ? 'WORLD 2' : 'WORLD 1';
+  wsSub.textContent = toArcade ? 'Jeux vidéo' : 'FC Barcelona';
+  wipe.style.visibility = 'visible';
+  const speed = reduceMotion ? 0.01 : toArcade ? 1 : 0.7;
+
+  await tween(520 * speed, (k) => drawWipe(ease(k), 0));
+  inArcade = toArcade;
+  document.body.classList.toggle('arcade', toArcade);
+  jumpTo(toArcade ? Math.max(from, arcade.offsetTop) : Math.min(from, arcade.offsetTop - innerHeight * 1.25));
+  warpScreen.style.visibility = 'visible';
+  await tween(180 * speed, (k) => { warpScreen.style.opacity = k; });
+  await pause(toArcade ? 900 * speed : 550 * speed);
+  await tween(180 * speed, (k) => { warpScreen.style.opacity = 1 - k; });
+  warpScreen.style.visibility = 'hidden';
+  await tween(560 * speed, (k) => drawWipe(1, ease(k)));
+  wipe.style.visibility = 'hidden';
+
+  lockScroll(false);
+  warping = false;
+  checkWorld();
+}
+
+// Entrée : quand l'arcade arrive dans l'écran. Sortie : quand elle en est complètement ressortie par le bas.
+function checkWorld() {
+  if (warping) return;
+  const top = arcade.getBoundingClientRect().top;
+  if (!inArcade && top < innerHeight * 0.85) changeWorld(true);
+  else if (inArcade && top > innerHeight * 1.05) changeWorld(false);
 }
 
 let bestScore = 0;
 function updateArcade() {
-  const top = warp.offsetTop;
-  const t = range(scrollY, top - innerHeight * 0.7, arcade.offsetTop);
-  drawWipe(t);
-  const ws = Math.min(range(t, 0.4, 0.47), 1 - range(t, 0.53, 0.6));
-  warpScreen.style.opacity = ws.toFixed(3);
-  warpScreen.style.visibility = ws > 0.01 ? 'visible' : 'hidden';
-  document.body.classList.toggle('arcade', t >= 0.5);
-
-  bestScore = Math.max(bestScore, Math.floor(Math.max(0, scrollY - top) / 4) * 10);
+  checkWorld();
+  if (!inArcade) return;
+  bestScore = Math.max(bestScore, Math.floor(Math.max(0, scrollY - arcade.offsetTop + innerHeight) / 4) * 10);
   scoreEl.textContent = String(bestScore).padStart(6, '0');
 }
 
@@ -643,8 +695,13 @@ document.querySelectorAll('.trailer[data-yt]').forEach((btn) => {
 });
 
 addEventListener('scroll', updateArcade, { passive: true });
-addEventListener('resize', () => { setupWipe(); updateArcade(); });
+addEventListener('resize', setupWipe);
 setupWipe();
+// Page rechargée déjà dans l'arcade : pas d'animation
+if (arcade.getBoundingClientRect().top < innerHeight * 0.85) {
+  inArcade = true;
+  document.body.classList.add('arcade');
+}
 updateArcade();
 
 /* ==========================================================

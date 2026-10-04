@@ -431,7 +431,7 @@ main > section, main > footer { pointer-events: auto; }
 /* Transition : grille de pixels + écran « WORLD 2 » */
 #pixelwipe {
   position: fixed; inset: 0; z-index: 40; width: 100vw; height: 100vh;
-  pointer-events: none; image-rendering: pixelated; visibility: hidden;
+  pointer-events: none; visibility: hidden;
 }
 #warp-screen {
   position: fixed; inset: 0; z-index: 41; pointer-events: none;
@@ -449,11 +449,11 @@ main > section, main > footer { pointer-events: auto; }
 }
 
 #warp {
-  position: relative; height: 150vh; background: var(--bg);
+  position: relative; height: 70vh; background: var(--bg);
   display: flex; align-items: flex-start; justify-content: center;
 }
 .warp-hint {
-  position: sticky; top: 38vh; text-align: center;
+  position: sticky; top: 30vh; text-align: center;
   font-family: var(--px); color: var(--ar-gold); text-transform: uppercase;
   display: flex; flex-direction: column; align-items: center; gap: 16px;
 }
@@ -584,10 +584,6 @@ main > section, main > footer { pointer-events: auto; }
 .boss-warning span { background: #000; color: var(--ar-red); padding: 6px 10px; animation: blink 1.4s steps(2) infinite; }
 .boss .crt { box-shadow: 0 0 0 4px var(--accent), 0 0 60px rgba(255, 77, 109, .35); }
 
-.game-over { text-align: center; padding: 70px 0 20px; }
-.go-title { font-family: var(--px); font-size: clamp(18px, 3vw, 30px); line-height: 1.5; margin-top: 18px; color: var(--ar-dim); }
-.go-title .dots::after { content: ''; animation: dots 1.5s steps(4) infinite; }
-@keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
 
 /* ---------- Tout le site passe en mode arcade ---------- */
 .hud-arcade { display: none; font-family: var(--px); font-size: 10px; color: #fff; letter-spacing: .04em; margin-right: 6px; }
