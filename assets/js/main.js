@@ -639,12 +639,12 @@ async function changeWorld(toArcade) {
   checkWorld();
 }
 
-// Entrée : quand l'arcade arrive dans l'écran. Sortie : quand elle en est complètement ressortie par le bas.
+// Entrée : dès la fin de la page du monde Barça. Sortie : quand l'arcade est ressortie de l'écran par le bas.
 function checkWorld() {
   if (warping) return;
   const top = arcade.getBoundingClientRect().top;
-  if (!inArcade && top < innerHeight * 0.85) changeWorld(true);
-  else if (inArcade && top > innerHeight * 1.05) changeWorld(false);
+  if (!inArcade && top < innerHeight * 0.97) changeWorld(true);
+  else if (inArcade && top > innerHeight * 1.08) changeWorld(false);
 }
 
 let bestScore = 0;
@@ -698,7 +698,7 @@ addEventListener('scroll', updateArcade, { passive: true });
 addEventListener('resize', setupWipe);
 setupWipe();
 // Page rechargée déjà dans l'arcade : pas d'animation
-if (arcade.getBoundingClientRect().top < innerHeight * 0.85) {
+if (arcade.getBoundingClientRect().top < innerHeight * 0.97) {
   inArcade = true;
   document.body.classList.add('arcade');
 }
