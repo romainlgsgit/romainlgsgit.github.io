@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Bistrot du Roumois — Proposition de site</title>
+  <meta name="description" content="Maquette de site internet pour Le Bistrot du Roumois à Bourg-Achard, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="icon" href="img/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0a09; --bg2: #141210; --card: #1a1715; --ink: #f3ece0; --muted: #a59b8c; --line: rgba(196,154,91,.22);
+      --gold: #c49a5b; --gold-hi: #e2bd7f; --red: #b8262d; --green: #5fb36b;
+      --caps: 'Bebas Neue', Impact, sans-serif; --serif: 'Old Standard TT', Georgia, serif; --script: 'Great Vibes', cursive; --body: 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding-left: clamp(16px, 4vw, 44px); padding-right: clamp(16px, 4vw, 44px); }
+    .bolt { display: inline-block; width: 14px; height: 20px; background: var(--gold); clip-path: polygon(55% 0, 10% 55%, 45% 55%, 30% 100%, 90% 40%, 55% 40%, 75% 0); vertical-align: middle; }
+
+    .demo-bar { background: var(--gold); color: #1a1208; font-size: 13px; text-align: center; padding: 9px 16px; font-weight: 500; }
+    .demo-bar a { font-weight: 700; border-bottom: 1px solid currentColor; }
+
+    /* En-tête */
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(11,10,9,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 70px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
+    .brand b { font-family: var(--caps); font-weight: 400; font-size: 25px; letter-spacing: .06em; line-height: 1; }
+    .brand small { display: block; font-size: 10.5px; letter-spacing: .3em; color: var(--gold); text-transform: uppercase; margin-top: 3px; }
+    header nav { display: flex; gap: 30px; font-family: var(--caps); font-size: 19px; letter-spacing: .08em; }
+    header nav a { color: var(--muted); transition: color .2s; }
+    header nav a:hover { color: var(--gold-hi); }
+    .btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 4px; padding: 13px 22px; font-family: var(--caps); font-size: 20px; letter-spacing: .08em; line-height: 1; border: 1.5px solid var(--gold); color: var(--gold-hi); transition: .2s; }
+    .btn:hover { background: rgba(196,154,91,.12); }
+    .btn.solid { background: var(--gold); color: #120d06; }
+    .btn.solid:hover { background: var(--gold-hi); }
+    .btn svg { width: 17px; height: 17px; fill: currentColor; }
+    header .btn { padding: 10px 16px; font-size: 18px; }
+
+    /* Hero */
+    .hero { position: relative; min-height: min(88vh, 820px); display: grid; align-items: end; overflow: hidden; }
+    .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1); transform: scale(1.04); animation: zoom 18s ease-out forwards; }
+    @keyframes zoom { to { transform: scale(1); } }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,10,9,.35) 0%, rgba(11,10,9,.55) 45%, var(--bg) 100%); }
+    .hero .wrap { position: relative; z-index: 1; width: 100%; padding-top: 80px; padding-bottom: clamp(40px, 6vw, 80px); }
+    .status { display: inline-flex; align-items: center; gap: 9px; background: rgba(11,10,9,.7); border: 1px solid var(--line); border-radius: 99px; padding: 7px 14px; font-size: 14px; font-weight: 500; }
+    .status i { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(95,179,107,.6); animation: pulse 2s infinite; }
+    .status.closed i { background: var(--red); animation: none; }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(95,179,107,0); } 100% { box-shadow: 0 0 0 0 rgba(95,179,107,0); } }
+    .hero .script { font-family: var(--script); font-size: clamp(34px, 4.5vw, 54px); color: var(--gold-hi); line-height: 1; margin-top: 26px; }
+    .hero h1 { font-family: var(--caps); font-weight: 400; font-size: clamp(64px, 12vw, 168px); line-height: .86; letter-spacing: .02em; text-shadow: 0 6px 40px rgba(0,0,0,.5); }
+    .hero h1 span { color: var(--gold); }
+    .hero .tags { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 22px 0 30px; font-family: var(--caps); font-size: 22px; letter-spacing: .14em; color: var(--muted); }
+    .hero .tags b { font-weight: 400; color: var(--ink); }
+    .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    /* Annonce */
+    .news { background: var(--red); }
+    .news .wrap { display: flex; align-items: center; justify-content: center; gap: 14px; padding-top: 14px; padding-bottom: 14px; text-align: center; flex-wrap: wrap; }
+    .news b { font-family: var(--caps); font-weight: 400; font-size: 23px; letter-spacing: .06em; }
+    .news span { font-size: 15px; }
+
+    section.block { padding: clamp(70px, 9vw, 120px) 0; }
+    .kicker { font-family: var(--caps); font-size: 19px; letter-spacing: .24em; color: var(--gold); display: flex; align-items: center; gap: 10px; }
+    .h2 { font-family: var(--caps); font-weight: 400; font-size: clamp(46px, 6.4vw, 84px); line-height: .92; letter-spacing: .02em; margin-top: 10px; }
+    .h2 em { font-style: normal; color: var(--gold); }
+    .lead { color: var(--muted); max-width: 540px; margin-top: 16px; font-size: 17px; }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 44px; }
+
+    /* 4 univers */
+    .day { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .moment { background: var(--bg2); padding: 30px 26px 32px; display: flex; flex-direction: column; gap: 10px; transition: background .3s; }
+    .moment:hover { background: var(--card); }
+    .moment svg { width: 40px; height: 40px; stroke: var(--gold); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+    .moment .hr { font-family: var(--caps); font-size: 17px; letter-spacing: .14em; color: var(--gold); margin-top: 8px; }
+    .moment h3 { font-family: var(--caps); font-weight: 400; font-size: 34px; letter-spacing: .03em; line-height: 1; }
+    .moment p { color: var(--muted); font-size: 15px; }
+
+    /* Restauration */
+    .resto { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .resto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .service { position: relative; border: 1px solid var(--line); border-radius: 8px; padding: clamp(26px, 3.5vw, 40px); background: var(--bg); overflow: hidden; }
+    .service .when { font-family: var(--script); font-size: 46px; color: var(--gold-hi); line-height: 1; }
+    .service h3 { font-family: var(--caps); font-weight: 400; font-size: 44px; letter-spacing: .03em; line-height: 1; margin: 6px 0 12px; }
+    .service p { color: var(--muted); }
+    .pdj { margin-top: 24px; border: 1px dashed var(--gold); border-radius: 6px; padding: 18px 20px; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; }
+    .pdj small { grid-column: 1 / -1; font-family: var(--caps); font-size: 16px; letter-spacing: .18em; color: var(--gold); }
+    .pdj b { font-family: var(--serif); font-size: 23px; font-weight: 400; }
+    .pdj span { font-family: var(--caps); font-size: 30px; color: var(--gold-hi); }
+    .pdj em { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .chips span { border: 1px solid var(--line); border-radius: 99px; padding: 7px 14px; font-size: 14px; color: var(--ink); }
+    .resto-note { margin-top: 22px; text-align: center; color: var(--muted); font-size: 15px; }
+    .resto-note a { color: var(--gold-hi); font-weight: 600; }
+
+    /* Carte */
+    .menu { display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: start; }
+    .tabs { display: grid; gap: 4px; position: sticky; top: 100px; }
+    .tabs button { text-align: left; border: 0; background: transparent; padding: 12px 16px; border-radius: 6px; font-family: var(--caps); font-size: 23px; letter-spacing: .06em; color: var(--muted); border-left: 2px solid transparent; transition: .2s; }
+    .tabs button:hover { color: var(--ink); }
+    .tabs button.on { color: var(--gold-hi); background: var(--bg2); border-left-color: var(--gold); }
+    .board { background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; padding: clamp(24px, 4vw, 44px); min-height: 420px; }
+    .board h3 { font-family: var(--serif); font-weight: 400; font-size: 34px; color: var(--gold-hi); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 8px; }
+    .board .cols { display: flex; justify-content: flex-end; gap: 0; font-family: var(--caps); letter-spacing: .1em; color: var(--muted); font-size: 16px; margin: 18px 0 4px; }
+    .board .cols span, .row .p { width: 74px; text-align: right; }
+    .row { display: flex; align-items: baseline; gap: 10px; padding: 11px 0; border-bottom: 1px solid rgba(196,154,91,.12); font-family: var(--serif); font-size: 19px; }
+    .row .n { flex: 1; display: flex; align-items: baseline; gap: 10px; }
+    .row .n::after { content: ''; flex: 1; border-bottom: 1px dotted rgba(196,154,91,.35); transform: translateY(-4px); }
+    .row .p { font-family: var(--body); font-size: 15.5px; font-weight: 600; color: var(--gold-hi); }
+    .row .p.dim { color: var(--muted); font-weight: 500; }
+    .row small { display: block; font-family: var(--body); font-size: 13px; color: var(--muted); }
+    .board .foot { margin-top: 20px; font-size: 13.5px; color: var(--muted); }
+    .board-in { animation: fade .35s ease; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } }
+
+    /* Soirées */
+    .events { background: var(--bg2); border-top: 1px solid var(--line); }
+    .next { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(24px, 4vw, 54px); align-items: center; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--bg); margin-bottom: 26px; }
+    .next img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .next .txt { padding: clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px) 0; display: grid; gap: 14px; }
+    .next .date { display: flex; gap: 14px; align-items: center; }
+    .next .date b { font-family: var(--caps); font-weight: 400; font-size: 70px; line-height: .8; color: var(--gold); }
+    .next .date span { font-family: var(--caps); font-size: 22px; letter-spacing: .1em; line-height: 1.05; }
+    .next h3 { font-family: var(--caps); font-weight: 400; font-size: clamp(42px, 5vw, 64px); line-height: .95; letter-spacing: .02em; }
+    .next p { color: var(--muted); }
+    .next .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .next .meta span { background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 6px 13px; font-size: 13.5px; }
+    .past { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .poster { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+    .poster img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: transform .6s, filter .4s; filter: grayscale(.25) brightness(.85); }
+    .poster:hover img { transform: scale(1.05); filter: none; }
+    .poster figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 12px; background: linear-gradient(transparent, rgba(0,0,0,.9)); font-size: 13.5px; }
+    .poster figcaption b { display: block; font-family: var(--caps); font-weight: 400; font-size: 22px; letter-spacing: .04em; }
+
+    /* Infos */
+    .infos { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .panel { background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; padding: clamp(24px, 3.5vw, 38px); }
+    .panel h3 { font-family: var(--caps); font-weight: 400; font-size: 34px; letter-spacing: .04em; margin-bottom: 14px; }
+    .hours { list-style: none; }
+    .hours li { display: flex; justify-content: space-between; padding: 11px 12px; border-bottom: 1px solid rgba(196,154,91,.12); font-family: var(--serif); font-size: 18px; border-radius: 4px; }
+    .hours li span:last-child { font-family: var(--body); font-size: 15.5px; font-weight: 500; }
+    .hours li.today { background: rgba(196,154,91,.12); color: var(--gold-hi); }
+    .hours li.off span:last-child { color: var(--muted); }
+    .contact-list { display: grid; gap: 4px; margin-bottom: 18px; }
+    .contact-list a { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid rgba(196,154,91,.12); font-size: 16px; }
+    .contact-list a:hover { color: var(--gold-hi); }
+    .contact-list svg { width: 20px; height: 20px; fill: var(--gold); flex: none; }
+    .map { border-radius: 6px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 9; filter: grayscale(1) invert(.92) contrast(.9); }
+    .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    footer.foot { border-top: 1px solid var(--line); padding: 50px 0 34px; text-align: center; color: var(--muted); font-size: 14px; }
+    footer .logo { width: 110px; margin: 0 auto 14px; border-radius: 50%; }
+    footer .soc { display: flex; justify-content: center; gap: 12px; margin: 18px 0 26px; }
+    footer .legal { font-size: 13px; }
+    footer .legal a { color: var(--gold-hi); }
+
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23f3ece0' fill-opacity='.07'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s, transform .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 980px) {
+      header nav { display: none; }
+      .day { grid-template-columns: 1fr 1fr; }
+      .resto-grid, .infos { grid-template-columns: 1fr; }
+      .menu { grid-template-columns: 1fr; gap: 18px; }
+      .tabs { position: static; display: flex; overflow-x: auto; gap: 6px; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none; }
+      .tabs button { flex: none; border-left: 0; border-bottom: 2px solid transparent; font-size: 20px; padding: 10px 14px; }
+      .tabs button.on { border-bottom-color: var(--gold); }
+      .past { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .brand b { font-size: 21px; }
+      .brand small { letter-spacing: .2em; }
+      header .btn span { display: none; }
+      .day { grid-template-columns: 1fr; }
+      .next { grid-template-columns: 1fr; }
+      .next .txt { padding: 0 22px 26px; }
+      .row { font-size: 17px; }
+      .board .cols span, .row .p { width: 56px; }
+      .hero .tags { font-size: 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Proposition de site réalisée par Romain Legros pour Le Bistrot du Roumois · maquette avec vos vraies infos. <a href="../../">Voir mon portfolio →</a></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#"><img src="img/logo.webp" alt="" /><div><b>Le Bistrot du Roumois</b><small>Bourg-Achard</small></div></a>
+      <nav>
+        <a href="#restauration">Restauration</a>
+        <a href="#carte">La carte</a>
+        <a href="#soirees">Soirées</a>
+        <a href="#infos">Infos</a>
+      </nav>
+      <a class="btn solid" href="tel:+33232425479"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg><span>Réserver</span></a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="img/terrasse.webp" alt="La terrasse du Bistrot du Roumois le soir" />
+    <div class="wrap">
+      <span class="status" id="status"><i></i><span>Ouvert</span></span>
+      <p class="script">LE lieu mythique de Bourg-Achard</p>
+      <h1>Le Bistrot<br /><span>du Roumois</span></h1>
+      <p class="tags"><b>Café</b><span class="bolt"></span><b>Bar</b><span class="bolt"></span><b>Brasserie</b><span class="bolt"></span><b>Pub</b></p>
+      <div class="ctas">
+        <a class="btn solid" href="tel:+33232425479">Réserver une table · 02 32 42 54 79</a>
+        <a class="btn" href="#carte">Voir la carte</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="news"><div class="wrap" id="news"><b>Nouveau : la restauration ouvre le mardi 6 octobre</b><span>Plat du jour le midi, tapas et planches le soir.</span></div></div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker"><span class="bolt"></span>Du matin jusqu'au bout de la nuit</p><h2 class="h2">Un lieu, <em>quatre ambiances</em></h2></div>
+        <p class="lead">Le café du matin, le plat du jour du midi, l'apéro en terrasse et les soirées rock du week-end.</p>
+      </div>
+      <div class="day reveal">
+        <div class="moment">
+          <svg viewBox="0 0 40 40"><path d="M8 16h20v8a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8Z"/><path d="M28 18h3a3 3 0 0 1 0 6h-3"/><path d="M14 6c-1.5 2 1.5 3 0 5M20 6c-1.5 2 1.5 3 0 5"/></svg>
+          <p class="hr">Dès 10h</p><h3>Le café</h3><p>Expresso, crème, chocolat… le rendez-vous du matin sur la Grande Rue.</p>
+        </div>
+        <div class="moment">
+          <svg viewBox="0 0 40 40"><path d="M12 6v10a3 3 0 0 0 6 0V6M15 6v28"/><path d="M27 6c-3 0-4 4-4 9s1 5 4 5v14"/></svg>
+          <p class="hr">Le midi</p><h3>La brasserie</h3><p>Un plat du jour fait maison, servi rapidement pour la pause déjeuner.</p>
+        </div>
+        <div class="moment">
+          <svg viewBox="0 0 40 40"><path d="M6 24h28l-3 6H9Z"/><circle cx="13" cy="19" r="3"/><circle cx="21" cy="18" r="3.5"/><path d="M27 21l4-6"/></svg>
+          <p class="hr">Le soir</p><h3>Tapas &amp; planches</h3><p>Planches à partager, tapas et snack pour accompagner l'apéro.</p>
+        </div>
+        <div class="moment">
+          <svg viewBox="0 0 40 40"><path d="M12 8h14l-1.5 24h-11Z"/><path d="M26 13h3a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3h-4"/><path d="M12.5 15h13"/></svg>
+          <p class="hr">Jusqu'à 2h le week-end</p><h3>Le bar</h3><p>Bières pression, cocktails et soirées à thème : rock, hip-hop, RnB.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block resto" id="restauration">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker"><span class="bolt"></span>Restauration</p><h2 class="h2">On mange <em>au Bistrot</em></h2></div>
+        <p class="lead">Une cuisine simple et généreuse, le midi comme le soir.</p>
+      </div>
+      <div class="resto-grid">
+        <article class="service reveal">
+          <p class="when">le Midi</p>
+          <h3>Brasserie · plat du jour</h3>
+          <p>Chaque jour un plat différent, à découvrir sur l'ardoise… et ici.</p>
+          <div class="pdj">
+            <small>Plat du jour · <span id="pdj-date">aujourd'hui</span></small>
+            <b>Moules frites maison</b><span>— €</span>
+            <em>Exemple : vous le mettez à jour en 30 secondes depuis votre téléphone.</em>
+          </div>
+        </article>
+        <article class="service reveal">
+          <p class="when">le Soir</p>
+          <h3>Tapas, planches &amp; snack</h3>
+          <p>De quoi grignoter à plusieurs autour d'un verre, en salle ou en terrasse.</p>
+          <div class="chips"><span>Planches à partager</span><span>Tapas</span><span>Snack</span><span>Terrasse</span></div>
+        </article>
+      </div>
+      <p class="resto-note">Une grande tablée, un anniversaire ? <a href="tel:+33232425479">Appelez-nous au 02 32 42 54 79</a> pour réserver.</p>
+    </div>
+  </section>
+
+  <section class="block" id="carte">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker"><span class="bolt"></span>La carte</p><h2 class="h2">Qu'est-ce qu'on <em>vous sert ?</em></h2></div>
+        <p class="lead">La carte complète du bar, consultable en un clic depuis un téléphone, en terrasse comme à la maison.</p>
+      </div>
+      <div class="menu reveal">
+        <div class="tabs" id="tabs" role="tablist"></div>
+        <div class="board" id="board"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block events" id="soirees">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker"><span class="bolt"></span>Les soirées</p><h2 class="h2">Ça bouge <em>au Bistrot</em></h2></div>
+        <p class="lead">Concerts, soirées à thème et événements du village : l'agenda à jour, toujours au même endroit.</p>
+      </div>
+      <article class="next reveal">
+        <img src="img/restauration.webp" alt="Affiche de l'ouverture de la restauration" loading="lazy" />
+        <div class="txt">
+          <p class="kicker">À la une</p>
+          <div class="date"><b>6</b><span>Mardi<br />octobre</span></div>
+          <h3>La cuisine ouvre ses portes</h3>
+          <p>Le Bistrot passe à table : brasserie et plat du jour le midi, tapas, planches et snack le soir. Chaque nouvel événement apparaît ici avec son affiche.</p>
+          <div class="meta"><span>Midi · plat du jour</span><span>Soir · tapas &amp; planches</span><span>Réservation au 02 32 42 54 79</span></div>
+        </div>
+      </article>
+      <div class="past">
+        <figure class="poster reveal"><img src="img/la-premiere.webp" alt="" loading="lazy" /><figcaption><b>La Première</b>Sam. 29 août · hip-hop &amp; RnB</figcaption></figure>
+        <figure class="poster reveal"><img src="img/back-in-black.webp" alt="" loading="lazy" /><figcaption><b>Back in Black</b>Sam. 5 septembre · rock</figcaption></figure>
+        <figure class="poster reveal"><img src="img/foire-bourette.webp" alt="" loading="lazy" /><figcaption><b>Foire à la Bourette</b>19 &amp; 20 septembre · moules frites</figcaption></figure>
+        <figure class="poster reveal"><img src="img/ouvert.webp" alt="" loading="lazy" /><figcaption><b>Nous sommes ouverts !</b>Café · Bar · Brasserie</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="infos">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker"><span class="bolt"></span>Infos pratiques</p><h2 class="h2">Venir <em>nous voir</em></h2></div>
+      </div>
+      <div class="infos">
+        <div class="panel reveal">
+          <h3>Horaires</h3>
+          <ul class="hours" id="hours"></ul>
+        </div>
+        <div class="panel reveal">
+          <h3>Nous trouver</h3>
+          <div class="contact-list">
+            <a href="https://maps.app.goo.gl/51oTQQ1G5NgStxC49" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>18 Grande Rue, 27310 Bourg-Achard</a>
+            <a href="tel:+33232425479"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg>02 32 42 54 79</a>
+            <a href="mailto:lebistrotduroumois@gmail.com"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.5L4 7.3V17h16V7.3Z"/></svg>lebistrotduroumois@gmail.com</a>
+          </div>
+          <div class="map"><iframe title="Plan d'accès" loading="lazy" src="https://maps.google.com/maps?q=18%20Grande%20Rue%2C%2027310%20Bourg-Achard&z=16&output=embed"></iframe></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <img class="logo" src="img/logo.webp" alt="Le Bistrot du Roumois" loading="lazy" />
+      <p>Café · Bar · Brasserie · Pub — 18 Grande Rue, Bourg-Achard</p>
+      <div class="soc">
+        <a class="btn" href="https://www.instagram.com/lebistrotduroumois/" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn" href="https://www.facebook.com/profile.php?id=61592836881023" target="_blank" rel="noopener">Facebook</a>
+      </div>
+      <p class="legal">L'abus d'alcool est dangereux pour la santé, à consommer avec modération.<br />© 2026 <a href="../../">Romain Legros</a> · Design et code de cette maquette protégés : reproduction interdite sans accord. Logo, photos et affiches : Le Bistrot du Roumois.</p>
+    </div>
+  </footer>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+
+    /* Horaires (0 = dimanche) : [ouverture, fermeture] en heures, fermeture > 24 = après minuit */
+    const DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+    const HOURS = { 1: [10, 21], 2: [10, 21], 3: [10, 21], 4: [10, 25], 5: [10, 26], 6: [10, 26] };
+    const fmtH = (h) => `${String(h % 24).padStart(2, '0')}h`;
+    const now = new Date();
+    const today = now.getDay();
+    $('#hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map((d) => {
+      const h = HOURS[d];
+      return `<li class="${d === today ? 'today' : ''} ${h ? '' : 'off'}"><span>${DAYS[d]}${d === today ? ' · aujourd\'hui' : ''}</span><span>${h ? `${fmtH(h[0])} – ${fmtH(h[1])}` : 'Fermé'}</span></li>`;
+    }).join('');
+
+    // Ouvert / fermé en direct (en tenant compte des fermetures après minuit)
+    function isOpen(date) {
+      const t = date.getHours() + date.getMinutes() / 60;
+      const d = date.getDay();
+      const yest = HOURS[(d + 6) % 7];
+      if (yest && yest[1] > 24 && t < yest[1] - 24) return { open: true, until: yest[1] };
+      const h = HOURS[d];
+      if (h && t >= h[0] && t < h[1]) return { open: true, until: h[1] };
+      return { open: false };
+    }
+    const st = isOpen(now);
+    $('#status').classList.toggle('closed', !st.open);
+    $('#status span').textContent = st.open ? `Ouvert maintenant · jusqu'à ${fmtH(st.until)}` : 'Fermé pour le moment · à demain !';
+
+    // Bandeau : annonce de l'ouverture de la cuisine
+    if (now >= new Date(2026, 9, 6)) $('#news').innerHTML = '<b>Nouveau : la restauration est ouverte !</b><span>Plat du jour le midi, tapas et planches le soir.</span>';
+    $('#pdj-date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+    /* Carte des boissons */
+    const MENU = [
+      { t: 'Bières', cols: ['25 cl', '50 cl'], rows: [['Tuborg', 2.5, 4.5], ['Ducasse blonde', 3.5, 6.5], ['Anosteké IPA', 3.8, 7.2], ['La Bête blonde', 3.9, 7.5], ['La Bête blanche', 3.6, 7.2], ['La Bête rouge', 4.2, 7.8]] },
+      { t: 'Apéritifs', cols: ['4 cl', '+ soft'], rows: [['Vodka', 5, 0.8], ['Whisky', '5 / 7', 0.8], ['Rhum', 5, 0.8], ['Gin', 5, 0.8], ['Ricard / Pastis', 2.5, 0.8], ['Get 27 / Limoncello', 3.5], ['Calvados / Baileys', 4], ['Get 31', 4]] },
+      { t: 'Cocktails', cols: [''], rows: [['Piña Colada', 7], ['Sunrise', 6.5], ['Americano', 6.5]], foot: 'Et d\'autres cocktails à découvrir au comptoir.' },
+      { t: 'Sans alcool', cols: [''], rows: [['Virgin Mojito', 4.2], ['Virgin Beach', 4.2], ['Virgin Colada', 4.5], ['Virgin Sunrise', 4.2]] },
+      { t: 'Boissons chaudes', cols: [''], rows: [['Expresso', 1.3], ['Noisette', 1.5], ['Crème', 2.3], ['Double expresso', 2.5], ['Thé', 2.7], ['Cappuccino', 3], ['Chocolat', 3.5]] },
+      { t: 'Eaux & sirops', cols: ['20 cl'], rows: [['Eau plate', 2], ['Eau gazeuse', 3], ['Sirop à l\'eau', 2.1, null, 'fraise, menthe, grenadine, citron, pêche'], ['Supplément sirop', 0.6]] },
+    ];
+    const eur = (v) => typeof v === 'number' ? v.toLocaleString('fr-FR', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €' : `${v} €`;
+    $('#tabs').innerHTML = MENU.map((m, i) => `<button type="button" role="tab" data-i="${i}" class="${i ? '' : 'on'}" aria-selected="${!i}">${m.t}</button>`).join('');
+    function showMenu(i) {
+      const m = MENU[i];
+      $('#board').innerHTML = `<div class="board-in"><h3>${m.t}</h3>
+        <div class="cols">${m.cols.map((c) => `<span>${c}</span>`).join('')}</div>
+        ${m.rows.map(([n, a, b, note]) => `<div class="row"><span class="n"><span>${n}${note ? `<small>${note}</small>` : ''}</span></span><span class="p">${eur(a)}</span>${m.cols.length > 1 ? `<span class="p ${b ? '' : 'dim'}">${b ? (m.t === 'Apéritifs' ? '+ ' : '') + eur(b) : '—'}</span>` : ''}</div>`).join('')}
+        ${m.foot ? `<p class="foot">${m.foot}</p>` : ''}</div>`;
+      document.querySelectorAll('#tabs button').forEach((b) => { const on = +b.dataset.i === i; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+    }
+    $('#tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showMenu(+b.dataset.i); });
+    showMenu(0);
+
+    const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
