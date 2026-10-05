@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le 8ème Art — Proposition de site</title>
+  <meta name="description" content="Maquette de site internet pour Le 8ème Art, concepteur de spectacles pyrotechniques en Normandie, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --night: #07060b; --night-2: #100e17; --card: #16131f; --ink: #f4f0f6; --muted: #a39cad; --line: rgba(255,255,255,.1);
+      --magenta: #e0247a; --magenta-2: #ff5aa5; --gold: #f2c46d;
+      --display: 'Bodoni Moda', Georgia, serif; --body: 'Manrope', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--night); color: var(--ink); font: 16.5px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding-left: clamp(16px, 4vw, 44px); padding-right: clamp(16px, 4vw, 44px); }
+
+    .demo-bar { background: var(--magenta); color: #fff; font-size: 13px; text-align: center; padding: 9px 16px; }
+    .demo-bar a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.6); }
+
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(7,6,11,.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 76px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+    .logo b { font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1; }
+    .logo small { display: block; font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--magenta-2); margin-top: 5px; }
+    header nav { display: flex; gap: 28px; font-size: 14.5px; font-weight: 500; color: var(--muted); }
+    header nav a:hover { color: #fff; }
+    .hdr-r { display: flex; align-items: center; gap: 16px; }
+    .hdr-r .tel { font-weight: 600; font-size: 15px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 24px; border-radius: 99px; font-weight: 700; font-size: 15px; background: var(--magenta); color: #fff; border: 1.5px solid var(--magenta); transition: .2s; cursor: pointer; white-space: nowrap; box-shadow: 0 10px 30px -10px rgba(224,36,122,.7); }
+    .btn:hover { background: var(--magenta-2); border-color: var(--magenta-2); transform: translateY(-2px); }
+    .btn.line { background: transparent; border-color: rgba(255,255,255,.35); box-shadow: none; }
+    .btn.line:hover { border-color: #fff; background: rgba(255,255,255,.06); }
+    header .btn { padding: 11px 18px; }
+
+    /* Hero */
+    .hero { position: relative; min-height: min(92vh, 860px); display: grid; align-items: end; overflow: hidden; }
+    .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .75; }
+    .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,6,11,.2) 0%, rgba(7,6,11,.25) 40%, var(--night) 100%); pointer-events: none; }
+    .hero .wrap { position: relative; z-index: 2; width: 100%; padding-top: 120px; padding-bottom: clamp(50px, 7vw, 90px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+    .eyebrow::before { content: ''; width: 30px; height: 1px; background: currentColor; }
+    .hero h1 { font-family: var(--display); font-weight: 500; font-size: clamp(50px, 8vw, 120px); line-height: .95; letter-spacing: -.02em; margin: 20px 0 22px; max-width: 980px; }
+    .hero h1 em { color: var(--magenta-2); }
+    .hero p.lead { font-size: 19px; color: #d6d0dc; max-width: 560px; }
+    .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .hint { position: absolute; right: clamp(16px, 4vw, 44px); bottom: 30px; z-index: 2; font-size: 13px; color: var(--muted); }
+
+    /* Références */
+    .refs { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--night-2); }
+    .refs .wrap { display: grid; grid-template-columns: auto 1fr; gap: 30px; align-items: center; padding-top: 22px; padding-bottom: 22px; }
+    .refs p { font-size: 12.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+    .refs ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 30px; font-family: var(--display); font-style: italic; font-size: 21px; }
+    .refs li::before { content: '✦ '; color: var(--magenta-2); font-style: normal; font-size: 13px; }
+
+    section.block { padding: clamp(80px, 10vw, 130px) 0; }
+    .h2 { font-family: var(--display); font-weight: 500; font-size: clamp(40px, 5.4vw, 72px); line-height: 1; letter-spacing: -.015em; margin-top: 14px; }
+    .h2 em { color: var(--magenta-2); }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 46px; }
+    .head p { color: var(--muted); max-width: 460px; }
+
+    /* Grands spectacles */
+    .stage { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .ref-card { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 3 / 4; cursor: pointer; border: 0; padding: 0; background: var(--card); text-align: left; }
+    .ref-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s, filter .4s; filter: saturate(1.1); }
+    .ref-card:hover img { transform: scale(1.07); }
+    .ref-card span { position: absolute; left: 0; right: 0; bottom: 0; padding: 50px 16px 16px; background: linear-gradient(transparent, rgba(0,0,0,.85)); font-family: var(--display); font-size: 21px; line-height: 1.1; }
+    .ref-card span small { display: block; font-family: var(--body); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--magenta-2); margin-bottom: 4px; }
+
+    /* Chiffres */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-top: 60px; }
+    .stats div { background: var(--night); padding: 28px 24px; }
+    .stats b { display: block; font-family: var(--display); font-weight: 500; font-size: 48px; line-height: 1; color: var(--gold); }
+    .stats span { color: var(--muted); font-size: 14.5px; }
+
+    /* Catalogue */
+    .catalogue { background: radial-gradient(1200px 600px at 80% 0%, rgba(224,36,122,.16), transparent 60%), var(--night-2); border-top: 1px solid var(--line); }
+    .picker { display: grid; grid-template-columns: 1.1fr .9fr; gap: 26px; align-items: stretch; }
+    .gems { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .gem { border: 1.5px solid var(--line); background: var(--card); border-radius: 14px; padding: 16px; text-align: left; cursor: pointer; transition: .2s; }
+    .gem:hover { border-color: rgba(255,255,255,.35); }
+    .gem.on { border-color: var(--magenta); background: linear-gradient(160deg, rgba(224,36,122,.22), var(--card)); }
+    .gem b { display: block; font-family: var(--display); font-weight: 600; font-size: 21px; letter-spacing: .04em; }
+    .gem span { font-size: 13.5px; color: var(--muted); }
+    .gem i { font-style: normal; display: block; margin-top: 8px; font-weight: 700; color: var(--gold); }
+    .detail { border-radius: 18px; overflow: hidden; background: var(--card); border: 1px solid var(--line); display: flex; flex-direction: column; }
+    .detail img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+    .detail .in { padding: 26px; display: grid; gap: 14px; }
+    .detail h3 { font-family: var(--display); font-weight: 500; font-size: 42px; line-height: 1; }
+    .detail .meta { display: flex; gap: 22px; flex-wrap: wrap; }
+    .detail .meta div b { display: block; font-size: 26px; font-family: var(--display); color: var(--gold); line-height: 1.1; }
+    .detail .meta div span { font-size: 13px; color: var(--muted); }
+    .bar { height: 6px; border-radius: 6px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--magenta), var(--gold)); transition: width .5s cubic-bezier(.2,.8,.2,1); }
+    .incl { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 14px; color: #d6d0dc; }
+    .incl li::before { content: '✓ '; color: var(--magenta-2); font-weight: 700; }
+    .f3 { font-size: 13.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+    .f3 b { color: #fff; }
+    .cat-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* Prestations */
+    .presta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .p-card { position: relative; border-radius: 18px; overflow: hidden; min-height: 340px; display: flex; align-items: end; border: 1px solid var(--line); }
+    .p-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+    .p-card:hover img { transform: scale(1.06); }
+    .p-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 25%, rgba(7,6,11,.92)); }
+    .p-card div { position: relative; z-index: 1; padding: 24px; }
+    .p-card small { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+    .p-card h3 { font-family: var(--display); font-weight: 500; font-size: 30px; line-height: 1.05; margin: 6px 0 8px; }
+    .p-card p { color: #d6d0dc; font-size: 14.5px; }
+    .p-card.wide { grid-column: span 2; }
+
+    /* Galerie */
+    .tabs { display: inline-flex; background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 4px; }
+    .tabs button { border: 0; background: none; border-radius: 99px; padding: 10px 18px; font-weight: 600; font-size: 14.5px; color: var(--muted); cursor: pointer; }
+    .tabs button.on { background: #fff; color: var(--night); }
+    .gallery { columns: 4 240px; column-gap: 12px; }
+    .gallery button { display: block; width: 100%; margin-bottom: 12px; border: 0; padding: 0; border-radius: 12px; overflow: hidden; cursor: zoom-in; background: var(--card); break-inside: avoid; }
+    .gallery img { width: 100%; transition: transform .6s, opacity .3s; }
+    .gallery button:hover img { transform: scale(1.04); }
+    .lightbox { position: fixed; inset: 0; z-index: 80; background: rgba(5,4,8,.94); display: grid; place-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .lightbox.open { opacity: 1; pointer-events: auto; }
+    .lightbox img { max-height: 86vh; border-radius: 10px; }
+    .lightbox button { position: absolute; top: 18px; right: 18px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: 16px; }
+
+    /* Pour qui */
+    .who { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .who div { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+    .who i { font-style: normal; font-size: 28px; }
+    .who h3 { font-family: var(--display); font-weight: 500; font-size: 25px; margin: 10px 0 6px; }
+    .who p { color: var(--muted); font-size: 14.5px; }
+
+    /* Devis */
+    .devis { background: var(--night-2); border-top: 1px solid var(--line); }
+    .devis .wrap { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(30px, 5vw, 70px); align-items: start; }
+    .devis .side p { color: var(--muted); margin-top: 16px; }
+    .contact { display: grid; gap: 10px; margin-top: 28px; }
+    .contact a, .contact div { display: flex; gap: 14px; align-items: center; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .contact a:hover { border-color: var(--magenta); }
+    .contact svg { width: 22px; height: 22px; fill: var(--magenta-2); flex: none; }
+    .contact b { display: block; font-weight: 600; }
+    .contact small { color: var(--muted); font-size: 13.5px; }
+    form.quote { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: clamp(22px, 3.5vw, 36px); }
+    .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+    .seg label { cursor: pointer; position: relative; }
+    .seg input { position: absolute; opacity: 0; }
+    .seg span { display: block; text-align: center; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 6px; font-size: 14px; font-weight: 600; transition: .15s; }
+    .seg span i { display: block; font-style: normal; font-size: 22px; margin-bottom: 2px; }
+    .seg input:checked + span { border-color: var(--magenta); background: rgba(224,36,122,.15); }
+    .seg input:focus-visible + span { outline: 2px solid var(--magenta-2); outline-offset: 2px; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fields label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600; color: #d6d0dc; }
+    .fields .full { grid-column: 1 / -1; }
+    .quote input[type=text], .quote input[type=tel], .quote input[type=email], .quote input[type=date], .quote select, .quote textarea { width: 100%; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 15px; background: var(--night); color-scheme: dark; }
+    .quote input:focus, .quote select:focus, .quote textarea:focus { outline: none; border-color: var(--magenta); }
+    .quote textarea { min-height: 90px; resize: vertical; }
+    .budget output { color: var(--gold); font-weight: 700; }
+    .budget input { width: 100%; accent-color: var(--magenta); }
+    .quote .btn { width: 100%; margin-top: 18px; }
+    .done { text-align: center; padding: 40px 10px; }
+    .done b { font-size: 48px; display: block; margin-bottom: 8px; }
+    .done p { color: var(--muted); }
+
+    /* Réseau */
+    .network { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .network div { border: 1px solid var(--line); border-radius: 14px; padding: 20px; background: var(--card); }
+    .network div.hq { border-color: var(--magenta); background: linear-gradient(160deg, rgba(224,36,122,.18), var(--card)); }
+    .network h3 { font-family: var(--display); font-weight: 500; font-size: 22px; }
+    .network p { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+    .network span { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: .06em; }
+
+    footer.foot { border-top: 1px solid var(--line); padding: 54px 0 32px; color: var(--muted); font-size: 14.5px; }
+    footer .cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 30px; }
+    footer h4 { color: #fff; font-size: 14px; margin-bottom: 12px; }
+    footer .cols a { display: block; padding: 3px 0; }
+    footer .cols a:hover { color: #fff; }
+    footer .legal { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; }
+    footer .legal a { color: #fff; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: #fff; color: var(--night); padding: 13px 20px; border-radius: 99px; font-size: 14.5px; font-weight: 600; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23ffffff' fill-opacity='.07'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s, transform .9s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 1080px) {
+      header nav { display: none; }
+      .stage { grid-template-columns: repeat(3, 1fr); }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .picker, .devis .wrap { grid-template-columns: 1fr; }
+      .presta { grid-template-columns: 1fr 1fr; }
+      .who { grid-template-columns: 1fr 1fr; }
+      .network { grid-template-columns: repeat(3, 1fr); }
+      footer .cols { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hdr-r .tel { display: none; }
+      .logo b { font-size: 19px; }
+      .refs .wrap { grid-template-columns: 1fr; gap: 10px; }
+      .refs ul { font-size: 18px; gap: 6px 18px; }
+      .stage { grid-template-columns: 1fr 1fr; }
+      .stage .ref-card:last-child { grid-column: span 2; aspect-ratio: 16 / 9; }
+      .gems { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .gem { padding: 12px 10px; }
+      .gem b { font-size: 17px; }
+      .gem span { font-size: 12px; }
+      .incl { grid-template-columns: 1fr; }
+      .presta, .who, .network { grid-template-columns: 1fr; }
+      .p-card.wide { grid-column: auto; }
+      .p-card { min-height: 280px; }
+      .seg { grid-template-columns: 1fr 1fr; }
+      .fields { grid-template-columns: 1fr; }
+      .hint { display: none; }
+      footer .cols { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Proposition de site réalisée par Romain Legros pour Le 8ème Art · maquette avec vos vraies photos et tarifs 2026. <a href="../../">Voir mon portfolio →</a></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#"><img src="img/logo.webp" alt="" /><span><b>Le 8ème Art</b><small>Pyrotechnie · depuis 1984</small></span></a>
+      <nav>
+        <a href="#spectacles">Spectacles</a>
+        <a href="#catalogue">Feux catalogue</a>
+        <a href="#prestations">Sur-mesure</a>
+        <a href="#galerie">Réalisations</a>
+        <a href="#reseau">Réseau</a>
+      </nav>
+      <div class="hdr-r">
+        <a class="tel" href="tel:+33232421991">02 32 42 19 91</a>
+        <a class="btn" href="#devis">Demander un devis</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="img/hero-martainville.webp" alt="Spectacle pyrotechnique au château de Martainville" />
+    <canvas id="fw" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <p class="eyebrow">Concepteur de spectacles pyrotechniques depuis 1984</p>
+      <h1>Faire du feu d'artifice <em>un art</em>, le 8<sup style="font-size:.45em">ème</sup>.</h1>
+      <p class="lead">Grands spectacles, feux musicaux synchronisés, sons et lumières ou feux prêts à tirer : nous créons l'émotion pour les collectivités, les entreprises et les particuliers, depuis la Normandie.</p>
+      <div class="ctas">
+        <a class="btn" href="#devis">Demander un devis</a>
+        <a class="btn line" href="#catalogue">Voir le catalogue 2026</a>
+      </div>
+    </div>
+    <p class="hint">✦ Cliquez dans le ciel</p>
+  </section>
+
+  <div class="refs">
+    <div class="wrap">
+      <p>Ils nous ont fait confiance</p>
+      <ul><li>500 ans du Havre</li><li>Transat Jacques Vabre</li><li>Ville de Caen</li><li>Château de Martainville</li><li>Deauville</li></ul>
+    </div>
+  </div>
+
+  <section class="block" id="spectacles">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="eyebrow">Grands spectacles</p><h2 class="h2">Des ciels qui <em>restent en mémoire</em></h2></div>
+        <p>Chaque année, des milliers de spectateurs restent sous le charme de nos productions, en Normandie et partout en France.</p>
+      </div>
+      <div class="stage reveal" id="stage">
+        <button class="ref-card" type="button" data-src="img/ref-havre.webp"><img src="img/ref-havre.webp" alt="" loading="lazy" /><span><small>Le Havre</small>500 ans du Havre</span></button>
+        <button class="ref-card" type="button" data-src="img/ref-transat.webp"><img src="img/ref-transat.webp" alt="" loading="lazy" /><span><small>Le Havre</small>Transat Jacques Vabre</span></button>
+        <button class="ref-card" type="button" data-src="img/ref-caen.webp"><img src="img/ref-caen.webp" alt="" loading="lazy" /><span><small>Calvados</small>Caen</span></button>
+        <button class="ref-card" type="button" data-src="img/hero-martainville.webp"><img src="img/hero-martainville.webp" alt="" loading="lazy" /><span><small>Seine-Maritime</small>Château de Martainville</span></button>
+        <button class="ref-card" type="button" data-src="img/ref-deauville.webp"><img src="img/ref-deauville.webp" alt="" loading="lazy" /><span><small>Calvados</small>Deauville</span></button>
+      </div>
+      <div class="stats reveal">
+        <div><b>1984</b><span>l'année de création<br />du 8ème Art</span></div>
+        <div><b>3</b><span>sites classés en Normandie,<br />région Centre et Bretagne</span></div>
+        <div><b>26 t</b><span>véhicule ADR pour les<br />livraisons dans toute la France</span></div>
+        <div><b>F4</b><span>formation de nos artificiers<br />dans nos propres locaux</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block catalogue" id="catalogue">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="eyebrow">Gamme Privilège 2026</p><h2 class="h2">Choisissez <em>votre feu</em></h2></div>
+        <p>9 feux de proximité, de 6 à 15 minutes, à tirer vous-même. Sélectionnez une gemme pour comparer.</p>
+      </div>
+      <div class="picker reveal">
+        <div class="gems" id="gems"></div>
+        <article class="detail">
+          <img id="d-img" src="img/gs-14.webp" alt="" />
+          <div class="in">
+            <p class="eyebrow" id="d-rank">Feu 1 sur 9</p>
+            <h3 id="d-name">Nacre</h3>
+            <div class="meta"><div><b id="d-price">930 €</b><span>TTC</span></div><div><b id="d-dur">6 min</b><span>de spectacle environ</span></div><div><b id="d-ppm">155 €</b><span>par minute</span></div></div>
+            <div class="bar"><i id="d-bar"></i></div>
+            <ul class="incl"><li>Pile de mise à feu</li><li>Fil électrique</li><li>Plan d'installation</li><li>Ordre de tir détaillé</li></ul>
+            <p class="f3"><b>Feux F3 de proximité :</b> calibre 30 maximum, aucun produit de catégorie 4 et moins de 35 kg de matière active. Ils peuvent être achetés et tirés par toute personne majeure.</p>
+            <div class="cat-actions">
+              <a class="btn" href="#devis" id="d-cta">Réserver ce feu</a>
+              <a class="btn line" href="https://le8emeart.com/download/FICHES_DETAILLE_2026/Catalogue_le_8eme_art_tarif_2026.pdf" target="_blank" rel="noopener">Catalogue PDF</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="prestations">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="eyebrow">Sur-mesure</p><h2 class="h2">Un spectacle <em>pour chaque occasion</em></h2></div>
+        <p>Calibrés selon votre espace de sécurité et votre budget, nos spectacles sur devis sont tirés par nos artificiers certifiés.</p>
+      </div>
+      <div class="presta">
+        <article class="p-card wide reveal"><img src="img/musical-laser.webp" alt="" loading="lazy" /><div><small>Notre signature</small><h3>Spectacles musicaux synchronisés</h3><p>Le talent de l'artificier associé à celui du musicien : chaque bombe tombe sur la note, pour un pur moment d'enchantement.</p></div></article>
+        <article class="p-card reveal"><img src="img/gs-6.webp" alt="" loading="lazy" /><div><small>Grands espaces</small><h3>Gamme Aerial</h3><p>Bombes en mortiers et bouquets renforcés, tirés par un artificier F4 T2.</p></div></article>
+        <article class="p-card reveal"><img src="img/sl-10.webp" alt="" loading="lazy" /><div><small>Patrimoine</small><h3>Sons &amp; lumières</h3><p>Châteaux, cathédrales, ports : la pyrotechnie au service d'un lieu.</p></div></article>
+        <article class="p-card reveal"><img src="img/gs-13.webp" alt="" loading="lazy" /><div><small>Fin d'année</small><h3>Musi-Feux de Noël</h3><p>Dynamisez vos fêtes de fin d'année avec l'Esprit de Noël.</p></div></article>
+        <article class="p-card reveal"><img src="img/feu-de-jour.webp" alt="" loading="lazy" /><div><small>Nouveau</small><h3>Feu d'artifice de jour</h3><p>Une nouvelle offre pour illuminer vos événements en pleine journée.</p></div></article>
+        <article class="p-card reveal"><img src="img/gs-21.webp" alt="" loading="lazy" /><div><small>Prêts à tirer</small><h3>Gamme Auto-Pack</h3><p>Produits professionnels pré-réglés, un seul allumage, 50 m de sécurité.</p></div></article>
+        <article class="p-card wide reveal"><img src="img/sl-16.webp" alt="" loading="lazy" /><div><small>En complément ou en show seul</small><h3>Prestation flammes</h3><p>Enflammez votre événement avec des effets de flammes, en complément de votre feu d'artifice ou en spectacle à part entière.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="galerie" style="padding-top:0">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="eyebrow">Réalisations</p><h2 class="h2">Nos plus <em>belles nuits</em></h2></div>
+        <div class="tabs" id="gtabs"><button type="button" class="on" data-g="gs">Grands spectacles</button><button type="button" data-g="sl">Sons &amp; lumières</button></div>
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="head reveal"><div><p class="eyebrow">Pour qui ?</p><h2 class="h2">Un interlocuteur <em>pour chacun</em></h2></div></div>
+      <div class="who reveal">
+        <div><i>🏛️</i><h3>Collectivités</h3><p>14 juillet, fêtes communales, inaugurations : des spectacles clés en main, dans le respect de la réglementation.</p></div>
+        <div><i>💍</i><h3>Particuliers</h3><p>Mariages, anniversaires, fêtes de famille : feux catalogue à tirer vous-même ou spectacle sur mesure.</p></div>
+        <div><i>🏢</i><h3>Entreprises</h3><p>Séminaires, lancements, soirées de gala : un final qui marque les esprits.</p></div>
+        <div><i>🎆</i><h3>Artificiers &amp; distributeurs</h3><p>Une gamme de produits testés avec rigueur, et un réseau d'ambassadeurs en France.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block devis" id="devis">
+    <div class="wrap">
+      <div class="side reveal">
+        <p class="eyebrow">Devis gratuit</p>
+        <h2 class="h2">Parlons de <em>votre ciel</em></h2>
+        <p>Décrivez votre événement : nous vous proposons un spectacle adapté à votre site, à votre budget et aux règles de sécurité.</p>
+        <div class="contact">
+          <a href="tel:+33232421991"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg><span><b>02 32 42 19 91</b><small>Direction commerciale</small></span></a>
+          <a href="mailto:info@le8emeart.com"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.5L4 7.3V17h16V7.3Z"/></svg><span><b>info@le8emeart.com</b><small>Réponse par e-mail</small></span></a>
+          <div><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span><b>35 route de Routot, 27350 Hauville</b><small>Siège social, près de Bourg-Achard</small></span></div>
+        </div>
+      </div>
+      <form class="quote reveal" id="quote">
+        <div id="q-fields">
+          <div class="seg">
+            <label><input type="radio" name="who" value="Collectivité" checked /><span><i>🏛️</i>Collectivité</span></label>
+            <label><input type="radio" name="who" value="Particulier" /><span><i>💍</i>Particulier</span></label>
+            <label><input type="radio" name="who" value="Entreprise" /><span><i>🏢</i>Entreprise</span></label>
+            <label><input type="radio" name="who" value="Pro" /><span><i>🎆</i>Artificier</span></label>
+          </div>
+          <div class="fields">
+            <label>Type de spectacle<select id="q-type"><option>Feu catalogue Privilège</option><option>Spectacle musical synchronisé</option><option>Grand spectacle Aerial</option><option>Son et lumière</option><option>Feu de Noël</option><option>Feu de jour</option><option>Prestation flammes</option><option>Je ne sais pas encore</option></select></label>
+            <label>Date de l'événement<input type="date" required /></label>
+            <label class="full budget">Budget indicatif : <output id="b-out">3 000 €</output><input type="range" id="budget" min="900" max="30000" step="100" value="3000" /></label>
+            <label>Nom<input type="text" required placeholder="Nom ou structure" /></label>
+            <label>Téléphone<input type="tel" required placeholder="06 12 34 56 78" /></label>
+            <label>E-mail<input type="email" required placeholder="vous@exemple.fr" /></label>
+            <label>Code postal<input type="text" inputmode="numeric" maxlength="5" required placeholder="27310" /></label>
+            <label class="full">Votre événement<textarea placeholder="Lieu, nombre de spectateurs, ambiance musicale souhaitée…"></textarea></label>
+          </div>
+          <button class="btn" type="submit">Envoyer ma demande de devis</button>
+        </div>
+        <div class="done" id="q-done" hidden><b>🎆</b><h3 class="h2" style="font-size:36px">Demande envoyée !</h3><p>Nous revenons vers vous très vite.<br />(Démo : rien n'est envoyé.)</p></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="block" id="reseau">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="eyebrow">Notre réseau</p><h2 class="h2">Nos <em>ambassadeurs</em> en France</h2></div>
+        <p>Des passionnés de pyrotechnie qui vous conseillent près de chez vous.</p>
+      </div>
+      <div class="network reveal">
+        <div class="hq"><h3>Normandie</h3><p>Siège social · Hauville</p><span>14 · 27 · 50 · 76</span></div>
+        <div><h3>Centre</h3><p>Voves</p><span>28 · 78</span></div>
+        <div><h3>Bretagne</h3><p>Ciel en Folie · Nivillac</p><span>22 · 29 · 35 · 56</span></div>
+        <div><h3>Limousin</h3><p>Benayes</p><span>16 · 19 · 23 · 79 · 86 · 87</span></div>
+        <div><h3>Picardie</h3><p>Courtrizy · Escames</p><span>02 · 60 · 80</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="cols">
+        <div><a class="logo" href="#"><img src="img/logo.webp" alt="" /><span><b>Le 8ème Art</b><small>Spectacles pyrotechniques</small></span></a><p style="margin-top:14px">SAS Le 8ème Art · 35 route de Routot, 27350 Hauville</p></div>
+        <div><h4>Nos feux</h4><a href="#catalogue">Gamme Privilège</a><a href="#prestations">Auto-Pack</a><a href="#prestations">Musicaux</a><a href="#prestations">Noël</a></div>
+        <div><h4>L'entreprise</h4><a href="#spectacles">Nos références</a><a href="#reseau">Réseau</a><a href="https://le8emeart.com/reglementation-feuf4-feuf3-le8emear/" target="_blank" rel="noopener">Réglementation</a></div>
+        <div><h4>Contact</h4><a href="tel:+33232421991">02 32 42 19 91</a><a href="mailto:info@le8emeart.com">info@le8emeart.com</a><a href="https://www.facebook.com/Le-8%C3%A8me-Art-110302793829356/" target="_blank" rel="noopener">Facebook</a></div>
+      </div>
+      <p class="legal">© 2026 <a href="../../">Romain Legros</a> · Design et code de cette maquette protégés : reproduction interdite sans accord. Logo, photos, textes et tarifs : Le 8ème Art.</p>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-hidden="true"><img alt="" /><button type="button" aria-label="Fermer">✕</button></div>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+    const eur = (n) => n.toLocaleString('fr-FR') + ' €';
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Feu d'artifice dans le hero */
+    (() => {
+      const cv = $('#fw'), ctx = cv.getContext('2d');
+      let W, H, parts = [], rockets = [], visible = true;
+      const COLORS = ['#ff5aa5', '#f2c46d', '#ffffff', '#7fd4ff', '#b48bff', '#ff7a45'];
+      function size() { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio, 2); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0); }
+      size(); addEventListener('resize', size);
+      function burst(x, y) {
+        const c = COLORS[Math.random() * COLORS.length | 0], n = 70 + Math.random() * 40;
+        for (let i = 0; i < n; i++) {
+          const a = Math.random() * Math.PI * 2, s = 1.2 + Math.random() * 3.6;
+          parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 1, c, d: .009 + Math.random() * .01 });
+        }
+      }
+      function launch(tx, ty) { rockets.push({ x: tx, y: H, tx, ty, vy: -(6 + Math.random() * 3) }); }
+      function tick() {
+        if (visible) {
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.fillStyle = 'rgba(0,0,0,.22)'; ctx.fillRect(0, 0, W, H);
+          ctx.globalCompositeOperation = 'lighter';
+          rockets = rockets.filter((r) => { r.y += r.vy; ctx.fillStyle = '#f2c46d'; ctx.fillRect(r.x, r.y, 2, 6); if (r.y <= r.ty) { burst(r.x, r.y); return false; } return true; });
+          parts = parts.filter((p) => { p.vx *= .985; p.vy = p.vy * .985 + .04; p.x += p.vx; p.y += p.vy; p.life -= p.d; ctx.globalAlpha = Math.max(p.life, 0); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, 1.6, 0, 7); ctx.fill(); return p.life > 0; });
+          ctx.globalAlpha = 1;
+          if (!reduce && Math.random() < .025) launch(W * (.15 + Math.random() * .7), H * (.12 + Math.random() * .3));
+        }
+        requestAnimationFrame(tick);
+      }
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(cv);
+      $('.hero').addEventListener('click', (e) => { if (e.target.closest('a')) return; const r = cv.getBoundingClientRect(); burst(e.clientX - r.left, e.clientY - r.top); });
+      if (!reduce) setTimeout(() => { launch(W * .3, H * .25); launch(W * .7, H * .2); }, 400);
+      tick();
+    })();
+
+    /* Catalogue Privilège */
+    const GEMS = [['Nacre', 930, 6], ['Écaille', 1320, 7], ['Quartz', 1700, 8], ['Cristal', 2040, 10], ['Corail', 2410, 11], ['Saphir', 3050, 12], ['Topaze', 3600, 13], ['Onyx', 4310, 14], ['Platine', 4900, 15]];
+    const GEM_IMG = ['gs-14', 'gs-17', 'gs-10', 'gs-19', 'gs-5', 'gs-1', 'gs-20', 'gs-7', 'gs-8'];
+    $('#gems').innerHTML = GEMS.map(([n, p, d], i) => `<button type="button" class="gem ${i ? '' : 'on'}" data-i="${i}"><b>${n}</b><span>${d} min environ</span><i>${eur(p)}</i></button>`).join('');
+    function pick(i) {
+      const [n, p, d] = GEMS[i];
+      $$('.gem').forEach((g) => g.classList.toggle('on', +g.dataset.i === i));
+      $('#d-img').src = `img/${GEM_IMG[i]}.webp`;
+      $('#d-rank').textContent = `Feu ${i + 1} sur 9`;
+      $('#d-name').textContent = n;
+      $('#d-price').textContent = eur(p);
+      $('#d-dur').textContent = `${d} min`;
+      $('#d-ppm').textContent = eur(Math.round(p / d));
+      $('#d-bar').style.width = `${(d / 15) * 100}%`;
+      $('#d-cta').textContent = `Réserver ${n}`;
+      $('#d-cta').dataset.gem = n;
+    }
+    $('#gems').addEventListener('click', (e) => { const b = e.target.closest('.gem'); if (b) pick(+b.dataset.i); });
+    $('#d-cta').addEventListener('click', () => { $('#q-type').value = 'Feu catalogue Privilège'; const i = GEMS.findIndex((g) => g[0] === $('#d-cta').dataset.gem); $('#budget').value = GEMS[i][1]; $('#budget').dispatchEvent(new Event('input')); });
+    pick(0);
+
+    /* Galerie */
+    const GAL = { gs: ['gs-1', 'gs-10', 'gs-17', 'gs-19', 'gs-20', 'gs-21', 'gs-5', 'gs-7', 'gs-13', 'gs-14', 'gs-6', 'gs-8'], sl: ['sl-1', 'sl-3', 'sl-4', 'sl-9', 'sl-10', 'sl-11', 'sl-13', 'sl-14', 'sl-15', 'sl-16', 'sl-18'] };
+    function gal(k) { $('#gallery').innerHTML = GAL[k].map((n) => `<button type="button" data-src="img/${n}.webp"><img src="img/${n}.webp" alt="" loading="lazy" /></button>`).join(''); }
+    $('#gtabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; $$('#gtabs button').forEach((x) => x.classList.toggle('on', x === b)); gal(b.dataset.g); });
+    gal('gs');
+
+    /* Visionneuse */
+    const lb = $('#lb');
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-src]');
+      if (t) { lb.querySelector('img').src = t.dataset.src; lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); }
+    });
+    function closeLb() { lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); }
+    lb.addEventListener('click', (e) => { if (e.target.tagName !== 'IMG') closeLb(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLb(); });
+
+    /* Devis */
+    const bOut = $('#b-out');
+    $('#budget').addEventListener('input', (e) => { const v = +e.target.value; bOut.textContent = v >= 30000 ? '30 000 € et plus' : eur(v); });
+    $('#quote').addEventListener('submit', (e) => { e.preventDefault(); $('#q-fields').hidden = true; $('#q-done').hidden = false; });
+
+    const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .08 });
+    $$('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
