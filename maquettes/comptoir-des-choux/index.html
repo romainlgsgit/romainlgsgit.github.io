@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comptoir des Choux — Proposition de site</title>
+  <meta name="description" content="Maquette de site internet pour le Comptoir des Choux, épicerie-pâtisserie à Flancourt-Catelon, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Outfit:wght@300;400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #fbf5ec; --cream-2: #f4e9d8; --choco: #3a2418; --choco-2: #5a3a28; --caramel: #c47a2c; --caramel-2: #e3a35a; --blush: #f2d8cb; --muted: #8a7364; --line: rgba(58,36,24,.14);
+      --serif: 'Young Serif', Georgia, serif; --body: 'Outfit', system-ui, sans-serif; --hand: 'Caveat', cursive;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--choco); font: 17px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding-left: clamp(16px, 4vw, 44px); padding-right: clamp(16px, 4vw, 44px); }
+    .hand { font-family: var(--hand); color: var(--caramel); }
+
+    .demo-bar { background: var(--choco); color: #f0e2d2; font-size: 13px; text-align: center; padding: 9px 16px; }
+    .demo-bar a { color: #fff; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.5); }
+
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(251,245,236,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 74px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo i { width: 42px; height: 42px; border-radius: 50%; background: var(--choco); display: grid; place-items: center; }
+    .logo i svg { width: 26px; height: 26px; }
+    .logo b { font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1; }
+    .logo small { display: block; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    header nav { display: flex; gap: 28px; font-size: 15.5px; font-weight: 500; }
+    header nav a:hover { color: var(--caramel); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 24px; border-radius: 99px; font-weight: 600; font-size: 15.5px; background: var(--choco); color: var(--cream); border: 2px solid var(--choco); transition: .2s; cursor: pointer; white-space: nowrap; }
+    .btn:hover { background: var(--caramel); border-color: var(--caramel); transform: translateY(-2px); }
+    .btn.line { background: transparent; color: var(--choco); }
+    .btn.line:hover { background: var(--choco); color: var(--cream); border-color: var(--choco); }
+    header .btn { padding: 11px 18px; }
+
+    /* Hero */
+    .hero { padding: clamp(40px, 6vw, 80px) 0 clamp(60px, 8vw, 110px); position: relative; overflow: hidden; }
+    .hero .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+    .badge { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 7px 16px 7px 8px; font-size: 14px; font-weight: 500; }
+    .badge b { background: var(--caramel); color: #fff; border-radius: 99px; padding: 3px 10px; font-weight: 600; }
+    .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(46px, 6.6vw, 92px); line-height: .98; letter-spacing: -.02em; margin: 24px 0 20px; }
+    .hero h1 em { font-style: normal; color: var(--caramel); }
+    .hero p.lead { font-size: 19px; color: var(--choco-2); max-width: 480px; }
+    .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .hero-visual { position: relative; }
+    .plate { position: relative; border-radius: 50%; aspect-ratio: 1; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(58,36,24,.55); border: 12px solid #fff; }
+    .plate img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
+    .hero-visual .tag { position: absolute; background: #fff; border-radius: 16px; padding: 12px 16px; box-shadow: 0 14px 30px -12px rgba(58,36,24,.35); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+    .hero-visual .tag b { font-family: var(--serif); font-weight: 400; font-size: 17px; display: block; line-height: 1.1; }
+    .hero-visual .tag span { color: var(--muted); font-size: 13px; }
+    .hero-visual .t1 { left: -14px; bottom: 16%; }
+    .hero-visual .t2 { right: -6px; top: 10%; }
+    .hero-visual .t1 i, .hero-visual .t2 i { font-style: normal; font-size: 24px; }
+    .hero-visual .note { position: absolute; right: 4%; bottom: -6px; font-family: var(--hand); font-size: 28px; color: var(--caramel); transform: rotate(-5deg); }
+
+    section.block { padding: clamp(70px, 9vw, 120px) 0; }
+    .kicker { font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--caramel); }
+    .h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 4.6vw, 60px); line-height: 1.04; letter-spacing: -.015em; margin-top: 10px; }
+    .h2 em { font-style: normal; color: var(--caramel); }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+    .head p { color: var(--muted); max-width: 440px; }
+
+    /* Vitrine */
+    .vitrine { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .cakes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .cake { display: flex; flex-direction: column; gap: 12px; }
+    .cake .ph { border-radius: 22px; overflow: hidden; aspect-ratio: 4 / 5; background: var(--cream-2); position: relative; }
+    .cake .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+    .cake:hover .ph img { transform: scale(1.06); }
+    .cake .ph span { position: absolute; top: 12px; left: 12px; background: var(--cream); border-radius: 99px; padding: 4px 11px; font-size: 12.5px; font-weight: 600; }
+    .cake h3 { font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.15; }
+    .cake p { font-size: 15px; color: var(--muted); }
+
+    /* Pièces montées */
+    .fete { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+    .fete .pics { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .fete .pics img { border-radius: 22px; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+    .fete .pics img:last-child { margin-top: 50px; }
+    .fete .occ { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 26px; }
+    .fete .occ span { background: var(--blush); border-radius: 99px; padding: 7px 15px; font-size: 14.5px; font-weight: 500; }
+    .quote { border-left: 3px solid var(--caramel); padding: 6px 0 6px 20px; margin: 22px 0; }
+    .quote p { font-family: var(--serif); font-size: 21px; line-height: 1.35; }
+    .quote small { display: block; color: var(--muted); font-size: 14px; margin-top: 8px; }
+
+    /* Commande */
+    .order { background: var(--choco); color: var(--cream); }
+    .order .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(30px, 5vw, 70px); align-items: start; }
+    .order .h2 em { color: var(--caramel-2); }
+    .order .kicker { color: var(--caramel-2); }
+    .order .side p { color: #d9c6b4; margin-top: 14px; }
+    .how { list-style: none; display: grid; gap: 16px; margin-top: 30px; counter-reset: h; }
+    .how li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+    .how li::before { counter-increment: h; content: counter(h); width: 44px; height: 44px; border-radius: 50%; background: var(--caramel); color: #fff; display: grid; place-items: center; font-family: var(--serif); font-size: 20px; }
+    .how b { display: block; font-weight: 600; }
+    .how span { color: #d9c6b4; font-size: 15px; }
+    .form { background: var(--cream); color: var(--choco); border-radius: 26px; padding: clamp(22px, 3.5vw, 36px); }
+    .form h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; margin-bottom: 18px; }
+    .choice { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+    .choice label { cursor: pointer; position: relative; }
+    .choice input { position: absolute; opacity: 0; }
+    .choice span { display: block; text-align: center; border: 1.5px solid var(--line); background: #fff; border-radius: 14px; padding: 12px 6px; font-size: 14.5px; font-weight: 500; transition: .15s; }
+    .choice span i { display: block; font-style: normal; font-size: 22px; margin-bottom: 3px; }
+    .choice input:checked + span { border-color: var(--caramel); background: #fdf1e3; }
+    .choice input:focus-visible + span { outline: 2px solid var(--caramel); outline-offset: 2px; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fields label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 500; color: var(--choco-2); }
+    .fields .full { grid-column: 1 / -1; }
+    .form input[type=text], .form input[type=tel], .form input[type=date], .form select, .form textarea { width: 100%; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 15.5px; background: #fff; }
+    .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--caramel); }
+    .form textarea { min-height: 80px; resize: vertical; }
+    .parts { display: flex; align-items: center; gap: 12px; }
+    .parts button { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; font-size: 20px; cursor: pointer; }
+    .parts output { font-family: var(--serif); font-size: 26px; min-width: 40px; text-align: center; }
+    .form .btn { width: 100%; margin-top: 18px; }
+    .form .fine { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+    .done { text-align: center; padding: 40px 10px; }
+    .done b { display: grid; place-items: center; width: 70px; height: 70px; margin: 0 auto 16px; border-radius: 50%; background: var(--blush); font-size: 32px; }
+    .done p { color: var(--muted); }
+
+    /* Comptoir & marchés */
+    .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 26px; overflow: hidden; display: grid; grid-template-columns: 1fr 1.1fr; }
+    .card img { width: 100%; height: 100%; object-fit: cover; min-height: 240px; }
+    .card div { padding: clamp(22px, 3vw, 34px); display: grid; gap: 10px; align-content: center; }
+    .card h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.1; }
+    .card p { color: var(--muted); font-size: 15.5px; }
+    .card .date { display: inline-block; background: var(--blush); border-radius: 10px; padding: 6px 12px; font-size: 14px; font-weight: 600; justify-self: start; }
+
+    /* Infos */
+    .infos { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 22px; }
+    .panel { background: #fff; border: 1px solid var(--line); border-radius: 26px; padding: clamp(22px, 3vw, 32px); }
+    .panel h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; margin-bottom: 14px; }
+    .panel a, .panel p { display: flex; align-items: center; gap: 12px; padding: 9px 0; font-size: 16px; }
+    .panel a:hover { color: var(--caramel); }
+    .panel svg { width: 20px; height: 20px; fill: var(--caramel); flex: none; }
+    .hours { list-style: none; }
+    .hours li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--line); font-size: 15.5px; }
+    .hours li span:last-child { color: var(--muted); }
+    .hours-note { font-size: 13px; color: var(--muted); margin-top: 10px; font-style: italic; }
+    .map { border-radius: 26px; overflow: hidden; min-height: 300px; border: 1px solid var(--line); }
+    .map iframe { width: 100%; height: 100%; min-height: 300px; border: 0; display: block; }
+
+    footer.foot { background: var(--choco); color: #d9c6b4; text-align: center; padding: 50px 0 34px; font-size: 14.5px; }
+    footer .logo { justify-content: center; color: var(--cream); }
+    footer .logo i { background: var(--caramel); }
+    footer .legal { margin-top: 22px; font-size: 13px; }
+    footer .legal a { color: #fff; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--choco); color: var(--cream); padding: 13px 20px; border-radius: 99px; font-size: 14.5px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%238a7364' fill-opacity='.14'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s, transform .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 1000px) {
+      header nav { display: none; }
+      .hero .wrap, .fete, .order .wrap { grid-template-columns: 1fr; }
+      .hero-visual { max-width: 460px; width: 100%; margin: 20px auto 0; }
+      .cakes { grid-template-columns: repeat(2, 1fr); }
+      .duo, .infos { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .logo b { font-size: 20px; }
+      header .btn span { display: none; }
+      .hero-visual .t1 { left: 0; }
+      .hero-visual .t2 { right: 0; }
+      .cakes { gap: 14px; }
+      .cake h3 { font-size: 19px; }
+      .choice { grid-template-columns: 1fr 1fr; }
+      .fields { grid-template-columns: 1fr; }
+      .card { grid-template-columns: 1fr; }
+      .card img { aspect-ratio: 16 / 10; min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Proposition de site réalisée par Romain Legros pour le Comptoir des Choux · maquette avec vos vraies photos et infos. <a href="../../">Voir mon portfolio →</a></div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#"><i><svg viewBox="0 0 32 32" fill="none"><path d="M6 20c-2 0-3-2-2-4 1-3 4-3 5-2 0-4 4-6 7-5 2-3 7-2 8 1 3-1 6 2 5 5 2 1 1 5-2 5Z" fill="#e3a35a"/><path d="M5 20h22l-2 5H7Z" fill="#fbf5ec"/></svg></i><span><b>Comptoir des Choux</b><small>Épicerie · Pâtisserie</small></span></a>
+      <nav>
+        <a href="#vitrine">Nos pâtisseries</a>
+        <a href="#fetes">Pièces montées</a>
+        <a href="#commander">Commander</a>
+        <a href="#infos">Nous trouver</a>
+      </nav>
+      <a class="btn" href="#commander">Commander<span> à retirer</span></a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="badge"><b>98 %</b>de nos clients nous recommandent</span>
+        <h1>Le chou dans <em>tous ses états</em>, au cœur du Roumois.</h1>
+        <p class="lead">Saint-Honoré, choux craquelin, tartes de saison, cookies et pièces montées : une épicerie-pâtisserie gourmande à Flancourt-Catelon, à deux pas de Bourg-Achard.</p>
+        <div class="ctas">
+          <a class="btn" href="#commander">Commander un gâteau</a>
+          <a class="btn line" href="#vitrine">Voir la vitrine</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="plate"><img src="img/saint-honore.webp" alt="Saint-Honoré du Comptoir des Choux" /></div>
+        <div class="tag t2"><i>🥐</i><div><b>Retrait en boutique</b><span>Commandez, on prépare</span></div></div>
+        <div class="tag t1"><i>⭐</i><div><b>40 avis</b><span>98 % recommandent</span></div></div>
+        <p class="note">le Saint-Honoré ♡</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block vitrine" id="vitrine">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">La vitrine</p><h2 class="h2">Ce qui vous attend <em>au comptoir</em></h2></div>
+        <p>Notre vitrine change au fil des saisons. Voici quelques-unes de nos créations.</p>
+      </div>
+      <div class="cakes">
+        <article class="cake reveal"><div class="ph"><img src="img/saint-honore.webp" alt="" loading="lazy" /><span>Signature</span></div><h3>Le Saint-Honoré</h3><p>Choux caramélisés, crème légère et caramel.</p></article>
+        <article class="cake reveal"><div class="ph"><img src="img/choux-craquelin.webp" alt="" loading="lazy" /><span>La spécialité</span></div><h3>Les choux craquelin</h3><p>Le croustillant du craquelin, la gourmandise du chou.</p></article>
+        <article class="cake reveal"><div class="ph"><img src="img/tarte-figues.webp" alt="" loading="lazy" /><span>De saison</span></div><h3>La tarte aux figues</h3><p>Pâte sablée, crème et figues fraîches.</p></article>
+        <article class="cake reveal"><div class="ph"><img src="img/cookies.webp" alt="" loading="lazy" /><span>Le goûter</span></div><h3>Les cookies</h3><p>Généreux, moelleux à cœur, plusieurs parfums.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="fetes">
+    <div class="wrap fete">
+      <div class="pics reveal"><img src="img/vitrine.webp" alt="" loading="lazy" /><img src="img/chou-coupe.webp" alt="" loading="lazy" /></div>
+      <div class="reveal">
+        <p class="kicker">Pièces montées &amp; gâteaux de fête</p>
+        <h2 class="h2">Pour vos grands jours, <em>on monte les choux</em></h2>
+        <div class="occ"><span>💍 Mariage</span><span>🕊️ Baptême</span><span>🎂 Anniversaire</span><span>🎓 Communion</span><span>🥂 Entreprise</span></div>
+        <div class="quote"><p>« Notre pièce montée était aussi belle que délicieuse, un vrai régal ! Tout le monde s'est régalé. »</p><small>Avis client sur Facebook · septembre 2026</small></div>
+        <a class="btn" href="#commander">Demander un devis pièce montée</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block order" id="commander">
+    <div class="wrap">
+      <div class="side reveal">
+        <p class="kicker">Click &amp; collect</p>
+        <h2 class="h2">Commandez, <em>on prépare</em>, vous récupérez</h2>
+        <p>Plus besoin d'appeler ou d'envoyer un message : passez votre commande en ligne et venez la retirer en boutique.</p>
+        <ol class="how">
+          <li><div><b>Choisissez</b><span>Pièce montée, entremets, choux, tarte…</span></div></li>
+          <li><div><b>Indiquez le nombre de parts et la date</b><span>Nous confirmons votre commande rapidement.</span></div></li>
+          <li><div><b>Retirez en boutique</b><span>401 route de Bourg-Achard, Flancourt-Catelon.</span></div></li>
+        </ol>
+      </div>
+      <form class="form reveal" id="order">
+        <div id="order-fields">
+          <h3>Votre commande</h3>
+          <div class="choice">
+            <label><input type="radio" name="p" value="Pièce montée" checked /><span><i>🎂</i>Pièce montée</span></label>
+            <label><input type="radio" name="p" value="Saint-Honoré" /><span><i>🍮</i>Saint-Honoré</span></label>
+            <label><input type="radio" name="p" value="Choux" /><span><i>🧁</i>Choux</span></label>
+            <label><input type="radio" name="p" value="Tarte" /><span><i>🥧</i>Tarte</span></label>
+            <label><input type="radio" name="p" value="Cookies" /><span><i>🍪</i>Cookies</span></label>
+            <label><input type="radio" name="p" value="Autre" /><span><i>✨</i>Autre</span></label>
+          </div>
+          <div class="fields">
+            <label>Nombre de parts<div class="parts"><button type="button" data-d="-1" aria-label="Moins">−</button><output id="parts">8</output><button type="button" data-d="1" aria-label="Plus">+</button></div></label>
+            <label>Date de retrait<input type="date" id="pickup" required /></label>
+            <label>Nom<input type="text" required placeholder="Votre nom" /></label>
+            <label>Téléphone<input type="tel" required placeholder="06 12 34 56 78" /></label>
+            <label class="full">Une précision ?<textarea placeholder="Parfums, message à écrire, allergies…"></textarea></label>
+          </div>
+          <button class="btn" type="submit">Envoyer ma commande</button>
+          <p class="fine">Retrait en boutique · Confirmation par téléphone</p>
+        </div>
+        <div class="done" id="order-done" hidden><b>🎉</b><h3>Commande envoyée !</h3><p>Nous vous rappelons pour confirmer.<br />(Démo : rien n'est envoyé.)</p><button class="btn line" type="button" id="again" style="margin-top:18px;width:auto">Nouvelle commande</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Hors les murs</p><h2 class="h2">On nous croise <em>aussi</em> sur les marchés</h2></div>
+        <p>Salons, marchés fermiers et événements du coin : retrouvez ici nos prochaines dates.</p>
+      </div>
+      <div class="duo">
+        <article class="card reveal"><img src="img/stand.webp" alt="Le stand du Comptoir des Choux" loading="lazy" /><div><span class="date">5 &amp; 6 septembre 2026</span><h3>La Saint Patate 2026</h3><p>Journées gastronomiques et culturelles au hangar de L'Épi, à Bouquetot (27).</p></div></article>
+        <article class="card reveal"><img src="img/marche.webp" alt="" loading="lazy" /><div><span class="date">Prochaine date</span><h3>Votre prochain événement ici</h3><p>Chaque nouvelle date s'ajoute en quelques secondes, avec un rappel sur la page d'accueil.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="infos" style="padding-top:0">
+    <div class="wrap infos">
+      <div class="panel reveal">
+        <h3>Nous trouver</h3>
+        <a href="https://maps.google.com/?q=401%20route%20de%20Bourg-Achard%2C%2027310%20Flancourt-Catelon" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>401 route de Bourg-Achard<br />27310 Flancourt-Catelon</a>
+        <a href="tel:+33232579403"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg>02 32 57 94 03</a>
+        <a href="mailto:comptoirdeschoux@outlook.fr"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.5L4 7.3V17h16V7.3Z"/></svg>comptoirdeschoux@outlook.fr</a>
+        <a href="https://www.facebook.com/comptoirdeschoux" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8Z"/></svg>Facebook · 3 400 abonnés</a>
+      </div>
+      <div class="panel reveal">
+        <h3>Horaires</h3>
+        <ul class="hours"><li><span>Lundi</span><span>—</span></li><li><span>Mardi</span><span>—</span></li><li><span>Mercredi</span><span>—</span></li><li><span>Jeudi</span><span>—</span></li><li><span>Vendredi</span><span>—</span></li><li><span>Samedi</span><span>—</span></li><li><span>Dimanche</span><span>—</span></li></ul>
+        <p class="hours-note">Vos horaires s'affichent ici, avec « ouvert / fermé » en direct.</p>
+      </div>
+      <div class="map reveal"><iframe title="Plan d'accès" loading="lazy" src="https://maps.google.com/maps?q=401%20route%20de%20Bourg-Achard%2C%2027310%20Flancourt-Catelon&z=14&output=embed"></iframe></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <a class="logo" href="#"><i><svg viewBox="0 0 32 32" fill="none"><path d="M6 20c-2 0-3-2-2-4 1-3 4-3 5-2 0-4 4-6 7-5 2-3 7-2 8 1 3-1 6 2 5 5 2 1 1 5-2 5Z" fill="#fbf5ec"/><path d="M5 20h22l-2 5H7Z" fill="#3a2418"/></svg></i><span><b>Comptoir des Choux</b></span></a>
+      <p style="margin-top:14px">Épicerie · Pâtisserie · 401 route de Bourg-Achard, 27310 Flancourt-Catelon · 02 32 57 94 03</p>
+      <p class="legal">© 2026 <a href="../../">Romain Legros</a> · Design et code de cette maquette protégés : reproduction interdite sans accord. Photos et avis : Comptoir des Choux.</p>
+    </div>
+  </footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    let toastT;
+    function toast(m) { const t = $('.toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3000); }
+
+    // Nombre de parts
+    let parts = 8;
+    document.querySelectorAll('[data-d]').forEach((b) => b.addEventListener('click', () => {
+      parts = Math.min(150, Math.max(2, parts + +b.dataset.d * (parts >= 20 ? 5 : 2)));
+      $('#parts').textContent = parts;
+    }));
+
+    // Date de retrait : au plus tôt dans 2 jours
+    const min = new Date(); min.setDate(min.getDate() + 2);
+    $('#pickup').min = min.toISOString().slice(0, 10);
+
+    $('#order').addEventListener('submit', (e) => {
+      e.preventDefault();
+      $('#order-fields').hidden = true;
+      $('#order-done').hidden = false;
+    });
+    $('#again').addEventListener('click', () => { $('#order').reset(); parts = 8; $('#parts').textContent = parts; $('#order-fields').hidden = false; $('#order-done').hidden = true; });
+
+    const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
