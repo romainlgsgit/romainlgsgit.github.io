@@ -6,6 +6,8 @@
   <title>La Fabrique des Filles — Proposition de refonte</title>
   <meta name="description" content="Maquette de refonte de la boutique en ligne La Fabrique des Filles, proposée par Romain Legros." />
   <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Figtree:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
@@ -202,6 +204,11 @@
     .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 99px; font-size: 14px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+    /* Filigrane de la maquette */
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%232e2226' fill-opacity='.075'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    @media print { .wm { position: absolute; } }
+
     .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s, transform .8s cubic-bezier(.2,.8,.2,1); }
     .reveal.in { opacity: 1; transform: none; }
 
@@ -391,7 +398,7 @@
       </div>
       <div class="legal">
         <span>Maquette réalisée par <a href="../../">Romain Legros</a>, développeur web en Normandie. Photos et produits : La Fabrique des Filles.</span>
-        <span>Paiement désactivé (démonstration)</span>
+        <span>© 2026 Romain Legros · Design et code de cette maquette protégés : reproduction interdite sans accord.</span>
       </div>
     </div>
   </footer>
@@ -414,6 +421,7 @@
     </footer>
   </aside>
   <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
 
   <script>
     const CAROLE = 'Carole', LAURENCE = 'Laurence';
