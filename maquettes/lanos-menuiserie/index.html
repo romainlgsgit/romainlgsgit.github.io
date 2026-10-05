@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lanos Menuiserie — Proposition de site</title>
+  <meta name="description" content="Maquette de site internet pour Lanos Menuiserie à Bosgouet, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #a3262c; --red-dk: #831d22; --ink: #1d2124; --ink-2: #2a2f33; --muted: #687076; --bg: #ffffff; --soft: #f3f2ef; --line: #e3e1dc;
+      --head: 'Archivo', system-ui, sans-serif; --body: 'Inter', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    [hidden] { display: none !important; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding-left: clamp(16px, 4vw, 44px); padding-right: clamp(16px, 4vw, 44px); }
+    h1, h2, h3 { font-family: var(--head); font-stretch: 88%; letter-spacing: -.01em; }
+
+    .demo-bar { background: var(--ink); color: #dfe2e4; font-size: 13px; text-align: center; padding: 9px 16px; }
+    .demo-bar a { color: #fff; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,.5); }
+
+    /* En-tête */
+    .topline { background: var(--soft); font-size: 13.5px; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .topline .wrap { display: flex; justify-content: space-between; gap: 16px; padding-top: 8px; padding-bottom: 8px; flex-wrap: wrap; }
+    .topline a { color: var(--ink); font-weight: 500; }
+    .topline span + span { margin-left: 18px; }
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 22px; height: 76px; }
+    header .logo img { height: 44px; width: auto; }
+    header nav { display: flex; gap: 28px; font-weight: 500; font-size: 15px; }
+    header nav a { position: relative; padding: 6px 0; }
+    header nav a::after { content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 2px; background: var(--red); transition: right .25s; }
+    header nav a:hover::after { right: 0; }
+    .hdr-ctas { display: flex; align-items: center; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 22px; border-radius: 6px; font-weight: 600; font-size: 15px; border: 2px solid var(--red); background: var(--red); color: #fff; transition: .2s; cursor: pointer; white-space: nowrap; }
+    .btn:hover { background: var(--red-dk); border-color: var(--red-dk); transform: translateY(-1px); }
+    .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+    .btn.ghost:hover { border-color: var(--ink); background: transparent; }
+    .btn.light { background: #fff; color: var(--red); border-color: #fff; }
+    .btn svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+    header .btn { padding: 11px 18px; }
+
+    /* Hero */
+    .hero { position: relative; min-height: min(86vh, 780px); display: grid; align-items: center; color: #fff; overflow: hidden; }
+    .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,22,24,.86) 0%, rgba(20,22,24,.6) 46%, rgba(20,22,24,.08) 100%); }
+    .hero .wrap { position: relative; z-index: 1; width: 100%; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; padding-top: 70px; padding-bottom: 70px; }
+    .pill { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 99px; padding: 6px 14px 6px 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(6px); }
+    .pill img { height: 28px; width: auto; background: #fff; border-radius: 99px; padding: 3px 8px; }
+    .hero h1 { font-size: clamp(42px, 5.8vw, 80px); font-weight: 800; line-height: .98; margin: 22px 0 20px; }
+    .hero h1 em { font-style: normal; color: #ff8b8f; }
+    .hero p.lead { font-size: 18.5px; color: rgba(255,255,255,.86); max-width: 540px; }
+    .hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .hero .btn.ghost { color: #fff; border-color: rgba(255,255,255,.4); }
+    .hero .btn.ghost:hover { border-color: #fff; }
+
+    .quick { background: #fff; color: var(--ink); border-radius: 12px; padding: 28px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }
+    .quick h2 { font-size: 26px; font-weight: 800; line-height: 1.1; }
+    .quick p.sub { color: var(--muted); font-size: 14.5px; margin: 6px 0 18px; }
+    .types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .types button { border: 1.5px solid var(--line); background: #fff; border-radius: 8px; padding: 12px 6px 10px; font-size: 13px; font-weight: 500; display: grid; justify-items: center; gap: 6px; cursor: pointer; transition: .15s; }
+    .types button svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .types button:hover { border-color: var(--ink); }
+    .types button.on { border-color: var(--red); color: var(--red); background: #fdf3f3; }
+    .quick .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .quick input { width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 12px 14px; font-size: 15px; background: #fff; }
+    .quick input:focus, .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--red); }
+    .quick .btn { width: 100%; }
+    .quick .fine { font-size: 12.5px; color: var(--muted); text-align: center; margin-top: 10px; }
+
+    /* Bandeau de confiance */
+    .trust { background: var(--ink); color: #fff; }
+    .trust .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; }
+    .trust div { padding: 26px 18px; display: flex; align-items: center; gap: 14px; }
+    .trust b { font-family: var(--head); font-stretch: 80%; font-weight: 800; font-size: 36px; color: #ff8b8f; line-height: 1; }
+    .trust span { font-size: 14px; color: #c9cdd0; line-height: 1.35; }
+
+    section.block { padding: clamp(70px, 9vw, 120px) 0; }
+    .kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
+    .kicker::before { content: ''; width: 24px; height: 2px; background: currentColor; }
+    .h2 { font-size: clamp(34px, 4.4vw, 56px); font-weight: 800; line-height: 1.02; margin-top: 12px; }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+    .head p { color: var(--muted); max-width: 470px; }
+
+    /* Services */
+    .seg { display: inline-flex; background: var(--soft); border-radius: 99px; padding: 4px; }
+    .seg button { border: 0; background: none; padding: 10px 20px; border-radius: 99px; font-weight: 600; font-size: 14.5px; cursor: pointer; color: var(--muted); transition: .2s; }
+    .seg button.on { background: var(--ink); color: #fff; }
+    .services { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .svc { position: relative; border-radius: 10px; overflow: hidden; background: var(--soft); display: flex; flex-direction: column; border: 1px solid var(--line); transition: transform .25s, box-shadow .25s; }
+    .svc:hover { transform: translateY(-4px); box-shadow: 0 18px 36px -18px rgba(0,0,0,.35); }
+    .svc img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .svc div { padding: 16px 18px 18px; display: grid; gap: 4px; }
+    .svc h3 { font-size: 21px; font-weight: 700; line-height: 1.15; }
+    .svc p { font-size: 14px; color: var(--muted); }
+    .svc .go { font-size: 14px; font-weight: 600; color: var(--red); margin-top: 6px; }
+    .svc-in { animation: fade .35s ease both; }
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } }
+
+    /* Démarche */
+    .process { background: var(--soft); }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: s; }
+    .step { background: #fff; border-radius: 10px; padding: 26px 22px; border: 1px solid var(--line); position: relative; }
+    .step::before { counter-increment: s; content: '0' counter(s); font-family: var(--head); font-stretch: 80%; font-weight: 800; font-size: 46px; color: var(--red); line-height: 1; display: block; margin-bottom: 10px; }
+    .step h3 { font-size: 21px; font-weight: 700; margin-bottom: 6px; }
+    .step p { font-size: 14.5px; color: var(--muted); }
+    .aids { margin-top: 22px; display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center; background: var(--ink); color: #fff; border-radius: 10px; padding: 24px 28px; }
+    .aids img { height: 56px; width: auto; background: #fff; border-radius: 6px; padding: 4px; }
+    .aids h3 { font-size: 22px; font-weight: 700; }
+    .aids p { color: #c9cdd0; font-size: 14.5px; }
+
+    /* Réalisations */
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+    .filters button { border: 1.5px solid var(--line); background: #fff; border-radius: 99px; padding: 8px 15px; font-size: 14px; font-weight: 500; cursor: pointer; transition: .15s; }
+    .filters button:hover { border-color: var(--ink); }
+    .filters button.on { background: var(--red); border-color: var(--red); color: #fff; }
+    .works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .work { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 3; background: var(--soft); }
+    .work img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
+    .work:hover img { transform: scale(1.05); }
+    .work figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(transparent, rgba(0,0,0,.78)); color: #fff; }
+    .work figcaption small { display: inline-block; background: var(--red); font-size: 11.5px; font-weight: 600; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: .06em; }
+    .work figcaption b { display: block; font-family: var(--head); font-stretch: 88%; font-size: 19px; font-weight: 700; line-height: 1.2; margin-top: 6px; }
+    .work figcaption span { font-size: 13.5px; opacity: .85; }
+
+    /* Fabricants */
+    .brands { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .brands .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px 34px; flex-wrap: wrap; padding-top: 26px; padding-bottom: 26px; }
+    .brands p { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .brands span { font-family: var(--head); font-stretch: 110%; font-weight: 700; font-size: 19px; color: #9aa0a4; }
+
+    /* Devis */
+    .devis { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(30px, 5vw, 70px); align-items: start; }
+    .devis .side p { color: var(--muted); margin-top: 14px; }
+    .contact-cards { display: grid; gap: 10px; margin-top: 26px; }
+    .contact-cards a, .contact-cards div { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; transition: border-color .2s; }
+    .contact-cards a:hover { border-color: var(--red); }
+    .contact-cards svg { width: 22px; height: 22px; fill: var(--red); flex: none; }
+    .contact-cards b { display: block; font-weight: 600; }
+    .contact-cards small { color: var(--muted); font-size: 13.5px; }
+    .form { background: var(--soft); border-radius: 12px; padding: clamp(22px, 3.5vw, 38px); border: 1px solid var(--line); }
+    .progress { display: flex; gap: 6px; margin-bottom: 22px; }
+    .progress i { flex: 1; height: 4px; border-radius: 4px; background: var(--line); transition: background .3s; }
+    .progress i.on { background: var(--red); }
+    .stage { display: none; }
+    .stage.on { display: block; animation: fade .3s ease both; }
+    .stage h3 { font-size: 24px; font-weight: 800; margin-bottom: 14px; }
+    .opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .opts label { position: relative; cursor: pointer; }
+    .opts input { position: absolute; opacity: 0; }
+    .opts span { display: block; text-align: center; border: 1.5px solid var(--line); background: #fff; border-radius: 8px; padding: 13px 8px; font-size: 14.5px; font-weight: 500; transition: .15s; }
+    .opts input:checked + span { border-color: var(--red); color: var(--red); background: #fdf3f3; }
+    .opts input:focus-visible + span { outline: 2px solid var(--red); outline-offset: 2px; }
+    .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fields label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 500; }
+    .fields .full { grid-column: 1 / -1; }
+    .form input[type=text], .form input[type=tel], .form input[type=email], .form select, .form textarea { width: 100%; border: 1.5px solid var(--line); border-radius: 8px; padding: 12px 14px; font-size: 15px; background: #fff; }
+    .form textarea { min-height: 96px; resize: vertical; }
+    .nav-btns { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+    .done { text-align: center; padding: 30px 10px; }
+    .done b { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%; background: #e7f3ea; color: #2f7a43; font-size: 30px; }
+    .done p { color: var(--muted); }
+
+    /* Zone */
+    .zone { background: var(--ink); color: #fff; }
+    .zone .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+    .zone .h2 { color: #fff; }
+    .zone p { color: #c9cdd0; margin-top: 14px; }
+    .towns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .towns span { border: 1px solid rgba(255,255,255,.2); border-radius: 99px; padding: 6px 13px; font-size: 14px; }
+    .map { border-radius: 12px; overflow: hidden; aspect-ratio: 4 / 3; filter: grayscale(.9) contrast(1.05); }
+    .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    footer.foot { background: #15181a; color: #9aa0a4; padding: 56px 0 30px; font-size: 14.5px; }
+    footer .cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 30px; }
+    footer .logo-f { background: #fff; display: inline-block; padding: 10px 14px; border-radius: 8px; }
+    footer .logo-f img { height: 38px; width: auto; }
+    footer h4 { color: #fff; font-size: 14px; margin-bottom: 12px; font-family: var(--head); letter-spacing: .04em; }
+    footer .cols a { display: block; padding: 3px 0; }
+    footer .cols a:hover { color: #fff; }
+    footer .legal { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1); font-size: 13px; }
+    footer .legal a { color: #fff; }
+
+    .mobile-cta { display: none; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: #fff; padding: 13px 20px; border-radius: 8px; font-size: 14.5px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23808890' fill-opacity='.13'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s, transform .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 1060px) {
+      header nav { display: none; }
+      .hero .wrap { grid-template-columns: 1fr; }
+      .quick { max-width: 520px; }
+      .services { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .trust .wrap { grid-template-columns: repeat(2, 1fr); }
+      .works { grid-template-columns: repeat(2, 1fr); }
+      .devis, .zone .wrap { grid-template-columns: 1fr; }
+      footer .cols { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .topline .hide-s { display: none; }
+      header .logo img { height: 36px; }
+      header .btn.ghost { display: none; }
+      .hero::after { background: linear-gradient(180deg, rgba(20,22,24,.55) 0%, rgba(20,22,24,.88) 60%); }
+      .hero .wrap { padding-top: 46px; padding-bottom: 46px; }
+      .quick { padding: 20px; }
+      .trust div { padding: 18px 8px; flex-direction: column; align-items: flex-start; gap: 6px; }
+      .trust b { font-size: 30px; }
+      .services, .steps, .works { grid-template-columns: 1fr; }
+      .aids { grid-template-columns: 1fr; text-align: left; }
+      .opts { grid-template-columns: 1fr 1fr; }
+      .fields { grid-template-columns: 1fr; }
+      footer .cols { grid-template-columns: 1fr; }
+      .mobile-cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border-top: 1px solid var(--line); backdrop-filter: blur(8px); }
+      .mobile-cta .btn { padding: 12px; }
+      body { padding-bottom: 72px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Proposition de site réalisée par Romain Legros pour Lanos Menuiserie · maquette avec vos vraies réalisations. <a href="../../">Voir mon portfolio →</a></div>
+  <div class="topline">
+    <div class="wrap">
+      <div><span>📍 2, rue de l'Avenir, 27310 Bosgouet</span><span class="hide-s">Eure (27) &amp; Seine-Maritime (76)</span></div>
+      <div><span class="hide-s"><a href="https://www.lanos-isolation.fr/" target="_blank" rel="noopener">Lanos Isolation ↗</a></span><span><a href="mailto:contact@lanos-menuiserie.fr">contact@lanos-menuiserie.fr</a></span></div>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#"><img src="img/logo.png" alt="Lanos Menuiserie" /></a>
+      <nav>
+        <a href="#services">Nos services</a>
+        <a href="#demarche">Notre démarche</a>
+        <a href="#realisations">Réalisations</a>
+        <a href="#zone">Zone d'intervention</a>
+      </nav>
+      <div class="hdr-ctas">
+        <a class="btn ghost" href="tel:+33232574466"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg>02 32 57 44 66</a>
+        <a class="btn" href="#devis">Devis gratuit</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="img/hero-baie.webp" alt="Baie coulissante aluminium posée dans une maison normande" />
+    <div class="wrap">
+      <div>
+        <span class="pill"><img src="img/rge.png" alt="RGE Qualibat" />Entreprise certifiée RGE · éligible aux aides</span>
+        <h1>Vos menuiseries posées par <em>des menuisiers d'ici</em>, depuis 1985.</h1>
+        <p class="lead">Fenêtres, portes, portails, volets, pergolas et isolation : de la visite technique à la pose, tout est géré par nos équipes, à Bosgouet, à deux pas de Bourg-Achard.</p>
+        <div class="ctas">
+          <a class="btn" href="#devis">Demander mon devis gratuit</a>
+          <a class="btn ghost" href="#realisations">Voir nos réalisations</a>
+        </div>
+      </div>
+      <form class="quick" id="quick">
+        <h2>Votre projet en 30 secondes</h2>
+        <p class="sub">Un technicien-conseil se déplace chez vous, gratuitement et sans engagement.</p>
+        <div class="types" id="qtypes">
+          <button type="button" data-t="Fenêtre"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18M4 12h16"/></svg>Fenêtre</button>
+          <button type="button" data-t="Porte d'entrée"><svg viewBox="0 0 24 24"><path d="M6 21V3h12v18M3 21h18"/><circle cx="15" cy="12" r=".8"/></svg>Porte</button>
+          <button type="button" data-t="Porte de garage"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M6 21v-9h12v9M6 15h12M6 18h12"/></svg>Garage</button>
+          <button type="button" data-t="Portail"><svg viewBox="0 0 24 24"><path d="M3 20V8M21 20V8M3 10h18M3 16h18M7.5 10v6M12 10v6M16.5 10v6"/></svg>Portail</button>
+          <button type="button" data-t="Volet"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M4 7h16M4 11h16M4 15h16"/></svg>Volet</button>
+          <button type="button" data-t="Isolation"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-5h6v5"/></svg>Isolation</button>
+        </div>
+        <div class="row2">
+          <input type="text" inputmode="numeric" maxlength="5" placeholder="Code postal" aria-label="Code postal" required id="qcp" />
+          <input type="tel" placeholder="Téléphone" aria-label="Téléphone" required />
+        </div>
+        <button class="btn" type="submit">Être rappelé gratuitement</button>
+        <p class="fine">Gratuit · Sans engagement</p>
+      </form>
+    </div>
+  </section>
+
+  <div class="trust">
+    <div class="wrap">
+      <div><b>40 ans</b><span>de savoir-faire<br />depuis 1985</span></div>
+      <div><b>RGE</b><span>Qualibat · vos travaux<br />éligibles aux aides</span></div>
+      <div><b>0 €</b><span>visite technique<br />à domicile</span></div>
+      <div><b>100 %</b><span>des poses par<br />nos propres équipes</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Nos services</p><h2 class="h2">Du sur-mesure, pour la maison<br />comme pour les pros</h2></div>
+        <div class="seg" id="seg"><button type="button" class="on" data-s="part">Particuliers</button><button type="button" data-s="pro">Professionnels</button></div>
+      </div>
+      <div class="services" id="svc"></div>
+    </div>
+  </section>
+
+  <section class="block process" id="demarche">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Notre démarche</p><h2 class="h2">Pas de devis sans être<br />passé chez vous</h2></div>
+        <p>Chaque maison normande a ses particularités. C'est pourquoi on se déplace toujours avant de chiffrer.</p>
+      </div>
+      <div class="steps reveal">
+        <div class="step"><h3>Votre demande</h3><p>Par téléphone, par e-mail ou via le formulaire : vous nous décrivez votre projet en quelques mots.</p></div>
+        <div class="step"><h3>Visite à domicile</h3><p>Un technicien-conseil se déplace gratuitement pour prendre les mesures et vous conseiller.</p></div>
+        <div class="step"><h3>Devis détaillé</h3><p>Une solution réellement adaptée à votre logement, avec des fabricants français reconnus.</p></div>
+        <div class="step"><h3>Pose soignée</h3><p>Nos équipes posent vos menuiseries et laissent le chantier propre.</p></div>
+      </div>
+      <div class="aids reveal">
+        <img src="img/rge.png" alt="RGE Qualibat" />
+        <div><h3>On s'occupe aussi de vos aides</h3><p>Grâce à notre certification RGE, nous vous accompagnons dans vos démarches : subventions, chèque énergie, prêt, certificats d'économies d'énergie (CEE).</p></div>
+        <a class="btn light" href="#devis">En parler avec nous</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="realisations">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Réalisations</p><h2 class="h2">Nos derniers chantiers<br />près de chez vous</h2></div>
+        <p>De Bourg-Achard à Rouen, quelques projets réalisés par nos équipes.</p>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div class="works" id="works"></div>
+    </div>
+  </section>
+
+  <div class="brands">
+    <div class="wrap">
+      <p>Nos fabricants partenaires</p>
+      <span>K·LINE</span><span>Menuisier Conseil</span><span>La Toulousaine</span><span>Corrèze Fermetures</span><span>Brustor</span><span>Atulam</span>
+    </div>
+  </div>
+
+  <section class="block" id="devis">
+    <div class="wrap devis">
+      <div class="side reveal">
+        <p class="kicker">Devis gratuit</p>
+        <h2 class="h2">Parlons de votre projet</h2>
+        <p>Trois étapes, moins d'une minute. Nous vous rappelons pour fixer la visite technique, gratuite et sans engagement.</p>
+        <div class="contact-cards">
+          <a href="tel:+33232574466"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg><span><b>02 32 57 44 66</b><small>Appelez-nous directement</small></span></a>
+          <a href="mailto:contact@lanos-menuiserie.fr"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.5L4 7.3V17h16V7.3Z"/></svg><span><b>contact@lanos-menuiserie.fr</b><small>Envoyez-nous vos photos ou plans</small></span></a>
+          <div><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span><b>2, rue de l'Avenir, 27310 Bosgouet</b><small>À 5 minutes de Bourg-Achard</small></span></div>
+        </div>
+      </div>
+      <form class="form reveal" id="form" novalidate>
+        <div class="progress"><i class="on"></i><i></i><i></i></div>
+        <div class="stage on" data-st="1">
+          <h3>1. Quel est votre projet ?</h3>
+          <div class="opts" id="opts">
+            <label><input type="radio" name="t" value="Fenêtre" /><span>Fenêtre</span></label>
+            <label><input type="radio" name="t" value="Porte d'entrée" /><span>Porte d'entrée</span></label>
+            <label><input type="radio" name="t" value="Porte de garage" /><span>Porte de garage</span></label>
+            <label><input type="radio" name="t" value="Portail" /><span>Portail</span></label>
+            <label><input type="radio" name="t" value="Volet" /><span>Volet, BSO</span></label>
+            <label><input type="radio" name="t" value="Pergola" /><span>Store, pergola</span></label>
+            <label><input type="radio" name="t" value="Garde-corps" /><span>Garde-corps</span></label>
+            <label><input type="radio" name="t" value="Isolation" /><span>Isolation</span></label>
+            <label><input type="radio" name="t" value="Professionnel" /><span>Projet pro</span></label>
+          </div>
+        </div>
+        <div class="stage" data-st="2">
+          <h3>2. Quelques précisions</h3>
+          <div class="fields">
+            <label>Type de travaux<select><option>Rénovation (remplacement)</option><option>Construction neuve</option><option>Je ne sais pas encore</option></select></label>
+            <label>Délai souhaité<select><option>Dès que possible</option><option>Dans les 3 mois</option><option>Dans l'année</option></select></label>
+            <label class="full">Votre projet en quelques mots<textarea placeholder="Ex. : remplacer 4 fenêtres en PVC par de l'aluminium gris anthracite"></textarea></label>
+          </div>
+        </div>
+        <div class="stage" data-st="3">
+          <h3>3. Vos coordonnées</h3>
+          <div class="fields">
+            <label>Nom<input type="text" required placeholder="Votre nom" /></label>
+            <label>Téléphone<input type="tel" required placeholder="06 12 34 56 78" /></label>
+            <label>E-mail<input type="email" placeholder="vous@exemple.fr" /></label>
+            <label>Commune<input type="text" required placeholder="Bourg-Achard" /></label>
+          </div>
+        </div>
+        <div class="stage" data-st="4">
+          <div class="done"><b>✓</b><h3>Merci, c'est envoyé !</h3><p>Nous vous rappelons rapidement pour fixer la visite technique.<br />(Démo : aucune demande n'est transmise.)</p></div>
+        </div>
+        <div class="nav-btns" id="navb">
+          <button class="btn ghost" type="button" id="prev" hidden>← Retour</button>
+          <button class="btn" type="button" id="next" style="margin-left:auto">Continuer →</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="block zone" id="zone">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="kicker" style="color:#ff8b8f">Zone d'intervention</p>
+        <h2 class="h2">Dans l'Eure et l'agglomération de Rouen</h2>
+        <p>Installés à Bosgouet, nous intervenons dans tout le Roumois, l'Eure et la Seine-Maritime.</p>
+        <div class="towns"><span>Bourg-Achard</span><span>Bosgouet</span><span>Bosc-Roger-en-Roumois</span><span>Saint-Ouen-de-Thouberville</span><span>Bourgtheroulde</span><span>Caumont</span><span>Elbeuf</span><span>Grand-Quevilly</span><span>Petit-Couronne</span><span>Rouen</span><span>Pont-Audemer</span><span>Louviers</span></div>
+      </div>
+      <div class="map reveal"><iframe title="Lanos Menuiserie sur la carte" loading="lazy" src="https://maps.google.com/maps?q=Lanos%20Menuiserie%2C%202%20Rue%20de%20l%27Avenir%2C%2027310%20Bosgouet&z=10&output=embed"></iframe></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <span class="logo-f"><img src="img/logo.png" alt="Lanos Menuiserie" /></span>
+          <p style="margin-top:14px">Menuiserie générale, agencement intérieur et isolation thermique. Dans la continuité de Lanos Isolation, créée en 1985.</p>
+        </div>
+        <div><h4>Particuliers</h4><a href="#services">Fenêtres</a><a href="#services">Portes d'entrée</a><a href="#services">Portes de garage</a><a href="#services">Portails</a><a href="#services">Volets &amp; pergolas</a></div>
+        <div><h4>Professionnels</h4><a href="#services">Agencement</a><a href="#services">Menuiserie intérieure</a><a href="#services">Cloisons &amp; faux-plafonds</a><a href="#services">ITE, vêture</a></div>
+        <div><h4>Contact</h4><a href="tel:+33232574466">02 32 57 44 66</a><a href="mailto:contact@lanos-menuiserie.fr">contact@lanos-menuiserie.fr</a><a href="https://www.facebook.com/clientsparticuliers" target="_blank" rel="noopener">Facebook</a><a href="https://www.lanos-isolation.fr/" target="_blank" rel="noopener">Lanos Isolation</a></div>
+      </div>
+      <p class="legal">© 2026 <a href="../../">Romain Legros</a> · Design et code de cette maquette protégés : reproduction interdite sans accord. Logo, photos et textes : Lanos Menuiserie.</p>
+    </div>
+  </footer>
+
+  <div class="mobile-cta"><a class="btn ghost" href="tel:+33232574466">Appeler</a><a class="btn" href="#devis">Devis gratuit</a></div>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s, el = document) => el.querySelector(s);
+    const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+    let toastT;
+    function toast(m) { const t = $('.toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3000); }
+
+    /* Services */
+    const SVC = {
+      part: [
+        ['Fenêtres', 'PVC Menuisier Conseil ou aluminium K·Line, double vitrage performant.', 'fenetre-alu'],
+        ['Portes d\'entrée', 'Aluminium, PVC ou bois, sur mesure et sécurisées.', 'porte-mahjong'],
+        ['Portes de garage', 'Sectionnelles ou latérales, motorisées.', 'porte-garage'],
+        ['Portails', 'Battants ou coulissants, en aluminium.', 'portail-contemporain'],
+        ['Volets & BSO', 'Roulants, solaires, coulissants ou battants.', 'volets-coulissants'],
+        ['Stores & pergolas', 'Pergolas bioclimatiques Brustor, stores bannes.', 'pergola'],
+        ['Garde-corps', 'Aluminium, pour balcons et terrasses.', 'garde-corps'],
+        ['Isolation', 'Isolation intérieure et extérieure, avec Lanos Isolation.', 'ite-caumont'],
+      ],
+      pro: [
+        ['Agencement', 'Aménagements décoratifs et sur mesure pour vos locaux.', 'agencement'],
+        ['Menuiserie intérieure', 'Portes, cloisons vitrées, habillages.', 'menuiserie-interieure'],
+        ['Cloisons & faux-plafonds', 'Doublage, cloisonnement et plafonds suspendus.', 'cloison'],
+        ['Menuiserie extérieure', 'Châssis, façades vitrées, portes de service.', 'baie-interieur'],
+        ['ITE & vêture', 'Isolation thermique par l\'extérieur et bardage.', 'veture'],
+        ['Accessibilité', 'Réhabilitation et mise en conformité accessibilité.', 'porte-pvc'],
+      ],
+    };
+    function renderSvc(k) {
+      $('#svc').innerHTML = SVC[k].map(([t, d, img]) => `<a class="svc svc-in" href="#devis"><img src="img/${img}.webp" alt="" loading="lazy" /><div><h3>${t}</h3><p>${d}</p><span class="go">Demander un devis →</span></div></a>`).join('');
+    }
+    $('#seg').addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#seg button').forEach((x) => x.classList.toggle('on', x === b));
+      renderSvc(b.dataset.s);
+    });
+    renderSvc('part');
+
+    /* Réalisations */
+    const WORKS = [
+      ['Porte d\'entrée', 'Porte d\'entrée aluminium Mahjong K·Line', 'Bourg-Achard (27)', 'porte-mahjong'],
+      ['Portail', 'Portail aluminium Access', 'Bosc-Roger-en-Roumois (27)', 'portail-access'],
+      ['Volet', 'Volets coulissants aluminium Corrèze Fermetures', 'Elbeuf (76)', 'volets-coulissants'],
+      ['Isolation', 'Isolation extérieure d\'une résidence principale', 'Caumont (27)', 'ite-caumont'],
+      ['Fenêtre', 'Baie coulissante aluminium K·Line', 'Eure', 'hero-baie'],
+      ['Pergola', 'Pergola bioclimatique Brustor', 'Saint-Ouen-de-Thouberville (27)', 'pergola'],
+      ['Fenêtre', 'Fenêtres aluminium K·Line', 'Grand-Quevilly (76)', 'fenetre-alu'],
+      ['Porte d\'entrée', 'Porte d\'entrée bois Atulam', 'Rouen (76)', 'porte-bois'],
+      ['Garde-corps', 'Garde-corps La Toulousaine', 'Bourg-Achard (27)', 'garde-corps'],
+      ['Volet', 'Volets roulants solaires', 'Saint-Ouen-de-Thouberville (27)', 'volet-solaire'],
+      ['Isolation', 'Isolation extérieure et vêture', 'Bourg-Achard (27)', 'veture'],
+      ['Professionnel', 'Agencement décoratif', 'Locaux professionnels', 'agencement'],
+    ];
+    const cats = ['Tous', ...new Set(WORKS.map((w) => w[0]))];
+    $('#filters').innerHTML = cats.map((c, i) => `<button type="button" class="${i ? '' : 'on'}" data-c="${c}">${c}</button>`).join('');
+    function renderWorks(c) {
+      $('#works').innerHTML = WORKS.filter((w) => c === 'Tous' || w[0] === c).map(([cat, t, place, img]) => `<figure class="work svc-in"><img src="img/${img}.webp" alt="${t}" loading="lazy" /><figcaption><small>${cat}</small><b>${t}</b><span>📍 ${place}</span></figcaption></figure>`).join('');
+    }
+    $('#filters').addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      $$('#filters button').forEach((x) => x.classList.toggle('on', x === b));
+      renderWorks(b.dataset.c);
+    });
+    renderWorks('Tous');
+
+    /* Formulaire express du hero */
+    let qType = null;
+    $('#qtypes').addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      qType = b.dataset.t;
+      $$('#qtypes button').forEach((x) => x.classList.toggle('on', x === b));
+    });
+    $('#quick').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!qType) { toast('Choisissez d\'abord votre type de projet'); return; }
+      if (!/^\d{5}$/.test($('#qcp').value)) { toast('Indiquez un code postal à 5 chiffres'); return; }
+      e.target.reset(); qType = null; $$('#qtypes button').forEach((x) => x.classList.remove('on'));
+      toast('Merci ! Nous vous rappelons très vite. (Démo : rien n\'est envoyé)');
+    });
+
+    /* Devis en 3 étapes */
+    let st = 1;
+    const form = $('#form');
+    function go(n) {
+      st = n;
+      $$('.stage', form).forEach((s) => s.classList.toggle('on', +s.dataset.st === n));
+      $$('.progress i', form).forEach((p, i) => p.classList.toggle('on', i < n));
+      $('#prev').hidden = n === 1 || n === 4;
+      $('#navb').hidden = n === 4;
+      $('#next').textContent = n === 3 ? 'Envoyer ma demande' : 'Continuer →';
+    }
+    $('#next').addEventListener('click', () => {
+      if (st === 1 && !$('input[name=t]:checked', form)) { toast('Sélectionnez votre type de projet'); return; }
+      if (st === 3) {
+        const bad = $$('.stage[data-st="3"] input[required]', form).find((i) => !i.value.trim());
+        if (bad) { bad.focus(); toast('Merci de compléter vos coordonnées'); return; }
+      }
+      go(st + 1);
+    });
+    $('#prev').addEventListener('click', () => go(st - 1));
+    // Le choix du type de projet fait passer directement à l'étape suivante
+    $$('#opts input').forEach((i) => i.addEventListener('change', () => setTimeout(() => go(2), 250)));
+
+    const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .1 });
+    $$('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
