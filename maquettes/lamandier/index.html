@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'Amandier — Proposition de site</title>
+  <meta name="description" content="Maquette de site internet pour le restaurant L'Amandier à Bourg-Achard, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #17312c; --green-2: #1f3f39; --green-3: #2b524a; --cream: #f7f2ea; --paper: #efe7da; --ink: #1d2422; --muted: #6f726c;
+      --gold: #c9a26b; --gold-2: #e0c08f; --peach: #e7b996; --line: rgba(29,36,34,.14); --line-l: rgba(224,192,143,.25);
+      --deco: 'Marcellus', Georgia, serif; --serif: 'Cormorant Garamond', Georgia, serif; --body: 'Jost', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--ink); font: 300 17px/1.65 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; color: inherit; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding-left: clamp(16px, 4vw, 44px); padding-right: clamp(16px, 4vw, 44px); }
+
+    .demo-bar { background: var(--ink); color: #e9e4da; font-size: 13px; text-align: center; padding: 9px 16px; }
+    .demo-bar a { color: #fff; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.5); }
+    .alert { background: var(--peach); color: var(--green); text-align: center; padding: 10px 16px; font-size: 14.5px; font-weight: 400; }
+    .alert b { font-weight: 500; }
+
+    /* En-tête */
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(23,49,44,.96); backdrop-filter: blur(10px); color: var(--cream); border-bottom: 1px solid var(--line-l); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 78px; }
+    .logo { font-family: var(--deco); font-size: 30px; letter-spacing: .12em; color: var(--gold-2); line-height: 1; }
+    .logo small { display: block; font-family: var(--body); font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: rgba(247,242,234,.65); margin-top: 6px; }
+    header nav { display: flex; gap: 30px; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; }
+    header nav a { opacity: .85; transition: opacity .2s, color .2s; }
+    header nav a:hover { opacity: 1; color: var(--gold-2); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 26px; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; font-weight: 400; border: 1px solid var(--gold); color: var(--gold-2); transition: .25s; cursor: pointer; background: none; }
+    .btn:hover { background: var(--gold); color: var(--green); }
+    .btn.fill { background: var(--gold); color: var(--green); }
+    .btn.fill:hover { background: var(--gold-2); }
+    .btn.dark { border-color: var(--green); color: var(--green); }
+    .btn.dark:hover { background: var(--green); color: var(--cream); }
+    header .btn { padding: 11px 18px; }
+
+    /* Hero */
+    .hero { background: var(--green); color: var(--cream); position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; opacity: .07; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'%3E%3Cg fill='none' stroke='%23e0c08f' stroke-width='1'%3E%3Cpath d='M0 60a60 60 0 0 1 120 0'/%3E%3Cpath d='M15 60a45 45 0 0 1 90 0'/%3E%3Cpath d='M30 60a30 30 0 0 1 60 0'/%3E%3Cpath d='M60 0v60M60 60 18 18M60 60l42-42M60 60 3 40M60 60l57-20'/%3E%3C/g%3E%3C/svg%3E"); }
+    .hero .wrap { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(30px, 5vw, 80px); align-items: center; padding-top: clamp(50px, 7vw, 100px); padding-bottom: clamp(60px, 8vw, 110px); }
+    .eyebrow { font-size: 12.5px; letter-spacing: .32em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 14px; }
+    .eyebrow::before { content: ''; width: 34px; height: 1px; background: currentColor; }
+    .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(46px, 6.4vw, 92px); line-height: 1; margin: 22px 0 24px; }
+    .hero h1 em { color: var(--gold-2); }
+    .hero p.lead { color: rgba(247,242,234,.78); max-width: 480px; font-size: 18px; }
+    .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .guides { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 44px; padding-top: 26px; border-top: 1px solid var(--line-l); }
+    .guides span { font-family: var(--deco); font-size: 14px; letter-spacing: .08em; color: rgba(247,242,234,.82); display: inline-flex; align-items: center; gap: 8px; }
+    .guides span::before { content: '◆'; font-size: 8px; color: var(--gold); }
+    .arch { position: relative; aspect-ratio: 4 / 5; border-radius: 999px 999px 0 0; overflow: hidden; border: 1px solid var(--line-l); padding: 10px; }
+    .arch img { width: 100%; height: 100%; object-fit: cover; border-radius: 999px 999px 0 0; }
+    .arch-wrap { position: relative; }
+    .arch-wrap .seal { position: absolute; left: -30px; bottom: 40px; width: 128px; height: 128px; border-radius: 50%; background: var(--gold); color: var(--green); display: grid; place-content: center; text-align: center; font-family: var(--deco); line-height: 1.05; box-shadow: 0 12px 30px rgba(0,0,0,.3); }
+    .seal b { font-size: 40px; font-weight: 400; display: block; }
+    .seal small { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+
+    section.block { padding: clamp(80px, 10vw, 140px) 0; }
+    .title { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+    .title .eyebrow { justify-content: center; }
+    .title .eyebrow::after { content: ''; width: 34px; height: 1px; background: currentColor; }
+    .h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 5vw, 66px); line-height: 1.04; margin-top: 14px; }
+    .h2 em { color: var(--green-3); }
+    .title p { color: var(--muted); margin-top: 14px; }
+    .ornament { display: flex; align-items: center; justify-content: center; gap: 12px; color: var(--gold); margin: 22px 0; }
+    .ornament::before, .ornament::after { content: ''; width: 60px; height: 1px; background: currentColor; }
+
+    /* Maison */
+    .maison { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 90px); align-items: center; }
+    .maison .pics { position: relative; padding: 0 0 60px 0; }
+    .maison .pics img:first-child { width: 82%; aspect-ratio: 4 / 5; object-fit: cover; }
+    .maison .pics img:last-child { position: absolute; right: 0; bottom: 0; width: 46%; aspect-ratio: 1; object-fit: cover; border: 8px solid var(--cream); }
+    .maison .txt p { color: var(--muted); margin-top: 18px; }
+    .maison .sign { font-family: var(--serif); font-style: italic; font-size: 26px; color: var(--green-3); margin-top: 26px; }
+    .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 34px; border-top: 1px solid var(--line); padding-top: 26px; }
+    .facts b { display: block; font-family: var(--deco); font-weight: 400; font-size: 34px; color: var(--green); line-height: 1.1; }
+    .facts span { font-size: 13.5px; color: var(--muted); }
+
+    /* Menus */
+    .menus { background: var(--paper); }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+    .mcard { background: var(--cream); border: 1px solid var(--line); padding: 40px 32px 36px; text-align: center; display: flex; flex-direction: column; position: relative; }
+    .mcard::before { content: ''; position: absolute; inset: 8px; border: 1px solid rgba(201,162,107,.35); pointer-events: none; }
+    .mcard.feat { background: var(--green); color: var(--cream); border-color: var(--green); }
+    .mcard .when { font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+    .mcard h3 { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.1; margin: 12px 0 8px; }
+    .mcard .price { font-family: var(--deco); font-size: 46px; color: var(--green-3); line-height: 1.1; }
+    .mcard.feat .price { color: var(--gold-2); }
+    .mcard .price small { font-family: var(--body); font-size: 14px; color: var(--muted); letter-spacing: 0; }
+    .mcard.feat .price small, .mcard.feat .note, .mcard.feat .course span { color: rgba(247,242,234,.7); }
+    .mcard .courses { margin: 22px 0; display: grid; gap: 12px; font-family: var(--serif); font-size: 19px; line-height: 1.3; }
+    .course span { display: block; font-family: var(--body); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .course i { display: block; font-size: 15px; color: var(--muted); font-style: italic; }
+    .mcard.feat .course i { color: var(--gold-2); }
+    .mcard .sep { color: var(--gold); font-size: 12px; letter-spacing: .5em; }
+    .mcard .note { margin-top: auto; font-size: 14px; color: var(--muted); }
+    .mcard .pairing { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14.5px; }
+    .menus-foot { text-align: center; color: var(--muted); font-size: 15px; margin-top: 28px; }
+
+    /* Carte */
+    .carte { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 70px; }
+    .carte h3 { font-family: var(--deco); font-weight: 400; font-size: 22px; letter-spacing: .14em; color: var(--green-3); margin: 26px 0 6px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+    .dish { display: flex; gap: 18px; justify-content: space-between; align-items: baseline; padding: 12px 0; }
+    .dish p { font-family: var(--serif); font-size: 21px; line-height: 1.25; }
+    .dish p small { display: block; font-family: var(--body); font-size: 14px; color: var(--muted); margin-top: 3px; }
+    .dish b { font-family: var(--deco); font-weight: 400; font-size: 19px; color: var(--green-3); white-space: nowrap; }
+    .carte-note { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: 14.5px; margin-top: 30px; font-style: italic; }
+
+    /* Galerie */
+    .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 10px; }
+    .gallery figure { overflow: hidden; position: relative; }
+    .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+    .gallery figure:hover img { transform: scale(1.05); }
+    .gallery .tall { grid-row: span 2; }
+    .gallery .wide { grid-column: span 2; }
+    .gallery figcaption { position: absolute; left: 12px; bottom: 10px; color: #fff; font-family: var(--serif); font-style: italic; font-size: 19px; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+
+    /* Bandeau déco */
+    .decoband { position: relative; color: var(--cream); text-align: center; overflow: hidden; }
+    .decoband > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .decoband::after { content: ''; position: absolute; inset: 0; background: rgba(23,49,44,.72); }
+    .decoband .wrap { position: relative; z-index: 1; padding-top: clamp(80px, 10vw, 140px); padding-bottom: clamp(80px, 10vw, 140px); }
+    .decoband blockquote { font-family: var(--serif); font-style: italic; font-size: clamp(30px, 4vw, 52px); line-height: 1.15; max-width: 860px; margin: 0 auto; }
+    .decoband cite { display: block; margin-top: 22px; font-style: normal; font-size: 13px; letter-spacing: .26em; text-transform: uppercase; color: var(--gold-2); }
+
+    /* Réservation & cadeaux */
+    .duo { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; }
+    .resa { background: var(--green); color: var(--cream); padding: clamp(28px, 4vw, 50px); }
+    .resa .h2 { color: var(--cream); font-size: clamp(36px, 4vw, 52px); }
+    .resa .h2 em { color: var(--gold-2); }
+    .resa p.sub { color: rgba(247,242,234,.72); margin: 10px 0 26px; }
+    .resa form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .resa label { display: grid; gap: 6px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-2); }
+    .resa input, .resa select { background: transparent; border: 0; border-bottom: 1px solid var(--line-l); padding: 10px 2px; font-size: 16px; color: var(--cream); letter-spacing: 0; text-transform: none; border-radius: 0; }
+    .resa select option { color: var(--ink); }
+    .resa input:focus, .resa select:focus { outline: none; border-bottom-color: var(--gold); }
+    .resa .full { grid-column: 1 / -1; }
+    .resa .policy { grid-column: 1 / -1; font-size: 13.5px; color: rgba(247,242,234,.6); }
+    .resa .or { margin-top: 22px; font-size: 15px; color: rgba(247,242,234,.8); }
+    .resa .or a { color: var(--gold-2); border-bottom: 1px solid currentColor; }
+    .gift { position: relative; background: var(--paper); display: flex; flex-direction: column; }
+    .gift img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+    .gift .txt { padding: clamp(24px, 3.5vw, 40px); display: grid; gap: 14px; }
+    .gift h3 { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.05; }
+    .gift p { color: var(--muted); }
+    .gift .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .gift .chips span { border: 1px solid var(--line); padding: 5px 12px; font-size: 13px; }
+
+    /* Infos */
+    .infos { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 40px; }
+    .infos h3 { font-family: var(--deco); font-weight: 400; font-size: 20px; letter-spacing: .14em; color: var(--green-3); margin-bottom: 16px; }
+    .hours { list-style: none; }
+    .hours li { display: grid; grid-template-columns: 96px 1fr; gap: 10px; padding: 9px 10px; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+    .hours li b { font-weight: 400; }
+    .hours li.off span { color: var(--muted); }
+    .hours li.today { background: rgba(201,162,107,.18); }
+    .hours-note { font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+    .access p { margin-bottom: 10px; }
+    .access a { border-bottom: 1px solid var(--gold); }
+    .access ul { list-style: none; margin-top: 16px; display: grid; gap: 6px; color: var(--muted); font-size: 15px; }
+    .map { height: 100%; min-height: 280px; border: 1px solid var(--line); filter: grayscale(.6) sepia(.15); }
+    .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    footer.foot { background: var(--green); color: rgba(247,242,234,.75); padding: 60px 0 36px; text-align: center; font-size: 14.5px; }
+    footer .logo { font-size: 38px; }
+    footer .legal { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line-l); font-size: 13px; }
+    footer .legal a { color: var(--gold-2); }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--green); color: var(--cream); border: 1px solid var(--gold); padding: 13px 22px; font-size: 14.5px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23808a85' fill-opacity='.13'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s, transform .9s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 1000px) {
+      header nav { display: none; }
+      .hero .wrap, .maison, .duo { grid-template-columns: 1fr; }
+      .arch-wrap { max-width: 420px; width: 100%; margin: 0 auto; }
+      .menu-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+      .carte { grid-template-columns: 1fr; }
+      .infos { grid-template-columns: 1fr 1fr; }
+      .map { grid-column: 1 / -1; min-height: 260px; }
+      .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+    }
+    @media (max-width: 640px) {
+      .logo { font-size: 24px; }
+      .logo small { letter-spacing: .2em; font-size: 9px; }
+      header .btn span { display: none; }
+      .arch-wrap .seal { left: 0; width: 104px; height: 104px; }
+      .seal b { font-size: 32px; }
+      .facts { grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+      .facts b { font-size: 26px; }
+      .resa form { grid-template-columns: 1fr; }
+      .infos { grid-template-columns: 1fr; }
+      .dish p { font-size: 19px; }
+      .gallery .wide { grid-column: span 2; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Proposition de site réalisée par Romain Legros pour le restaurant L'Amandier · maquette avec vos vraies informations. <a href="../../">Voir mon portfolio →</a></div>
+  <p class="alert" id="alert"><b>Congés annuels :</b> le restaurant sera fermé du 12 au 23 octobre inclus. Réouverture le samedi 24 octobre au soir.</p>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#">L'AMANDIER<small>Restaurant gastronomique · Bourg-Achard</small></a>
+      <nav>
+        <a href="#maison">La maison</a>
+        <a href="#menus">Menus</a>
+        <a href="#carte">La carte</a>
+        <a href="#cadeaux">Bons cadeaux</a>
+        <a href="#infos">Infos</a>
+      </nav>
+      <a class="btn fill" href="#reserver">Réserver<span> une table</span></a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Restaurant gastronomique en Normandie</p>
+        <h1>Une cuisine de saison, <em>au fil des arrivages.</em></h1>
+        <p class="lead">Depuis 35 ans, Béatrice et Frédéric Poyer vous reçoivent à Bourg-Achard, entre Rouen et la côte, autour de produits nobles sélectionnés par le chef.</p>
+        <div class="ctas">
+          <a class="btn fill" href="#reserver">Réserver une table</a>
+          <a class="btn" href="#menus">Découvrir les menus</a>
+        </div>
+        <div class="guides"><span>3 fourchettes, Guide Michelin</span><span>Gault &amp; Millau</span><span>Petit Futé</span><span>Top 100 du Petit Normand</span></div>
+      </div>
+      <div class="arch-wrap">
+        <div class="arch"><img src="img/plat-signature.webp" alt="Une assiette du chef" /></div>
+        <div class="seal"><b>35</b><small>ans de<br />passion</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="maison">
+    <div class="wrap maison">
+      <div class="pics reveal"><img src="img/salle-art-deco.webp" alt="La salle au décor Art déco" loading="lazy" /><img src="img/assiette-homard.webp" alt="" loading="lazy" /></div>
+      <div class="txt reveal">
+        <p class="eyebrow">La maison</p>
+        <h2 class="h2">Une table fidèle, <em>un décor qui se réinvente</em></h2>
+        <p>Installés depuis 35 ans, nous avons la chance de recevoir une clientèle d'habitués très fidèles. Notre carte suit les saisons et nos arrivages : certains menus changent chaque semaine, parfois plusieurs fois.</p>
+        <p>La décoration n'est pas oubliée : régulièrement, la maison se transforme pour vous offrir une ambiance toujours plus moderne et accueillante, comme notre nouvelle salle aux motifs Art déco.</p>
+        <p class="sign">Béatrice &amp; Frédéric Poyer</p>
+        <div class="facts"><div><b>35</b><span>ans à Bourg-Achard</span></div><div><b>20 km</b><span>de Rouen, accès A13 &amp; A28</span></div><div><b>3</b><span>fourchettes au Michelin</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block menus" id="menus">
+    <div class="wrap">
+      <div class="title reveal">
+        <p class="eyebrow">Nos menus</p>
+        <h2 class="h2">Trois façons de <em>passer à table</em></h2>
+        <p>Servis jusqu'à 13h30 le midi et 20h30 le soir.</p>
+      </div>
+      <div class="menu-grid">
+        <article class="mcard reveal">
+          <p class="when">Le midi en semaine</p>
+          <h3>Au fil de la semaine</h3>
+          <p class="price">31 €</p>
+          <div class="courses">
+            <div class="course"><span>Entrée</span>Selon le marché</div>
+            <div class="sep">◆ ◆ ◆</div>
+            <div class="course"><span>Plat</span>Un poisson ou une viande</div>
+            <div class="sep">◆ ◆ ◆</div>
+            <div class="course"><span>Dessert</span>Un assortiment de desserts</div>
+          </div>
+          <p class="note">Change chaque semaine selon nos arrivages. Hors dimanches et jours fériés. Le contenu de la semaine est affiché ici, mis à jour en quelques secondes.</p>
+        </article>
+        <article class="mcard feat reveal">
+          <p class="when">Midi &amp; soir</p>
+          <h3>Menu de l'Amandier</h3>
+          <p class="price">50 € <small>· 54 € avec fromages</small></p>
+          <div class="courses">
+            <div class="course"><span>Entrée</span>Tartare de tomates aux herbes, fraîcheur de homard, poulpe et crevette<i>ou</i>Terrine de foie gras de canard aux épices et pointe de cognac</div>
+            <div class="sep">◆ ◆ ◆</div>
+            <div class="course"><span>Plat</span>Suprême de volaille au foie gras et crème de morilles<i>ou</i>Duo de la mer, minestrone de légumes, beurre de shiso au curcuma</div>
+            <div class="sep">◆ ◆ ◆</div>
+            <div class="course"><span>Dessert</span>Symphonie des desserts de l'Amandier</div>
+          </div>
+          <p class="note">Les plats du menu peuvent être servis à la carte.</p>
+        </article>
+        <article class="mcard reveal">
+          <p class="when">Pour toute la table</p>
+          <h3>La Balade gourmande</h3>
+          <p class="price">59 € <small>· 63 € avec fromage</small></p>
+          <div class="courses">
+            <div class="course"><span>Première entrée</span>Produits nobles de saison</div>
+            <div class="sep">◆</div>
+            <div class="course"><span>Seconde entrée</span>Sélectionnés par le chef</div>
+            <div class="sep">◆</div>
+            <div class="course"><span>Plat principal</span>Au gré des arrivages</div>
+            <div class="sep">◆</div>
+            <div class="course"><span>Dessert</span>La touche finale</div>
+          </div>
+          <p class="pairing"><b>Accord mets &amp; vins</b> · 2 verres 18 € · 3 verres 27 €</p>
+        </article>
+      </div>
+      <p class="menus-foot">Nos viandes et volailles sont d'origine européenne.</p>
+    </div>
+  </section>
+
+  <section class="block" id="carte">
+    <div class="wrap">
+      <div class="title reveal">
+        <p class="eyebrow">La carte</p>
+        <h2 class="h2">Invitation <em>aux voyages</em></h2>
+      </div>
+      <div class="carte reveal">
+        <div>
+          <h3>ENTRÉES</h3>
+          <div class="dish"><p>Terrine de foie gras de canard<small>Mélange d'épices et pointe de cognac</small></p><b>23 €</b></div>
+          <div class="dish"><p>Gaspacho espagnol<small>Homard, saumon et gambas au piment d'Espelette</small></p><b>29 €</b></div>
+          <div class="dish"><p>Assiette dégustative de l'Amandier<small>Foie gras, saumon, langoustines, beignet de poissons · en plat 30 €</small></p><b>25 €</b></div>
+          <h3>NOS POISSONS</h3>
+          <div class="dish"><p>Chaud et froid de cabillaud et homard<small>Fromage blanc à la ciboulette et moutarde ancienne</small></p><b>27 €</b></div>
+          <div class="dish"><p>Panaché de la mer<small>Selon l'arrivage, émincé d'agrumes et combava</small></p><b>Selon arrivage</b></div>
+        </div>
+        <div>
+          <h3>NOS VIANDES</h3>
+          <div class="dish"><p>Filet de veau sauce bordelaise<small>Fricassée de champignons</small></p><b>25 €</b></div>
+          <h3>FROMAGES</h3>
+          <div class="dish"><p>Medley de fromages<small>Sur lit de salade</small></p><b>11 €</b></div>
+          <h3>DESSERTS</h3>
+          <div class="dish"><p>Soufflé au Grand Marnier<small>À commander en début de service · supplément menu 6 €</small></p><b>16 €</b></div>
+          <div class="dish"><p>Coupe Rêve de bébé<small>Ananas et fraises, glace fraise et chantilly vanille</small></p><b>12 €</b></div>
+          <div class="dish"><p>L'assiette gourmande de l'Amandier</p><b>15 €</b></div>
+          <div class="dish"><p>Café gourmand<small>Blue Mountain de Jamaïque</small></p><b>14 €</b></div>
+        </div>
+        <p class="carte-note">Carte susceptible d'évoluer selon les saisons et les arrivages.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="gallery reveal">
+        <figure class="tall"><img src="img/assiette-foie-gras.webp" alt="" loading="lazy" /><figcaption>En cuisine</figcaption></figure>
+        <figure class="wide"><img src="img/salle.webp" alt="" loading="lazy" /><figcaption>La salle</figcaption></figure>
+        <figure class="tall"><img src="img/veranda.webp" alt="" loading="lazy" /><figcaption>La véranda</figcaption></figure>
+        <figure><img src="img/assiette-amandier.webp" alt="" loading="lazy" /></figure>
+        <figure><img src="img/assiette-carree.webp" alt="" loading="lazy" /></figure>
+        <figure class="wide"><img src="img/terrasse.webp" alt="" loading="lazy" /><figcaption>La terrasse aux beaux jours</figcaption></figure>
+        <figure><img src="img/assiette-saumon.webp" alt="" loading="lazy" /></figure>
+        <figure><img src="img/facade-nuit.webp" alt="" loading="lazy" /><figcaption>La maison</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="decoband">
+    <img src="img/papier-peint.webp" alt="" loading="lazy" />
+    <div class="wrap reveal">
+      <blockquote>« C'est toujours un vrai moment de réconfort de savoir nos clients satisfaits. »</blockquote>
+      <cite>Béatrice Poyer</cite>
+    </div>
+  </section>
+
+  <section class="block" id="reserver">
+    <div class="wrap duo">
+      <div class="resa reveal">
+        <p class="eyebrow">Réservation</p>
+        <h2 class="h2">Réservez <em>votre table</em></h2>
+        <p class="sub">Envoyez votre demande en ligne, nous vous confirmons par téléphone ou par e-mail.</p>
+        <form id="resa-form">
+          <label>Date<input type="date" required id="resa-date" /></label>
+          <label>Service<select required><option value="">Choisir</option><option>Déjeuner · 12h00</option><option>Déjeuner · 12h30</option><option>Déjeuner · 13h00</option><option>Dîner · 19h00</option><option>Dîner · 19h30</option><option>Dîner · 20h00</option></select></label>
+          <label>Couverts<select required><option value="">Choisir</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7 à 10</option></select></label>
+          <label>Téléphone<input type="tel" required placeholder="06 12 34 56 78" /></label>
+          <label class="full">Nom<input type="text" required placeholder="Votre nom" /></label>
+          <p class="policy">Le week-end, nous accueillons des tables de 10 à 12 couverts maximum. En cas d'empêchement, merci de nous prévenir au plus tôt.</p>
+          <button class="btn fill full" type="submit">Envoyer ma demande</button>
+        </form>
+        <p class="or">Vous préférez nous appeler ? <a href="tel:+33232571149">02 32 57 11 49</a></p>
+      </div>
+      <div class="gift reveal" id="cadeaux">
+        <img src="img/bons-cadeaux.webp" alt="Bons cadeaux de L'Amandier" loading="lazy" />
+        <div class="txt">
+          <p class="eyebrow">Bons cadeaux</p>
+          <h3>Offrez un moment à l'Amandier</h3>
+          <p>Pour une fête, un anniversaire, un départ en retraite ou pour Noël, offrez un menu ou un montant de votre choix.</p>
+          <div class="chips"><span>Anniversaire</span><span>Noël</span><span>Départ en retraite</span><span>Fête</span></div>
+          <a class="btn dark" href="tel:+33232571149">Commander un bon cadeau</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="infos" style="padding-top:0">
+    <div class="wrap infos">
+      <div class="reveal">
+        <h3>HORAIRES</h3>
+        <ul class="hours" id="hours"></ul>
+        <p class="hours-note">Horaires d'été, jusqu'en octobre 2026. Dernières commandes à 13h30 et 20h30.</p>
+      </div>
+      <div class="access reveal">
+        <h3>NOUS TROUVER</h3>
+        <p>581 route de Rouen<br />27310 Bourg-Achard</p>
+        <p><a href="tel:+33232571149">02 32 57 11 49</a></p>
+        <ul><li>◆ 20 km de Rouen</li><li>◆ 60 km du Havre</li><li>◆ 100 km de Caen</li><li>◆ Accès direct par l'A13 et l'A28</li></ul>
+      </div>
+      <div class="map reveal"><iframe title="Plan d'accès" loading="lazy" src="https://maps.google.com/maps?q=581%20route%20de%20Rouen%2C%2027310%20Bourg-Achard&z=14&output=embed"></iframe></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p class="logo">L'AMANDIER</p>
+      <p style="margin-top:12px">Restaurant gastronomique · 581 route de Rouen, 27310 Bourg-Achard · 02 32 57 11 49</p>
+      <p class="legal">© 2026 <a href="../../">Romain Legros</a> · Design et code de cette maquette protégés : reproduction interdite sans accord. Photos, menus et textes : restaurant L'Amandier.</p>
+    </div>
+  </footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const now = new Date();
+
+    // Bandeau congés : visible jusqu'à la réouverture
+    if (now >= new Date(2026, 9, 24, 18)) $('#alert').remove();
+    else if (now >= new Date(2026, 9, 12)) $('#alert').innerHTML = '<b>Actuellement en congés.</b> Réouverture le samedi 24 octobre au soir. Les réservations restent ouvertes en ligne.';
+
+    // Horaires (0 = dimanche)
+    const DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+    const H = { 4: '12h – 13h30 · 19h – 20h30', 5: '12h – 13h30 · 19h – 20h30', 6: '12h – 13h30 · 19h – 20h30', 0: '12h – 13h30' };
+    $('#hours').innerHTML = [1, 2, 3, 4, 5, 6, 0].map((d) => `<li class="${d === now.getDay() ? 'today' : ''} ${H[d] ? '' : 'off'}"><b>${DAYS[d]}</b><span>${H[d] || 'Fermé'}</span></li>`).join('');
+
+    // Formulaire de réservation (démo)
+    const dateInput = $('#resa-date');
+    dateInput.min = now.toISOString().slice(0, 10);
+    let toastT;
+    function toast(msg) { const t = $('.toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3200); }
+    $('#resa-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new Date(dateInput.value + 'T12:00');
+      if (!H[d.getDay()]) { toast(`Le restaurant est fermé le ${DAYS[d.getDay()].toLowerCase()}, choisissez un autre jour.`); return; }
+      e.target.reset();
+      toast('Demande envoyée ! (démo : aucune réservation n\'est transmise)');
+    });
+
+    const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
