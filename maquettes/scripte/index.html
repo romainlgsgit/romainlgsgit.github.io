@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scripte Rouen — Proposition de refonte</title>
+  <meta name="description" content="Maquette de refonte du site de Scripte, stylos de luxe, cadeaux et maroquinerie à Rouen, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #161514; --ink-2: #2b2926; --muted: #77726b; --bg: #ffffff; --ivory: #f8f5ef; --sand: #efe9df; --line: #e7e1d7;
+      --gold: #a8803f; --gold-2: #c9a464; --red: #a0322a;
+      --serif: 'Cormorant', Georgia, serif; --body: 'Manrope', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html.lock { overflow: hidden; }
+    body { background: var(--bg); color: var(--ink); font: 15.5px/1.65 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; color: inherit; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding-left: clamp(16px, 4vw, 48px); padding-right: clamp(16px, 4vw, 48px); }
+    svg.i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+    .demo-bar { background: var(--gold); color: #fff; font-size: 13px; text-align: center; padding: 8px 16px; }
+    .demo-bar a { font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.6); }
+
+    /* Barre de contact */
+    .topbar { background: var(--ivory); border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+    .topbar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; height: 40px; }
+    .topbar .l, .topbar .r { display: flex; align-items: center; gap: 22px; }
+    .topbar a { display: inline-flex; align-items: center; gap: 7px; transition: color .2s; }
+    .topbar a:hover { color: var(--ink); }
+    .topbar svg.i { width: 16px; height: 16px; }
+    .topbar .ship { color: var(--gold); font-weight: 600; }
+
+    /* En-tête */
+    header.top { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.97); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .head-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; height: 84px; }
+    .search { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); max-width: 280px; padding: 6px 0; }
+    .search input { border: 0; background: none; flex: 1; min-width: 0; font-size: 14px; }
+    .search input:focus { outline: none; }
+    .search:focus-within { border-color: var(--ink); }
+    .logo img { height: 52px; width: auto; }
+    .tools { display: flex; justify-content: flex-end; gap: 6px; }
+    .tool { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 99px; font-size: 13.5px; font-weight: 600; background: none; border: 0; cursor: pointer; transition: background .2s; position: relative; }
+    .tool:hover { background: var(--ivory); }
+    .tool .n { position: absolute; top: 2px; left: 26px; min-width: 18px; height: 18px; border-radius: 99px; background: var(--gold); color: #fff; font-size: 11px; display: grid; place-items: center; padding: 0 5px; }
+    .burger { display: none; }
+
+    nav.main { border-top: 1px solid var(--line); }
+    nav.main > ul { list-style: none; display: flex; justify-content: center; gap: 4px; }
+    nav.main > ul > li > a, nav.main > ul > li > button { display: inline-flex; align-items: center; gap: 6px; padding: 15px 16px; font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; background: none; border: 0; cursor: pointer; position: relative; }
+    nav.main > ul > li > a::after, nav.main > ul > li > button::after { content: ''; position: absolute; left: 16px; right: 16px; bottom: 9px; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform .25s; }
+    nav.main > ul > li:hover > a::after, nav.main > ul > li:hover > button::after, nav.main > ul > li.open > button::after { transform: scaleX(1); }
+    nav.main .caret { width: 9px; height: 9px; border-right: 1.5px solid; border-bottom: 1.5px solid; transform: rotate(45deg) translateY(-3px); }
+    .mega { position: absolute; left: 0; right: 0; top: 100%; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); box-shadow: 0 30px 50px -30px rgba(0,0,0,.25); opacity: 0; visibility: hidden; transform: translateY(-6px); transition: .2s; }
+    li.open .mega { opacity: 1; visibility: visible; transform: none; }
+    .mega .wrap { display: grid; grid-template-columns: repeat(5, 1fr) 1.3fr; gap: 28px; padding-top: 32px; padding-bottom: 36px; }
+    .mega h4 { font-family: var(--serif); font-size: 21px; font-weight: 600; margin-bottom: 10px; }
+    .mega ul { list-style: none; display: grid; gap: 5px; font-size: 14px; color: var(--muted); }
+    .mega ul a:hover { color: var(--ink); }
+    .mega .feat { background: var(--ivory); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; }
+    .mega .feat img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+    .mega .feat div { padding: 14px 16px; }
+    .mega .feat b { font-family: var(--serif); font-size: 20px; font-weight: 600; display: block; }
+    .mega .feat span { font-size: 13px; color: var(--gold); font-weight: 600; }
+    .sub { position: absolute; top: 100%; min-width: 220px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 40px -25px rgba(0,0,0,.3); padding: 10px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: .2s; }
+    li.open .sub { opacity: 1; visibility: visible; transform: none; }
+    .sub a { display: block; padding: 9px 12px; font-size: 14px; border-radius: 3px; }
+    .sub a:hover { background: var(--ivory); }
+    nav.main > ul > li { position: static; }
+    nav.main > ul > li.has-sub { position: relative; }
+
+    /* Diaporama */
+    .slider { position: relative; background: var(--ivory); }
+    .slides { position: relative; height: min(76vh, 640px); overflow: hidden; }
+    .slide { position: absolute; inset: 0; display: grid; grid-template-columns: .9fr 1.1fr; opacity: 0; transition: opacity .8s; pointer-events: none; }
+    .slide.on { opacity: 1; pointer-events: auto; }
+    .slide .txt { opacity: 0; transform: translateY(14px); transition: opacity .25s, transform .25s; }
+    .slide.on .txt { opacity: 1; transform: none; transition: opacity .6s .45s, transform .6s .45s; }
+    .slide .txt { display: flex; flex-direction: column; justify-content: center; gap: 18px; padding: clamp(30px, 6vw, 90px); }
+    .slide .txt small { font-size: 12.5px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+    .slide .txt h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(40px, 5.4vw, 74px); line-height: 1; letter-spacing: -.01em; }
+    .slide .txt p { color: var(--muted); max-width: 400px; }
+    .slide .pic { position: relative; overflow: hidden; }
+    .slide .pic img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 6s ease-out; }
+    .slide.on .pic img { transform: scale(1); }
+    .slide .pic.contain { background: #fff; display: grid; place-items: center; }
+    .slide .pic.contain img { width: auto; height: 92%; object-fit: contain; }
+    .dots { position: absolute; left: clamp(30px, 6vw, 90px); bottom: 34px; display: flex; gap: 10px; z-index: 2; }
+    .dots button { width: 34px; height: 3px; border: 0; background: var(--line); cursor: pointer; padding: 0; position: relative; overflow: hidden; }
+    .dots button.on::after { content: ''; position: absolute; inset: 0; background: var(--ink); animation: prog 6s linear forwards; }
+    @keyframes prog { from { transform: translateX(-100%); } to { transform: none; } }
+    .arrows { position: absolute; right: 24px; bottom: 24px; display: flex; gap: 8px; z-index: 2; }
+    .arrows button { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255,255,255,.9); cursor: pointer; display: grid; place-items: center; transition: .2s; }
+    .arrows button:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 28px; font-size: 12.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; background: var(--ink); color: #fff; border: 1px solid var(--ink); transition: .25s; cursor: pointer; align-self: flex-start; }
+    .btn:hover { background: var(--gold); border-color: var(--gold); }
+    .btn.line { background: transparent; color: var(--ink); }
+    .btn.line:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+    section.block { padding: clamp(80px, 10vw, 130px) 0; }
+    .title { text-align: center; max-width: 720px; margin: 0 auto 50px; }
+    .title small { font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+    .title h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(36px, 4.4vw, 56px); line-height: 1.05; margin-top: 10px; }
+    .title p { color: var(--muted); margin-top: 14px; }
+    .rule { width: 50px; height: 1px; background: var(--gold); margin: 20px auto 0; }
+
+    /* Montblanc */
+    .mb { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 90px); align-items: center; }
+    .mb .logo-mb { font-family: var(--body); font-weight: 800; font-size: 34px; letter-spacing: .02em; line-height: .9; display: inline-flex; align-items: flex-start; gap: 8px; }
+    .mb .logo-mb i { width: 20px; height: 20px; border: 2.5px solid var(--ink); border-radius: 50%; position: relative; margin-top: -2px; }
+    .mb .txt { display: grid; gap: 20px; }
+    .mb .txt p { color: var(--muted); font-size: 16.5px; }
+    .mb ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; font-size: 14.5px; }
+    .mb ul li { display: flex; gap: 10px; align-items: baseline; }
+    .mb ul li::before { content: ''; width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex: none; }
+    .mb .note { background: var(--ivory); border-left: 2px solid var(--gold); padding: 14px 18px; font-size: 14.5px; }
+    .mb .note a { font-weight: 700; border-bottom: 1px solid var(--gold); }
+    .mb .pic { position: relative; background: var(--ivory); aspect-ratio: 1; display: grid; place-items: center; }
+    .mb .pic img { width: 82%; mix-blend-mode: multiply; }
+    .mb .pic small { position: absolute; left: 20px; bottom: 18px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+    /* Produits */
+    .best { background: var(--ivory); }
+    .tabs { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 36px; }
+    .tabs button { border: 1px solid var(--line); background: #fff; padding: 9px 18px; font-size: 13px; font-weight: 600; letter-spacing: .06em; cursor: pointer; transition: .2s; }
+    .tabs button.on, .tabs button:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .prod { background: #fff; display: flex; flex-direction: column; transition: box-shadow .3s; }
+    .prod:hover { box-shadow: 0 22px 44px -28px rgba(0,0,0,.35); }
+    .prod .ph { position: relative; aspect-ratio: 1; display: grid; place-items: center; overflow: hidden; background: #fff; }
+    .prod .ph img { max-width: 78%; max-height: 78%; object-fit: contain; transition: transform .6s; mix-blend-mode: multiply; }
+    .prod:hover .ph img { transform: scale(1.06); }
+    .prod .tag { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 5px 9px; background: var(--ink); color: #fff; }
+    .prod .tag.promo { background: var(--red); }
+    .prod .info { padding: 18px 20px 22px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .prod .brand { font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+    .prod h3 { font-family: var(--serif); font-weight: 600; font-size: 20px; line-height: 1.2; }
+    .prod .price { margin-top: auto; padding-top: 10px; display: flex; align-items: baseline; gap: 10px; font-weight: 700; }
+    .prod .price s { color: var(--muted); font-weight: 500; font-size: 14px; }
+    .prod .price.red b { color: var(--red); }
+    .prod .act { margin-top: 12px; padding: 11px; border: 1px solid var(--line); background: #fff; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: .2s; }
+    .prod .act:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .prod .shop-only { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+    .center { text-align: center; margin-top: 44px; }
+
+    /* Boutique */
+    .store { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(30px, 6vw, 90px); align-items: center; }
+    .store .pic { position: relative; }
+    .store .pic img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
+    .store .pic .since { position: absolute; right: -20px; bottom: -26px; background: var(--ink); color: #fff; padding: 22px 26px; text-align: center; }
+    .store .pic .since b { display: block; font-family: var(--serif); font-size: 46px; font-weight: 600; line-height: 1; color: var(--gold-2); }
+    .store .pic .since span { font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; }
+    .store .txt { display: grid; gap: 18px; }
+    .store .txt small { font-size: 12px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); }
+    .store h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 4vw, 52px); line-height: 1.05; }
+    .store p { color: var(--muted); }
+    .store .addr { display: flex; gap: 12px; align-items: center; font-weight: 600; }
+
+    /* Prestations */
+    .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .services div { background: #fff; padding: 34px 30px; }
+    .services svg.i { width: 30px; height: 30px; color: var(--gold); }
+    .services h3 { font-family: var(--serif); font-weight: 600; font-size: 26px; margin: 14px 0 6px; }
+    .services p { color: var(--muted); font-size: 14.5px; }
+
+    /* Avantages */
+    .perks { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .perks .wrap { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .perk { padding: 34px 16px; text-align: center; display: grid; justify-items: center; gap: 12px; }
+    .perk + .perk { border-left: 1px solid var(--line); }
+    .perk span { width: 58px; height: 58px; border-radius: 50%; border: 1px solid var(--gold-2); display: grid; place-items: center; color: var(--gold); }
+    .perk svg.i { width: 26px; height: 26px; }
+    .perk b { font-size: 14px; font-weight: 600; }
+
+    /* Marques */
+    .brands { overflow: hidden; padding: 30px 0; }
+    .brands .track { display: flex; gap: 54px; width: max-content; animation: slide 60s linear infinite; }
+    .brands span { font-family: var(--serif); font-size: 26px; font-weight: 600; color: #b4ada2; white-space: nowrap; }
+    @keyframes slide { to { transform: translateX(-50%); } }
+
+    /* Pied de page */
+    footer.foot { background: var(--ink); color: #b9b3aa; padding: 70px 0 30px; font-size: 14px; }
+    footer .cols { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.1fr 1.3fr; gap: 34px; }
+    footer h4 { color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 16px; }
+    footer .cols a { display: block; padding: 3px 0; transition: color .2s; }
+    footer .cols a:hover { color: #fff; }
+    footer .logo-f { background: #fff; display: inline-block; padding: 10px 14px; }
+    footer .logo-f img { height: 40px; }
+    footer .soc { display: flex; gap: 10px; margin-top: 4px; }
+    footer .soc a { width: 40px; height: 40px; border: 1px solid #47433e; border-radius: 50%; display: grid !important; place-items: center; padding: 0 !important; }
+    footer .soc a:hover { border-color: var(--gold-2); color: var(--gold-2); }
+    footer .pay { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    footer .pay span { background: #2a2826; border: 1px solid #3a3733; padding: 5px 9px; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: #e5e0d8; }
+    footer .oney { display: inline-block; margin-top: 10px; background: #81bc00; color: #fff; padding: 6px 12px; font-weight: 800; font-size: 13px; }
+    footer .gold-btn { display: inline-block; margin-top: 14px; border: 1px solid var(--gold-2); color: var(--gold-2); padding: 9px 14px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    footer .gold-btn:hover { background: var(--gold-2); color: var(--ink); }
+    footer .legal { margin-top: 50px; padding-top: 22px; border-top: 1px solid #34312d; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12.5px; }
+    footer .legal a { color: #fff; }
+
+    /* Panier & menu mobile */
+    .veil { position: fixed; inset: 0; background: rgba(0,0,0,.4); opacity: 0; pointer-events: none; transition: .3s; z-index: 60; }
+    .veil.open { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; top: 0; bottom: 0; width: min(400px, 100%); background: #fff; z-index: 70; transition: transform .35s cubic-bezier(.2,.8,.2,1); display: flex; flex-direction: column; }
+    .drawer.right { right: 0; transform: translateX(100%); }
+    .drawer.left { left: 0; transform: translateX(-100%); }
+    .drawer.open { transform: none; }
+    .drawer header { display: flex; justify-content: space-between; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+    .drawer h3 { font-family: var(--serif); font-size: 26px; font-weight: 600; }
+    .x { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+    .lines { list-style: none; flex: 1; overflow: auto; padding: 0 22px; }
+    .lines li { display: grid; grid-template-columns: 64px 1fr auto; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: center; font-size: 14px; }
+    .lines img { width: 64px; height: 64px; object-fit: contain; background: var(--ivory); }
+    .lines b { display: block; font-weight: 600; }
+    .lines button { border: 0; background: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 13px; }
+    .lines .empty { display: block; text-align: center; color: var(--muted); padding: 50px 0; border: 0; }
+    .drawer .foot-d { padding: 20px 22px; border-top: 1px solid var(--line); display: grid; gap: 10px; }
+    .drawer .row { display: flex; justify-content: space-between; font-weight: 700; }
+    .drawer .shipbar { font-size: 13px; color: var(--muted); }
+    .drawer .shipbar i { display: block; height: 3px; background: var(--line); margin-top: 6px; }
+    .drawer .shipbar i b { display: block; height: 100%; background: var(--gold); transition: width .4s; }
+    .drawer .btn { width: 100%; align-self: stretch; }
+    .mnav { overflow: auto; padding: 10px 22px 30px; }
+    .mnav details { border-bottom: 1px solid var(--line); }
+    .mnav summary, .mnav > a { display: block; padding: 15px 0; font-size: 13.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; list-style: none; border-bottom: 1px solid var(--line); }
+    .mnav details summary { border: 0; }
+    .mnav details a { display: block; padding: 7px 0 7px 12px; color: var(--muted); font-size: 14.5px; }
+    .mnav details[open] { padding-bottom: 10px; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: #fff; padding: 13px 20px; font-size: 14px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23808080' fill-opacity='.12'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s, transform .9s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 1080px) {
+      nav.main { display: none; }
+      .burger { display: inline-flex; }
+      .head-row { grid-template-columns: auto 1fr auto; }
+      .head-row .search { display: none; }
+      .logo { justify-self: center; }
+      .tool span.lbl { display: none; }
+      .slide { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+      .slide .pic { order: -1; }
+      .slide .txt { padding: 26px 22px 70px; gap: 12px; }
+      .slides { height: auto; aspect-ratio: auto; min-height: 640px; }
+      .mb, .store { grid-template-columns: 1fr; }
+      .products { grid-template-columns: repeat(2, 1fr); }
+      .services { grid-template-columns: 1fr; }
+      .perks .wrap { grid-template-columns: repeat(3, 1fr); }
+      .perk:nth-child(4) { border-left: 0; }
+      footer .cols { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .topbar .l a:not(:first-child), .topbar .ship { display: none; }
+      .logo img { height: 42px; }
+      .slides { min-height: 600px; }
+      .slide .txt h2 { font-size: 40px; }
+      .arrows { display: none; }
+      .dots { left: 22px; bottom: 26px; }
+      .mb ul { grid-template-columns: 1fr; }
+      .products { gap: 12px; }
+      .prod .info { padding: 14px; }
+      .prod h3 { font-size: 17px; }
+      .store .pic .since { right: 10px; bottom: -20px; padding: 14px 18px; }
+      .store .pic .since b { font-size: 36px; }
+      .perks .wrap { grid-template-columns: 1fr 1fr; }
+      .perk { border-left: 0 !important; border-top: 1px solid var(--line); }
+      .perk:last-child { grid-column: span 2; }
+      footer .cols { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></symbol>
+    <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></symbol>
+    <symbol id="ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></symbol>
+    <symbol id="fb" viewBox="0 0 24 24"><path d="M15 8h3V4h-3a4 4 0 0 0-4 4v3H8v4h3v6h4v-6h3l1-4h-4V8Z"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 13H6Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></symbol>
+    <symbol id="truck" viewBox="0 0 24 24"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="pen" viewBox="0 0 24 24"><path d="m14 4 6 6-9 9H5v-6Z"/><path d="m5 19 4-4"/></symbol>
+    <symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4Z"/></symbol>
+    <symbol id="gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13"/><path d="M3 12h18M12 8v13M12 8S10 3 7.5 4.5 9 8 12 8Zm0 0s2-5 4.5-3.5S15 8 12 8Z"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s-7-7.4-7-12a7 7 0 0 1 14 0c0 4.6-7 12-7 12Z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+  </svg>
+
+  <div class="demo-bar">Proposition de refonte réalisée par Romain Legros pour Scripte · même contenu, présentation plus claire. <a href="../../">Voir mon portfolio →</a></div>
+
+  <div class="topbar">
+    <div class="wrap">
+      <div class="l">
+        <a href="#contact"><svg class="i"><use href="#pin"/></svg>Contact</a>
+        <a href="mailto:contact@scripte-rouen.com"><svg class="i"><use href="#mail"/></svg>contact@scripte-rouen.com</a>
+        <a href="tel:+33235154422"><svg class="i"><use href="#phone"/></svg>02 35 15 44 22</a>
+      </div>
+      <div class="r">
+        <span class="ship">Livraison gratuite dès 100 €</span>
+        <a href="https://www.instagram.com/rouenscripte/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="i"><use href="#ig"/></svg></a>
+        <a href="https://www.facebook.com/ScripteRouen/" target="_blank" rel="noopener" aria-label="Facebook"><svg class="i"><use href="#fb"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="wrap head-row">
+      <button class="tool burger" type="button" id="burger" aria-label="Menu"><svg class="i"><use href="#menu"/></svg></button>
+      <form class="search" id="search" role="search"><svg class="i"><use href="#search"/></svg><input type="search" placeholder="Rechercher un stylo, une marque…" aria-label="Rechercher" /></form>
+      <a class="logo" href="#"><img src="img/logo.png" alt="Scripte" /></a>
+      <div class="tools">
+        <a class="tool" href="#" data-toast="Espace client (démo)"><svg class="i"><use href="#user"/></svg><span class="lbl">Mon compte</span></a>
+        <button class="tool" type="button" data-open="cart"><svg class="i"><use href="#bag"/></svg><span class="lbl">Mon panier</span><span class="n" id="count" hidden>0</span></button>
+      </div>
+    </div>
+    <nav class="main" aria-label="Navigation principale">
+      <ul>
+        <li class="has-sub"><button type="button">Accueil <i class="caret"></i></button>
+          <div class="sub"><a href="#boutique">Notre histoire</a><a href="#prestations">Prestations</a></div></li>
+        <li><button type="button">Nos produits <i class="caret"></i></button>
+          <div class="mega"><div class="wrap">
+            <div><h4>Stylos</h4><ul><li><a href="#produits">Plume</a></li><li><a href="#produits">Roller</a></li><li><a href="#produits">Feutre</a></li><li><a href="#produits">Bille</a></li><li><a href="#produits">Porte-mines</a></li><li><a href="#produits">Crayons</a></li><li><a href="#produits">Multifonctions</a></li><li><a href="#produits">Coffrets</a></li></ul></div>
+            <div><h4>Maroquinerie</h4><ul><li><a href="#produits">Portefeuilles</a></li><li><a href="#produits">Porte-cartes</a></li><li><a href="#produits">Porte-monnaie</a></li><li><a href="#produits">Ceintures</a></li><li><a href="#produits">Étuis stylos</a></li><li><a href="#produits">Bagagerie</a></li><li><a href="#produits">Maroquinerie féminine</a></li><li><a href="#produits">Conférenciers</a></li></ul></div>
+            <div><h4>Cadeaux</h4><ul><li><a href="#produits">Porte-clés</a></li><li><a href="#produits">Pendulettes</a></li><li><a href="#produits">Couteaux</a></li><li><a href="#produits">Vaches Cow Parade</a></li><li><a href="#produits">Coffrets</a></li><li><a href="#produits">Accroche-sac</a></li><li><a href="#produits">Diffuseurs de parfum</a></li></ul></div>
+            <div><h4>Bureau &amp; papeterie</h4><ul><li><a href="#produits">Articles de bureau</a></li><li><a href="#produits">Papeterie</a></li><li><a href="#produits">Carnets</a></li><li><a href="#produits">Recharges</a></li><li><a href="#produits">Encres</a></li><li><a href="#produits">Objets connectés</a></li></ul></div>
+            <div><h4>Et aussi</h4><ul><li><a href="#produits">Articles fumeurs</a></li><li><a href="#produits">Petite bijouterie</a></li><li><a href="#produits">Montres</a></li><li><a href="#produits">Séries limitées</a></li><li><a href="#produits" style="color:var(--red);font-weight:700">Nos promotions</a></li><li><a href="#marques">Toutes les marques</a></li></ul></div>
+            <a class="feat" href="#produits"><img src="img/slide-carandache.webp" alt="" loading="lazy" /><div><span>Nouveauté</span><b>Toile de Jouy, Caran d'Ache Léman</b></div></a>
+          </div></div></li>
+        <li><a href="#montblanc">Montblanc</a></li>
+        <li><a href="#produits" data-tab="S.T. Dupont">S.T. Dupont</a></li>
+        <li><a href="#produits" data-tab="Hugo Boss">Hugo Boss</a></li>
+        <li><a href="#produits" data-tab="Legami">Legami</a></li>
+        <li><a href="#produits" data-tab="Agendas">Agendas 2027</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="slider" aria-roledescription="carrousel">
+    <div class="slides" id="slides">
+      <article class="slide on"><div class="txt"><small>Nouvelle année</small><h2>Les agendas 2027 sont arrivés</h2><p>Organiseurs en cuir rechargeables, agendas de bureau et recharges annuelles : trouvez l'agenda qui vous ressemble.</p><a class="btn" href="#produits" data-tab="Agendas">Découvrir les agendas</a></div><div class="pic contain"><img src="img/slide-agendas.webp" alt="Les agendas 2027 chez Scripte" /></div></article>
+      <article class="slide"><div class="txt"><small>Idée cadeau</small><h2>Les œufs bougie</h2><p>Des bougies en forme d'œufs précieux, à offrir ou à s'offrir.</p><a class="btn" href="#produits">Voir les cadeaux</a></div><div class="pic"><img src="img/slide-oeufs.webp" alt="Œufs bougie" loading="lazy" /></div></article>
+      <article class="slide"><div class="txt"><small>Legami Milano</small><h2>Le gorille Legami</h2><p>L'univers coloré de Legami : stylos effaçables, trousses, fournitures et accessoires.</p><a class="btn" href="#produits" data-tab="Legami">Découvrir Legami</a></div><div class="pic"><img src="img/slide-legami.webp" alt="Gorille Legami" loading="lazy" /></div></article>
+      <article class="slide"><div class="txt"><small>Caran d'Ache</small><h2>Toile de Jouy, collection Léman</h2><p>Un coffret plume et bille d'exception, signé de la maison suisse.</p><a class="btn" href="#produits">Voir la collection</a></div><div class="pic"><img src="img/slide-carandache.webp" alt="Coffret Caran d'Ache Léman Toile de Jouy" loading="lazy" /></div></article>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="arrows"><button type="button" id="prev" aria-label="Précédent">←</button><button type="button" id="next" aria-label="Suivant">→</button></div>
+  </section>
+
+  <section class="block" id="montblanc">
+    <div class="wrap mb">
+      <div class="pic reveal"><img src="img/mb-plume.webp" alt="Stylo plume Montblanc Meisterstück" loading="lazy" /><small>Meisterstück doré, plume</small></div>
+      <div class="txt reveal">
+        <span class="logo-mb">MONT<br />BLANC <i></i></span>
+        <p>Les produits de la maison Montblanc sont disponibles en boutique, et une sélection d'articles est présentée sur notre site internet. Vous y trouverez :</p>
+        <ul><li>Les instruments d'écriture</li><li>La petite maroquinerie : portefeuilles, porte-cartes, porte-clefs, ceintures…</li><li>La grande maroquinerie : sacoches, valises</li><li>La petite bijouterie : bracelets, boutons de manchettes</li><li>Les parfums</li></ul>
+        <p class="note">N'hésitez pas à nous appeler pour commander si vous ne pouvez pas vous déplacer en boutique : <a href="tel:+33235154422">02 35 15 44 22</a>.</p>
+        <a class="btn line" href="#produits" data-tab="Montblanc">Voir la sélection Montblanc</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block best" id="produits">
+    <div class="wrap">
+      <div class="title reveal"><small>La sélection Scripte</small><h2>Nos meilleurs produits</h2><div class="rule"></div></div>
+      <div class="tabs" id="tabs"></div>
+      <div class="products" id="products"></div>
+      <div class="center"><a class="btn line" href="#produits">Voir tous nos produits</a></div>
+    </div>
+  </section>
+
+  <section class="block" id="boutique">
+    <div class="wrap store">
+      <div class="pic reveal"><img src="img/boutique.webp" alt="La boutique Scripte, rue Saint-Lô à Rouen" loading="lazy" /><div class="since"><b>1991</b><span>à Rouen</span></div></div>
+      <div class="txt reveal">
+        <small>Notre histoire</small>
+        <h2>Scripte, stylos de luxe, cadeaux et maroquinerie</h2>
+        <p>Le magasin Scripte, situé en centre-ville de Rouen, spécialiste de l'écriture depuis 1991, vous propose un large choix dans toutes les grandes marques de stylos et d'accessoires de bureau, mais également cadeaux, briquets, réveils, pendulettes et maroquinerie.</p>
+        <p>Montblanc, S.T. Dupont, Faber-Castell, Cross, Sheaffer, Hugo Boss, Lamy, Pilot, Parker, Waterman, Caran d'Ache, Diplomat, Jean-Pierre Lépine… Nous assurons le SAV de nos marques.</p>
+        <p class="addr"><svg class="i"><use href="#pin"/></svg>56 rue Saint-Lô, 76000 Rouen, le long du Palais de Justice</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="prestations" style="padding-top:0">
+    <div class="wrap">
+      <div class="title reveal"><small>Prestations</small><h2>Un service à la hauteur de vos stylos</h2><div class="rule"></div></div>
+      <div class="services reveal">
+        <div><svg class="i"><use href="#shield"/></svg><h3>Garantie &amp; SAV</h3><p>Tous nos produits bénéficient d'une garantie fabricant, prise en charge en magasin ou par envoi postal. Nous assurons le SAV hors et sous garantie.</p></div>
+        <div><svg class="i"><use href="#tool"/></svg><h3>Polissage</h3><p>Nous redonnons tout leur éclat à vos stylos grâce à notre service de polissage.</p></div>
+        <div><svg class="i"><use href="#gift"/></svg><h3>Gravure &amp; gaufrage</h3><p>Noms, prénoms ou initiales gravés sur stylo ou gaufrés sur cuir, et logos d'entreprise pour vos cadeaux d'affaires.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="perks" aria-label="Nos avantages">
+    <div class="wrap">
+      <div class="perk"><span><svg class="i"><use href="#smile"/></svg></span><b>Accueil personnalisé</b></div>
+      <div class="perk"><span><svg class="i"><use href="#truck"/></svg></span><b>Expédition sous 48 h</b></div>
+      <div class="perk"><span><svg class="i"><use href="#clock"/></svg></span><b>Implanté depuis 1991</b></div>
+      <div class="perk"><span><svg class="i"><use href="#pen"/></svg></span><b>De nombreuses marques de luxe</b></div>
+      <div class="perk"><span><svg class="i"><use href="#shield"/></svg></span><b>Garantie</b></div>
+    </div>
+  </section>
+
+  <section class="brands" id="marques" aria-label="Nos marques"><div class="track" id="brands"></div></section>
+
+  <footer class="foot" id="contact">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <span class="logo-f"><img src="img/logo.png" alt="Scripte" /></span>
+          <h4 style="margin-top:26px">Réseaux sociaux</h4>
+          <div class="soc"><a href="https://www.instagram.com/rouenscripte/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="i"><use href="#ig"/></svg></a><a href="https://www.facebook.com/ScripteRouen/" target="_blank" rel="noopener" aria-label="Facebook"><svg class="i"><use href="#fb"/></svg></a></div>
+        </div>
+        <div><h4>Menu</h4><a href="#">Accueil</a><a href="#produits">Nos produits</a><a href="#montblanc">Montblanc</a><a href="#produits">S.T. Dupont</a><a href="#produits">Hugo Boss</a><a href="#produits">Legami</a><a href="#produits">Agendas 2027</a></div>
+        <div><h4>Coordonnées</h4><p>56 rue Saint-Lô<br />76000 Rouen</p><a href="tel:+33235154422" style="margin-top:10px">02 35 15 44 22</a><a href="mailto:contact@scripte-rouen.com">contact@scripte-rouen.com</a></div>
+        <div><h4>Horaires</h4><p>Du mardi au samedi<br />de 10h00 à 19h00</p><p style="margin-top:10px">Dimanche et lundi<br />fermé</p><a class="gold-btn" href="#">Avantages privés</a></div>
+        <div><h4>Paiements sécurisés</h4><div class="pay"><span>VISA</span><span>Mastercard</span><span>CB</span><span>Chèque</span><span>Paiement en magasin</span><span>Virement bancaire</span></div><span class="oney">Oney · 3x 4x</span><h4 style="margin-top:22px">Livraison</h4><p>Livraison gratuite à partir de 100 €</p><div class="pay"><span>Colissimo</span><span>Chronopost</span><span>Click &amp; Collect</span></div></div>
+      </div>
+      <div class="legal"><span>© 2017 – Scripte – Tous droits réservés · <a href="#">Mentions légales</a> · <a href="#">CGV</a></span><span>Maquette © 2026 <a href="../../">Romain Legros</a> · design et code protégés, reproduction interdite sans accord. Contenus et photos : Scripte.</span></div>
+    </div>
+  </footer>
+
+  <div class="veil" id="veil"></div>
+  <aside class="drawer right" id="cart" aria-label="Panier" aria-hidden="true">
+    <header><h3>Mon panier</h3><button class="x" type="button" data-close aria-label="Fermer">✕</button></header>
+    <ul class="lines" id="lines"></ul>
+    <div class="foot-d">
+      <div class="shipbar" id="shipbar"></div>
+      <div class="row"><span>Sous-total</span><span id="sub">0 €</span></div>
+      <button class="btn" type="button" data-toast="Démo : paiement désactivé (CB, Oney 3x 4x, virement…)">Commander</button>
+    </div>
+  </aside>
+  <aside class="drawer left" id="mnav" aria-label="Menu" aria-hidden="true">
+    <header><img src="img/logo.png" alt="Scripte" style="height:36px" /><button class="x" type="button" data-close aria-label="Fermer">✕</button></header>
+    <div class="mnav">
+      <details><summary>Accueil</summary><a href="#boutique">Notre histoire</a><a href="#prestations">Prestations</a></details>
+      <details><summary>Nos produits</summary><a href="#produits">Stylos</a><a href="#produits">Maroquinerie</a><a href="#produits">Cadeaux</a><a href="#produits">Recharges</a><a href="#produits">Articles de bureau</a><a href="#produits">Articles fumeurs</a><a href="#produits">Objets connectés</a><a href="#produits">Séries limitées</a><a href="#produits">Petite bijouterie</a><a href="#produits">Papeterie</a><a href="#produits">Nos promotions</a></details>
+      <a href="#montblanc">Montblanc</a><a href="#produits" data-tab="S.T. Dupont">S.T. Dupont</a><a href="#produits" data-tab="Hugo Boss">Hugo Boss</a><a href="#produits" data-tab="Legami">Legami</a><a href="#produits" data-tab="Agendas">Agendas 2027</a><a href="#contact">Contact</a>
+    </div>
+  </aside>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+    const eur = (n) => n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0 }) + ' €';
+    let toastT;
+    function toast(m) { const t = $('.toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800); }
+
+    /* Menus déroulants */
+    $$('nav.main > ul > li').forEach((li) => {
+      const b = li.querySelector(':scope > button'); if (!b) return;
+      li.addEventListener('mouseenter', () => li.classList.add('open'));
+      li.addEventListener('mouseleave', () => li.classList.remove('open'));
+      b.addEventListener('click', () => li.classList.toggle('open'));
+    });
+    $$('.mega a, .sub a').forEach((a) => a.addEventListener('click', () => $$('nav.main li').forEach((l) => l.classList.remove('open'))));
+
+    /* Diaporama */
+    const slides = $$('.slide'); let cur = 0, timer;
+    $('#dots').innerHTML = slides.map((_, i) => `<button type="button" aria-label="Diapositive ${i + 1}" class="${i ? '' : 'on'}"></button>`).join('');
+    function go(n) {
+      cur = (n + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('on', i === cur));
+      $$('#dots button').forEach((d, i) => { d.classList.remove('on'); if (i === cur) { void d.offsetWidth; d.classList.add('on'); } });
+      clearTimeout(timer); timer = setTimeout(() => go(cur + 1), 6000);
+    }
+    $('#dots').addEventListener('click', (e) => { const i = $$('#dots button').indexOf(e.target); if (i > -1) go(i); });
+    $('#prev').addEventListener('click', () => go(cur - 1));
+    $('#next').addEventListener('click', () => go(cur + 1));
+    go(0);
+
+    /* Produits (articles et prix réels du site) */
+    const P = [
+      { id: 'mb-plume', brand: 'Montblanc', cat: 'Montblanc', name: 'Meisterstück doré plume', price: 810, shop: true },
+      { id: 'parker-duofold', brand: 'Parker', cat: 'Séries limitées', name: 'Duofold édition limitée Centennial Ruthenium plume', price: 890, tag: 'Édition limitée' },
+      { id: 'mb-bordeaux', brand: 'Montblanc', cat: 'Montblanc', name: 'Meisterstück Classique Bordeaux roller', price: 680, shop: true },
+      { id: 'dupont-lemans', brand: 'S.T. Dupont', cat: 'S.T. Dupont', name: '24H Le Mans kit écriture Hyper Car', price: 900, tag: 'Exception' },
+      { id: 'mb-grimm', brand: 'Montblanc', cat: 'Montblanc', name: 'Écrivains, Hommage aux Frères Grimm plume', price: 600, shop: true, tag: 'Édition limitée' },
+      { id: 'dupont-defi', brand: 'S.T. Dupont', cat: 'S.T. Dupont', name: 'Briquet Défi Extrême', price: 290 },
+      { id: 'mb-portecartes', brand: 'Montblanc', cat: 'Montblanc', name: '4810 Meisterstück noir porte-cartes 6cc', price: 380, shop: true },
+      { id: 'qv-ministre', brand: 'Quo Vadis', cat: 'Agendas', name: 'Agenda cuir Ministre 16 × 24 cm', price: 105 },
+      { id: 'mb-manchettes', brand: 'Montblanc', cat: 'Promotions', name: 'Boutons de manchettes onyx noir', price: 312, old: 390, shop: true },
+      { id: 'boss-accroche', brand: 'Hugo Boss', cat: 'Hugo Boss', name: 'Accroche-sac carré', price: 42, old: 60 },
+      { id: 'legami-bougie', brand: 'Legami', cat: 'Legami', name: 'Bougie parfumée Lama, Lime Blossom & Vanilla', price: 18 },
+    ];
+    const byId = Object.fromEntries(P.map((p) => [p.id, p]));
+    const TABS = ['Tout', 'Montblanc', 'S.T. Dupont', 'Hugo Boss', 'Legami', 'Agendas', 'Séries limitées', 'Promotions'];
+    let tab = 'Tout';
+    $('#tabs').innerHTML = TABS.map((t) => `<button type="button" data-t="${t}" class="${t === tab ? 'on' : ''}">${t}</button>`).join('');
+    function render() {
+      const list = P.filter((p) => tab === 'Tout' || p.cat === tab || p.brand === tab || (tab === 'Promotions' && p.old)).slice(0, tab === 'Tout' ? 8 : 12);
+      $('#products').innerHTML = list.map((p) => `<article class="prod"><div class="ph"><img src="img/${p.id}.webp" alt="${p.name}" loading="lazy" />${p.old ? `<span class="tag promo">-${Math.round((1 - p.price / p.old) * 100)} %</span>` : p.tag ? `<span class="tag">${p.tag}</span>` : ''}</div>
+        <div class="info"><span class="brand">${p.brand}</span><h3>${p.name}</h3><div class="price ${p.old ? 'red' : ''}"><b>${eur(p.price)}</b>${p.old ? `<s>${eur(p.old)}</s>` : ''}</div>
+        ${p.shop ? `<a class="act" href="tel:+33235154422" style="text-align:center">Commander par téléphone</a><span class="shop-only">Disponible en boutique</span>` : `<button class="act" type="button" data-add="${p.id}">Ajouter au panier</button>`}</div></article>`).join('');
+    }
+    function setTab(t) { tab = t; $$('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.t === t)); render(); }
+    $('#tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) setTab(b.dataset.t); });
+    $$('[data-tab]').forEach((a) => a.addEventListener('click', () => setTab(a.dataset.tab)));
+    render();
+
+    /* Panier */
+    const veil = $('#veil');
+    function open(id) { $('#' + id).classList.add('open'); $('#' + id).setAttribute('aria-hidden', 'false'); veil.classList.add('open'); document.documentElement.classList.add('lock'); }
+    function closeAll() { $$('.drawer').forEach((d) => { d.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); }); veil.classList.remove('open'); document.documentElement.classList.remove('lock'); }
+    veil.addEventListener('click', closeAll);
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeAll(); $$('nav.main li').forEach((l) => l.classList.remove('open')); } });
+    let cart = [];
+    function renderCart() {
+      const n = cart.reduce((s, l) => s + l.q, 0), total = cart.reduce((s, l) => s + byId[l.id].price * l.q, 0);
+      $('#count').textContent = n; $('#count').hidden = !n;
+      $('#lines').innerHTML = cart.length ? cart.map((l, i) => { const p = byId[l.id]; return `<li><img src="img/${p.id}.webp" alt="" /><div><b>${p.name}</b>${p.brand} · ${l.q} × ${eur(p.price)}</div><button type="button" data-rm="${i}">Retirer</button></li>`; }).join('') : '<li class="empty">Votre panier est vide.</li>';
+      $('#sub').textContent = eur(total);
+      const left = 100 - total;
+      $('#shipbar').innerHTML = `${left > 0 ? `Plus que ${eur(left)} pour la livraison gratuite` : 'Livraison gratuite !'}<i><b style="width:${Math.min(100, total)}%"></b></i>`;
+    }
+    document.addEventListener('click', (e) => {
+      const t = e.target.closest('[data-add],[data-open],[data-close],[data-rm],[data-toast],#burger');
+      if (!t) return;
+      if (t.dataset.add) { const l = cart.find((x) => x.id === t.dataset.add); l ? l.q++ : cart.push({ id: t.dataset.add, q: 1 }); renderCart(); toast('Ajouté au panier'); }
+      else if (t.dataset.open) open(t.dataset.open);
+      else if ('close' in t.dataset) closeAll();
+      else if (t.dataset.rm) { cart.splice(+t.dataset.rm, 1); renderCart(); }
+      else if (t.dataset.toast) { e.preventDefault(); toast(t.dataset.toast); }
+      else if (t.id === 'burger') open('mnav');
+    });
+    $$('.mnav a').forEach((a) => a.addEventListener('click', closeAll));
+    $('#search').addEventListener('submit', (e) => { e.preventDefault(); toast('Recherche (démo) : les résultats s\'afficheraient ici'); });
+    renderCart();
+
+    /* Marques */
+    const BR = ['Montblanc', 'S.T. Dupont', 'Hugo Boss', 'Caran d\'Ache', 'Faber-Castell', 'Cross', 'Lamy', 'Parker', 'Waterman', 'Pelikan', 'Sheaffer', 'Visconti', 'Montegrappa', 'Kaweco', 'Diplomat', 'Jean-Pierre Lépine', 'Quo Vadis', 'Filofax', 'Legami', 'Lexon', 'Zippo', 'Deejo', 'Festina', 'Maurice Lacroix', 'Cerruti', 'Nina Ricci', 'Pilot', 'Platinum', 'Otto Hutt', 'Troika'];
+    $('#brands').innerHTML = [...BR, ...BR].map((b) => `<span>${b}</span>`).join('');
+
+    // Apparition au défilement (vérification simple, sans dépendance)
+    function reveal() { const h = innerHeight; $$('.reveal:not(.in)').forEach((el) => { if (el.getBoundingClientRect().top < h * .92) el.classList.add('in'); }); }
+    addEventListener('scroll', reveal, { passive: true }); addEventListener('resize', reveal); reveal();
+  </script>
+</body>
+</html>
