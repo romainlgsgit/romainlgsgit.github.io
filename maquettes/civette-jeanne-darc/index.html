@@ -109,14 +109,6 @@
     footer .legal { margin-top: 22px; font-size: 12.5px; }
     footer .legal a { color: var(--cream); }
 
-    /* Accès réservé aux majeurs */
-    .gate { position: fixed; inset: 0; z-index: 80; background: rgba(10,7,6,.92); backdrop-filter: blur(8px); display: grid; place-items: center; padding: 20px; }
-    .gate[hidden] { display: none; }
-    .gate > div { max-width: 460px; text-align: center; border: 1px solid var(--line); background: var(--wood); padding: 40px 32px; }
-    .gate h2 { font-family: var(--serif); font-weight: 400; font-size: 34px; margin: 14px 0 10px; }
-    .gate p { color: var(--muted); font-size: 15.5px; }
-    .gate .row { display: flex; gap: 10px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
-    .gate button { cursor: pointer; background: none; }
 
     .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23f4ece0' fill-opacity='.07'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
@@ -157,14 +149,6 @@
     <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
   </svg>
 
-  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t">
-    <div>
-      <p class="eyebrow">Civette Jeanne d'Arc</p>
-      <h2 id="gate-t">Avez-vous 18&nbsp;ans ou&nbsp;plus&nbsp;?</h2>
-      <p>Ce site est réservé aux personnes majeures. La vente de produits du tabac est interdite aux mineurs.</p>
-      <div class="row"><button class="btn fill" type="button" id="yes">J'ai 18 ans ou plus</button><button class="btn" type="button" id="no">Non</button></div>
-    </div>
-  </div>
 
   <div class="demo-bar">Proposition de site réalisée par Romain Legros pour la Civette Jeanne d'Arc · maquette avec vos vraies informations. <a href="../../">Voir mon portfolio →</a></div>
   <div class="legalbar">Site d'information · Aucune vente en ligne · Vente interdite aux mineurs</div>
@@ -263,13 +247,6 @@
 
   <script>
     const $ = (s) => document.querySelector(s);
-    // Vérification de l'âge, mémorisée pour la visite
-    const gate = $('#gate');
-    let ok = false; try { ok = sessionStorage.getItem('civette:majeur') === '1'; } catch {}
-    gate.hidden = ok;
-    $('#yes').addEventListener('click', () => { gate.hidden = true; try { sessionStorage.setItem('civette:majeur', '1'); } catch {} });
-    $('#no').addEventListener('click', () => { location.href = 'https://www.tabac-info-service.fr/'; });
-
     function reveal() { const h = innerHeight; document.querySelectorAll('.reveal:not(.in)').forEach((el) => { if (el.getBoundingClientRect().top < h * .92) el.classList.add('in'); }); }
     addEventListener('scroll', reveal, { passive: true }); addEventListener('resize', reveal); reveal();
   </script>
