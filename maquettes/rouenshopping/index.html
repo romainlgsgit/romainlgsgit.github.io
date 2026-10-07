@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rouenshopping — Proposition de site</title>
+  <meta name="description" content="Maquette de refonte de Rouenshopping.com, le guide du commerce rouennais, proposée par Romain Legros." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="author" content="Romain Legros" />
+  <!-- © 2026 Romain Legros (romainlgs). Maquette de démonstration : design et code protégés par le droit d'auteur, reproduction interdite sans accord. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #a3122a; --red-2: #c81d3a; --red-soft: #fbe9ec; --ink: #1b1b1f; --muted: #6b6b75; --bg: #faf8f5; --white: #fff; --line: #e8e4de;
+      --gold: #e2a93b; --green: #2f8a57; --blue: #2f5fa3;
+      --display: 'Fraunces', Georgia, serif; --body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; color: inherit; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding-left: clamp(16px, 4vw, 44px); padding-right: clamp(16px, 4vw, 44px); }
+
+    .demo-bar { background: var(--ink); color: #e4e4ea; font-size: 13px; text-align: center; padding: 9px 16px; }
+    .demo-bar a { color: #fff; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.5); }
+
+    /* Barre utile */
+    .util { background: var(--red); color: #fff; font-size: 13.5px; }
+    .util .wrap { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-top: 7px; padding-bottom: 7px; }
+    .util a { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; background: rgba(255,255,255,.1); transition: background .2s; }
+    .util a:hover { background: rgba(255,255,255,.22); }
+
+    header.top { position: sticky; top: 0; z-index: 40; background: rgba(250,248,245,.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 74px; }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo img { height: 50px; width: auto; }
+    .logo b { font-family: var(--display); font-weight: 700; font-size: 26px; color: var(--red); letter-spacing: -.02em; line-height: 1; }
+    .logo small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 3px; }
+    header nav { display: flex; gap: 26px; font-weight: 600; font-size: 15px; }
+    header nav a:hover { color: var(--red); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 22px; border-radius: 12px; font-weight: 700; font-size: 15px; background: var(--red); color: #fff; border: 2px solid var(--red); transition: .2s; cursor: pointer; white-space: nowrap; }
+    .btn:hover { background: var(--red-2); border-color: var(--red-2); transform: translateY(-1px); }
+    .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+    .btn.ghost:hover { border-color: var(--ink); }
+    .btn.white { background: #fff; color: var(--red); border-color: #fff; }
+    header .btn { padding: 10px 16px; }
+
+    /* Hero */
+    .hero { position: relative; color: #fff; }
+    .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,8,12,.35), rgba(20,8,12,.72)); }
+    .hero .wrap { position: relative; z-index: 2; padding-top: clamp(70px, 10vw, 130px); padding-bottom: clamp(60px, 8vw, 110px); text-align: center; }
+    .hero .since { display: inline-block; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(6px); border-radius: 99px; padding: 6px 14px; font-size: 13.5px; font-weight: 600; }
+    .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(42px, 6.4vw, 86px); line-height: 1; letter-spacing: -.025em; margin: 20px auto 16px; max-width: 900px; }
+    .hero h1 em { font-style: italic; color: #ffd3dc; }
+    .hero p.lead { font-size: 19px; opacity: .92; max-width: 620px; margin: 0 auto; }
+    .search { position: relative; max-width: 720px; margin: 34px auto 0; text-align: left; }
+    .search form { display: flex; background: #fff; border-radius: 16px; padding: 7px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }
+    .search input { flex: 1; min-width: 0; border: 0; padding: 14px 16px; font-size: 17px; color: var(--ink); background: none; }
+    .search input:focus { outline: none; }
+    .search .btn { padding: 13px 22px; }
+    .results { position: absolute; left: 0; right: 0; top: calc(100% + 8px); background: #fff; color: var(--ink); border-radius: 16px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.45); overflow: hidden; z-index: 5; max-height: 380px; overflow-y: auto; }
+    .results a, .results p { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+    .results a:hover, .results a.on { background: var(--red-soft); }
+    .results i { width: 40px; height: 40px; border-radius: 10px; background: var(--red-soft); display: grid; place-items: center; font-style: normal; font-size: 19px; }
+    .results b { display: block; font-size: 15px; }
+    .results small { color: var(--muted); font-size: 13px; }
+    .results em { font-style: normal; font-size: 12px; font-weight: 700; color: var(--red); background: var(--red-soft); padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
+    .results p { grid-template-columns: 1fr; color: var(--muted); font-size: 14.5px; }
+    .quick { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; }
+    .quick button { border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); backdrop-filter: blur(6px); color: #fff; border-radius: 99px; padding: 7px 14px; font-size: 14px; font-weight: 600; cursor: pointer; transition: .2s; }
+    .quick button:hover { background: #fff; color: var(--red); }
+
+    section.block { padding: clamp(70px, 9vw, 120px) 0; }
+    .kicker { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
+    .h2 { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; letter-spacing: -.02em; margin-top: 8px; }
+    .h2 em { font-style: italic; color: var(--red); }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+    .head p { color: var(--muted); max-width: 440px; }
+
+    /* Catégories */
+    .cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .cat { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px; cursor: pointer; transition: .2s; text-align: left; }
+    .cat:hover { border-color: var(--red); transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(163,18,42,.5); }
+    .cat i { width: 50px; height: 50px; border-radius: 14px; background: var(--red-soft); display: grid; place-items: center; font-style: normal; font-size: 24px; flex: none; }
+    .cat b { display: block; font-size: 16px; }
+    .cat small { color: var(--muted); font-size: 13px; }
+
+    /* Annuaire */
+    .dir { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .dir-tools { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; align-items: center; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+    .chips button { border: 1.5px solid var(--line); background: #fff; border-radius: 99px; padding: 8px 14px; font-size: 14px; font-weight: 600; cursor: pointer; transition: .15s; }
+    .chips button:hover { border-color: var(--ink); }
+    .chips button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .toggle input { accent-color: var(--red); width: 17px; height: 17px; }
+    .shops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .shop { border: 1px solid var(--line); border-radius: 16px; padding: 20px; background: var(--bg); display: flex; flex-direction: column; gap: 8px; transition: .2s; }
+    .shop:hover { border-color: var(--red); background: #fff; }
+    .shop .top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+    .shop .tag { font-size: 12px; font-weight: 700; color: var(--red); background: var(--red-soft); padding: 4px 9px; border-radius: 6px; }
+    .shop h3 { font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.15; }
+    .shop p { color: var(--muted); font-size: 14.5px; }
+    .shop .line { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+    .shop .acts { display: flex; gap: 8px; margin-top: auto; padding-top: 8px; flex-wrap: wrap; }
+    .shop .acts a { font-size: 13.5px; font-weight: 700; padding: 7px 12px; border-radius: 9px; border: 1.5px solid var(--line); background: #fff; }
+    .shop .acts a:hover { border-color: var(--red); color: var(--red); }
+    .shop .park { font-size: 12px; font-weight: 700; color: var(--green); background: #e6f3eb; padding: 4px 9px; border-radius: 6px; white-space: nowrap; }
+    .count { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+    .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px 0; }
+
+    /* Bons plans */
+    .deals { display: grid; grid-template-columns: 1.15fr .85fr; grid-template-rows: auto auto; gap: 16px; }
+    .deal { border-radius: 22px; padding: clamp(24px, 3.5vw, 38px); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; }
+    .deal h3 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3vw, 36px); line-height: 1.05; }
+    .deal p { font-size: 15.5px; }
+    .deal ul { list-style: none; display: grid; gap: 6px; font-size: 14.5px; }
+    .deal li::before { content: '✓ '; font-weight: 700; }
+    .deal.coffret { grid-row: span 2; background: var(--red); color: #fff; }
+    .deal.coffret img { width: 100%; max-width: 440px; margin: 6px auto 0; filter: drop-shadow(0 20px 30px rgba(0,0,0,.35)); }
+    .deal.coffret .boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .deal.coffret .box { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); border-radius: 14px; padding: 14px; font-size: 14px; }
+    .deal.coffret .box b { display: block; font-size: 15.5px; margin-bottom: 4px; }
+    .deal.coffret .price { font-family: var(--display); font-size: 44px; font-weight: 700; line-height: 1; }
+    .deal.coffret .price small { font-family: var(--body); font-size: 14px; font-weight: 500; opacity: .85; }
+    .deal.cheque { background: #fff; border: 1px solid var(--line); }
+    .amounts { display: flex; flex-wrap: wrap; gap: 6px; }
+    .amounts button { border: 1.5px solid var(--line); background: #fff; border-radius: 10px; padding: 8px 13px; font-weight: 700; cursor: pointer; }
+    .amounts button.on { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+    .qty { display: flex; align-items: center; gap: 12px; }
+    .qty button { width: 38px; height: 38px; border-radius: 10px; border: 1.5px solid var(--line); background: #fff; font-size: 18px; cursor: pointer; }
+    .qty output { font-weight: 700; min-width: 26px; text-align: center; }
+    .total { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .total b { font-family: var(--display); font-size: 30px; color: var(--red); }
+    .deal.parking { background: #eaf1fb; color: #16325c; }
+    .ticket { display: flex; gap: 10px; }
+    .ticket span { flex: 1; text-align: center; border: 2px dashed #9db6dc; border-radius: 12px; padding: 10px 6px; font-family: var(--display); font-size: 26px; font-weight: 700; color: var(--blue); }
+    .ticket span small { display: block; font-family: var(--body); font-size: 11.5px; font-weight: 600; color: #4b6a99; }
+
+    /* Quartiers */
+    .districts { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; gap: 12px; }
+    .districts figure { position: relative; border-radius: 18px; overflow: hidden; }
+    .districts figure.big { grid-column: span 2; grid-row: span 2; }
+    .districts figure.tall { grid-row: span 2; }
+    .districts img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }
+    .districts figure:hover img { transform: scale(1.05); }
+    .districts figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(transparent, rgba(0,0,0,.75)); color: #fff; font-family: var(--display); font-weight: 600; font-size: 20px; }
+    .comites { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .comites span { background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 8px 15px; font-size: 14px; font-weight: 600; }
+
+    /* Infos pratiques */
+    .prac { background: var(--ink); color: #fff; }
+    .prac .h2 em { color: #ff8da1; }
+    .prac .head p { color: #b7b7c2; }
+    .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .tile { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 6px; transition: .2s; }
+    .tile:hover { background: rgba(255,255,255,.1); transform: translateY(-3px); }
+    .tile i { font-style: normal; font-size: 28px; }
+    .tile b { font-size: 17px; }
+    .tile small { color: #b7b7c2; font-size: 13.5px; }
+    .numbers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+    .numbers a { border: 1px dashed rgba(255,255,255,.2); border-radius: 14px; padding: 14px 16px; font-size: 14px; color: #d4d4dc; }
+    .numbers a b { display: block; color: #fff; font-size: 16px; }
+
+    /* Engagements + newsletter */
+    .engage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .engage div { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+    .engage i { font-style: normal; font-size: 28px; }
+    .engage h3 { font-family: var(--display); font-weight: 600; font-size: 23px; margin: 8px 0 4px; }
+    .engage p { color: var(--muted); font-size: 14.5px; }
+    .news { margin-top: 18px; background: var(--red-soft); border-radius: 22px; padding: clamp(24px, 4vw, 40px); display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; }
+    .news img { height: 100px; width: auto; }
+    .news h3 { font-family: var(--display); font-weight: 700; font-size: 28px; line-height: 1.1; }
+    .news p { color: var(--muted); }
+    .news form { display: flex; gap: 8px; }
+    .news input { border: 1.5px solid var(--line); border-radius: 12px; padding: 13px 15px; min-width: 240px; background: #fff; }
+    .news input:focus { outline: none; border-color: var(--red); }
+
+    footer.foot { background: #fff; border-top: 1px solid var(--line); padding: 54px 0 30px; color: var(--muted); font-size: 14.5px; }
+    footer .cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 30px; }
+    footer h4 { color: var(--ink); font-size: 14.5px; margin-bottom: 12px; }
+    footer .cols a { display: block; padding: 3px 0; }
+    footer .cols a:hover { color: var(--red); }
+    footer .legal { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; line-height: 1.7; }
+    footer .legal a { color: var(--ink); text-decoration: underline; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: var(--ink); color: #fff; padding: 13px 20px; border-radius: 12px; font-size: 14.5px; opacity: 0; transition: .3s; z-index: 90; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .wm { position: fixed; inset: 0; z-index: 100; pointer-events: none; user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='220'%3E%3Ctext x='170' y='110' text-anchor='middle' dominant-baseline='middle' transform='rotate(-28 170 110)' font-family='Georgia,serif' font-style='italic' font-size='26' fill='%23808080' fill-opacity='.13'%3Emaquette · romainlgs%3C/text%3E%3C/svg%3E"); }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s, transform .8s cubic-bezier(.2,.8,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 1060px) {
+      header nav { display: none; }
+      .cats { grid-template-columns: repeat(2, 1fr); }
+      .shops { grid-template-columns: repeat(2, 1fr); }
+      .deals { grid-template-columns: 1fr; }
+      .deal.coffret { grid-row: auto; }
+      .districts { grid-template-columns: repeat(2, 1fr); }
+      .tiles, .numbers { grid-template-columns: repeat(2, 1fr); }
+      .news { grid-template-columns: 1fr; text-align: center; }
+      .news img { margin: 0 auto; }
+      .news form { justify-content: center; }
+      footer .cols { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .logo img { height: 42px; }
+      .logo b { font-size: 22px; }
+      .logo small { display: none; }
+      .search form { flex-direction: column; gap: 6px; }
+      header .btn { padding: 9px 12px; font-size: 13.5px; }
+      .dir-tools { display: grid; grid-template-columns: minmax(0, 1fr); }
+      .chips { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none; }
+      .chips button { flex: none; }
+      .search .btn { width: 100%; }
+      .cats { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .cat { flex-direction: column; align-items: flex-start; padding: 14px; gap: 10px; }
+      .shops { grid-template-columns: 1fr; }
+      .deal.coffret .boxes { grid-template-columns: 1fr; }
+      .districts { grid-auto-rows: 150px; }
+      .districts figure.big { grid-column: span 2; grid-row: span 2; }
+      .tiles, .numbers, .engage { grid-template-columns: 1fr; }
+      .news form { flex-direction: column; }
+      .news input { min-width: 0; width: 100%; }
+      footer .cols { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Proposition de refonte réalisée par Romain Legros pour Rouenshopping · maquette avec de vrais commerces de votre annuaire. <a href="../../">Voir mon portfolio →</a></div>
+  <div class="util">
+    <div class="wrap">
+      <a href="#pratique">💊 Pharmacie de garde</a><a href="#pratique">🅿️ Parkings</a><a href="#pratique">🧺 Marchés</a><a href="#pratique">🎬 Cinémas</a><a href="https://www.reseau-astuce.fr/" target="_blank" rel="noopener">🚇 Métro-bus</a><a href="#pratique">🚲 Stations Cy'clic</a><a href="#pratique">🏧 Distributeurs</a>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#"><img src="img/groom.png" alt="" /><span><b>Rouenshopping</b><small>Le guide du commerce rouennais depuis 1997</small></span></a>
+      <nav>
+        <a href="#annuaire">Commerces</a>
+        <a href="#bons-plans">Bons plans</a>
+        <a href="#quartiers">Quartiers</a>
+        <a href="#pratique">Infos pratiques</a>
+      </nav>
+      <a class="btn" href="#bons-plans">Bons plans</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="img/gros-horloge-ballons.webp" alt="La rue du Gros-Horloge animée, à Rouen" />
+    <div class="wrap">
+      <span class="since">Le premier réseau du commerce rouennais, depuis 1997</span>
+      <h1>Tout le commerce de Rouen, <em>en un clic.</em></h1>
+      <p class="lead">Boutiques, artisans, restaurants et services du centre-ville : trouvez la bonne adresse, profitez des bons plans et faites vivre le commerce local.</p>
+      <div class="search">
+        <form id="sform" role="search">
+          <input id="q" type="search" placeholder="Une boutique, une marque, un produit… ex. fromagerie" autocomplete="off" aria-label="Rechercher un commerce" />
+          <button class="btn" type="submit">Rechercher</button>
+        </form>
+        <div class="results" id="results" hidden></div>
+      </div>
+      <div class="quick"><button type="button" data-q="fromagerie">🧀 Fromageries</button><button type="button" data-q="épicerie">🫙 Épiceries fines</button><button type="button" data-q="bijoux">💍 Bijoux</button><button type="button" data-q="chaussures">👞 Chaussures</button><button type="button" data-q="chocolat">🍫 Chocolat</button></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Explorer</p><h2 class="h2">Que cherchez-vous <em>aujourd'hui ?</em></h2></div>
+        <p>Plus de 50 catégories, du fromager au maroquinier, pour trouver la bonne adresse au coin de la rue.</p>
+      </div>
+      <div class="cats reveal" id="cats"></div>
+    </div>
+  </section>
+
+  <section class="block dir" id="annuaire">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">L'annuaire</p><h2 class="h2">Les commerces <em>près de chez vous</em></h2></div>
+        <p>Une sélection de commerces référencés sur Rouenshopping. Filtrez par univers ou par avantage.</p>
+      </div>
+      <div class="dir-tools">
+        <div class="chips" id="chips"></div>
+        <label class="toggle"><input type="checkbox" id="park" /> 🅿️ Offre le chèque parking</label>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="shops" id="shops"></div>
+      <div style="text-align:center;margin-top:22px"><button class="btn ghost" type="button" id="more">Voir plus de commerces</button></div>
+    </div>
+  </section>
+
+  <section class="block" id="bons-plans">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Bons plans</p><h2 class="h2">Offrir et consommer <em>100 % rouennais</em></h2></div>
+        <p>Des cadeaux qui font vivre les commerçants de la ville, sans aucune commission prélevée.</p>
+      </div>
+      <div class="deals">
+        <article class="deal coffret reveal">
+          <p class="kicker" style="color:#ffd3dc">Coffrets cadeau · édition limitée</p>
+          <h3>Le meilleur du commerce rouennais, dans une boîte en métal</h3>
+          <div class="boxes">
+            <div class="box"><b>🍫 Rendez-vous dégustations</b>4 expériences gourmandes : Chocôlat, La Vie en Vrac, Magellano, Saveurs &amp; Cie.</div>
+            <div class="box"><b>🎲 Rendez-vous loisirs</b>3 expériences originales : Faire Play, L'Hachez Vous, Cité Immersive Viking.</div>
+          </div>
+          <img src="img/coffrets.png" alt="Les deux coffrets cadeau Rouenshopping" loading="lazy" />
+          <div class="total"><span class="price">39 € <small>TTC le coffret · valable jusqu'au 31/12/2026</small></span><button class="btn white" type="button" data-toast="Coffret ajouté ! (démo)">Commander un coffret</button></div>
+        </article>
+        <article class="deal cheque reveal">
+          <p class="kicker">Chèques cadeau</p>
+          <h3>Valables chez tous les commerçants partenaires</h3>
+          <div class="amounts" id="amounts"></div>
+          <div class="total">
+            <div class="qty"><button type="button" data-q-d="-1" aria-label="Moins">−</button><output id="qty">5</output><button type="button" data-q-d="1" aria-label="Plus">+</button><span style="color:var(--muted);font-size:14px">chèques</span></div>
+            <b id="total">125 €</b>
+          </div>
+          <ul><li>Personnalisables avec le logo de votre entreprise</li><li>Valables 6 mois</li><li>Remboursés à 100 % aux commerçants</li></ul>
+          <button class="btn" type="button" data-toast="Commande prête ! (démo : aucun paiement)">Commander mes chèques</button>
+        </article>
+        <article class="deal parking reveal">
+          <p class="kicker" style="color:var(--blue)">Chèque parking</p>
+          <h3>Votre stationnement moins cher</h3>
+          <p>Demandez votre chèque parking chez les commerçants participants : 1 € de réduction, cumulable jusqu'à 3 fois par stationnement.</p>
+          <div class="ticket"><span>1 €<small>1 chèque</small></span><span>2 €<small>2 chèques</small></span><span>3 €<small>3 chèques</small></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="quartiers" style="padding-top:0">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker">Les quartiers</p><h2 class="h2">Flâner dans <em>le Rouen commerçant</em></h2></div>
+        <p>Histoire, anecdotes et événements : découvrez les quartiers à travers leurs comités commerciaux.</p>
+      </div>
+      <div class="districts reveal">
+        <figure class="big"><img src="img/cathedrale-depuis-gros-horloge.webp" alt="" loading="lazy" /><figcaption>La cathédrale depuis le Gros-Horloge</figcaption></figure>
+        <figure><img src="img/vieux-marche.webp" alt="" loading="lazy" /><figcaption>Place du Vieux-Marché</figcaption></figure>
+        <figure class="tall"><img src="img/saint-romain-cc0.webp" alt="" loading="lazy" /><figcaption>Rue Saint-Romain</figcaption></figure>
+        <figure><img src="img/damiette-2021.webp" alt="" loading="lazy" /><figcaption>Rue Damiette</figcaption></figure>
+        <figure class="tall"><img src="img/colombages-01.webp" alt="" loading="lazy" /><figcaption>Maisons à colombages</figcaption></figure>
+        <figure><img src="img/cathedrale-28.webp" alt="" loading="lazy" /><figcaption>Notre-Dame de Rouen</figcaption></figure>
+        <figure><img src="img/colombages-02.webp" alt="" loading="lazy" /><figcaption>Le centre historique</figcaption></figure>
+      </div>
+      <div class="comites reveal"><span>Augustins Molière</span><span>Beauvoisine</span><span>Cathédr'halles aux toiles</span><span>Champmeslé</span><span>Général Leclerc Ouest</span><span>Grand Pont Savonnerie</span><span>Saint-Nicolas</span><span>Vicomté-Pucelle</span><span>Village Saint-Marc</span></div>
+    </div>
+  </section>
+
+  <section class="block prac" id="pratique">
+    <div class="wrap">
+      <div class="head reveal">
+        <div><p class="kicker" style="color:#ff8da1">Infos pratiques</p><h2 class="h2">Votre journée en ville, <em>simplifiée</em></h2></div>
+        <p>Parkings, marchés, pharmacies de garde, transports : tout ce qu'il faut pour venir en centre-ville.</p>
+      </div>
+      <div class="tiles reveal">
+        <a class="tile" href="#"><i>💊</i><b>Pharmacie de garde</b><small>Celle ouverte aujourd'hui, au plus près</small></a>
+        <a class="tile" href="#"><i>🅿️</i><b>Parkings</b><small>Localisation et parkings partenaires</small></a>
+        <a class="tile" href="#"><i>🧺</i><b>Marchés</b><small>Horaires et lieux des marchés</small></a>
+        <a class="tile" href="#"><i>🎬</i><b>Cinémas</b><small>Les salles de Rouen</small></a>
+        <a class="tile" href="https://www.reseau-astuce.fr/" target="_blank" rel="noopener"><i>🚇</i><b>Métro &amp; bus</b><small>Itinéraires sur le réseau Astuce</small></a>
+        <a class="tile" href="#"><i>🚲</i><b>Stations Cy'clic</b><small>Vélos en libre-service</small></a>
+        <a class="tile" href="#"><i>🏧</i><b>Distributeurs</b><small>LCL et Société Générale</small></a>
+        <a class="tile" href="#annuaire"><i>🛒</i><b>Acheter en ligne</b><small>Les e-commerces rouennais</small></a>
+      </div>
+      <div class="numbers reveal">
+        <a href="tel:+33975778595"><b>09 75 77 85 95</b>Rouenshopping</a>
+        <a href="tel:+33233015852"><b>02 33 01 58 52</b>SOS Médecins</a>
+        <a href="tel:+33892705705"><b>0892 705 705</b>Vol de carte bancaire, 24h/24</a>
+        <a href="tel:+33892683208"><b>0892 68 32 08</b>Vol de chéquier, 24h/24</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal"><div><p class="kicker">Rouenshopping s'engage</p><h2 class="h2">Un commerce <em>plus responsable</em></h2></div></div>
+      <div class="engage reveal">
+        <div><i>🍀</i><h3>Environnement</h3><p>Des outils pour aider les commerçants rouennais à prendre soin de l'environnement.</p></div>
+        <div><i>♿</i><h3>Accessibilité</h3><p>Encourager les commerces à mieux accueillir les personnes à mobilité réduite.</p></div>
+        <div><i>❤️</i><h3>Solidarité</h3><p>Agir pour rendre le commerce rouennais plus solidaire.</p></div>
+      </div>
+      <div class="news reveal">
+        <img src="img/groom.png" alt="" />
+        <div><h3>Les bons plans, avant tout le monde</h3><p>Recevez les offres exclusives des commerçants rouennais.</p></div>
+        <form id="nl"><input type="email" required placeholder="Votre adresse e-mail" aria-label="E-mail" /><button class="btn" type="submit">Je m'inscris</button></form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="cols">
+        <div><a class="logo" href="#"><img src="img/groom.png" alt="" /><span><b>Rouenshopping</b></span></a><p style="margin-top:12px">Édité par la Chambre Commerciale et Artisanale de Rouen · 11 rue de la Champmeslé, 76000 Rouen</p></div>
+        <div><h4>Commerces</h4><a href="#annuaire">Annuaire</a><a href="#annuaire">Acheter en ligne</a><a href="#quartiers">Comités commerciaux</a></div>
+        <div><h4>Bons plans</h4><a href="#bons-plans">Coffrets cadeau</a><a href="#bons-plans">Chèques cadeau</a><a href="#bons-plans">Chèque parking</a></div>
+        <div><h4>Contact</h4><a href="tel:+33975778595">09 75 77 85 95</a><a href="mailto:contact@rouenshopping.com">contact@rouenshopping.com</a><a href="https://www.facebook.com/rouenshopping" target="_blank" rel="noopener">Facebook</a></div>
+      </div>
+      <p class="legal">© 2026 <a href="../../">Romain Legros</a> · Design et code de cette maquette protégés : reproduction interdite sans accord. Contenus, logo et commerces : Rouenshopping / CCAR.<br />
+      Photos via Wikimedia Commons : DimiTalen (CC0), DXR (CC BY-SA 3.0), CEphoto, Uwe Aranas (CC BY-SA 3.0), Supercarwaar (CC BY-SA 4.0), Chabe01 (CC BY-SA 4.0), Fab5669 (CC BY-SA 4.0).</p>
+    </div>
+  </footer>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <div class="wm" aria-hidden="true"></div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+    const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    let toastT;
+    function toast(m) { const t = $('.toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800); }
+
+    /* Données : commerces référencés sur rouenshopping.com */
+    const U = { ali: ['Alimentation', '🧺'], mode: ['Mode & accessoires', '👗'], maison: ['Maison & déco', '🛋️'], loisirs: ['Loisirs & culture', '🎨'], resto: ['Restaurants & hôtels', '🍽️'] };
+    const SHOPS = [
+      ['La Fromagerie des Halles', 'ali', 'Fromagerie, traiteur', 'Halles du Vieux-Marché', '02 35 71 18 40', null, true],
+      ['Fromagerie du Vieux Marché', 'ali', 'Fromagerie', '18 rue Rollon', '02 35 71 11 00'],
+      ['Fromagerie Olivier', 'ali', 'Fromagerie', '40 rue de l\'Hôpital', '02 35 71 10 40', null, true],
+      ['Le Bar Bickett', 'ali', 'Fromagerie, restaurant', '87 rue Beauvoisine', '09 56 05 84 69'],
+      ['Les Fromages de Steven', 'ali', 'Fromagerie', '1 place de la Croix de Pierre', '02 35 15 06 26'],
+      ['Ma Fromagerie', 'ali', 'Fromagerie', '31 rue Armand Carrel', '02 35 88 56 03'],
+      ['Maison Jollit', 'ali', 'Fromager affineur', 'Halles du Vieux-Marché', '02 35 88 72 13', null, true],
+      ['Maison Pinel', 'ali', 'Épicerie fine · près de 300 produits normands', null, null, 'https://www.maisonpinel.fr/'],
+      ['La Vie en Vrac', 'ali', 'Épicerie vrac · thés, épices, produits normands', null, null, 'http://epicerielavieenvrac.com/'],
+      ['Le Fruitier des Halles', 'ali', 'Fruits et légumes sélectionnés chaque matin', null, null, 'https://www.lefruitierdeshalles.fr/'],
+      ['ChocÔlat', 'ali', 'Chocolaterie, confiserie', null, null, 'http://www.chocolat-rouen.com/'],
+      ['MarieTralala', 'mode', 'Mode femme, accessoires et bijoux', '19 rue Croix de Fer', '02 76 08 65 81', 'https://www.montralala.com/'],
+      ['Le Comptoir', 'mode', 'Prêt-à-porter féminin · personal shopper', null, null, 'https://le-comptoir-rouen.com/'],
+      ['Phil Grif', 'mode', 'Chaussures petites et grandes pointures', null, null, 'http://www.philgrif.fr/'],
+      ['LNK', 'mode', 'Bijoux fantaisie faits main', null, null, 'http://www.lnk-creation.fr/'],
+      ['Bleu Lilas', 'mode', 'Bijoux fantaisie et accessoires', null, null, 'http://www.boutique-bleulilas.com/'],
+      ['Balenzo', 'mode', 'Maroquinerie', null, null, 'http://www.balenzo.com/'],
+      ['Sophie Danse', 'mode', 'Articles de danse, robes latines et standard', '8 place de la Haute Vieille Tour', '09 73 26 62 08', 'https://www.sophiedanse.com/'],
+      ['Francel Luminaires', 'maison', 'Luminaires de tous les styles', null, null, 'https://www.francel-luminaires-rouen.com/'],
+      ['Marc Moileu', 'maison', 'Objets et textiles personnalisables', null, null, 'http://www.marcmoileu.fr/'],
+      ['Scripte', 'loisirs', 'Stylos de prestige, agendas, maroquinerie', null, null, 'http://www.scripte-rouen.com/'],
+      ['L\'Atelier des Arts', 'loisirs', 'Beaux-arts et encadrement', null, null, 'http://www.latelier-des-arts.com/'],
+      ['Médium Musique', 'loisirs', 'Instruments de musique', null, null, 'https://www.medium-musique-mlinet-lpa.fr/'],
+      ['Grand Hôtel de la Seine', 'resto', 'Hôtel, restaurant, séminaires', '14 quai Gaston Boulet', '02 35 15 25 25', 'http://hotelseinerouen.com/'],
+      ['Le Stromboli', 'resto', 'Pizzas aux produits frais, pâte italienne', '41 rue Saint-Étienne-des-Tonneliers', '02 32 08 49 50'],
+    ];
+
+    /* Catégories */
+    const CATS = [['🧀', 'Alimentation', 'Fromagers, épiceries, primeurs', 'ali'], ['👗', 'Mode', 'Prêt-à-porter, chaussures, bijoux', 'mode'], ['🛋️', 'Maison & déco', 'Luminaires, décoration', 'maison'], ['🎨', 'Loisirs & culture', 'Musique, arts, papeterie', 'loisirs'], ['🍽️', 'Restaurants & hôtels', 'Pour une pause ou une nuit', 'resto'], ['💇', 'Beauté', 'Coiffeurs, instituts, parfumeries', null], ['🎁', 'Cadeaux', 'Idées cadeaux 100 % locales', null], ['🛠️', 'Services', 'Pressings, cordonniers, imprimeurs', null]];
+    $('#cats').innerHTML = CATS.map(([i, t, s, k]) => `<button class="cat" type="button" data-k="${k || ''}"><i>${i}</i><span><b>${t}</b><small>${s}</small></span></button>`).join('');
+    $('#cats').addEventListener('click', (e) => {
+      const b = e.target.closest('.cat'); if (!b) return;
+      if (!b.dataset.k) { toast('Catégorie disponible sur le site final'); return; }
+      setFilter(b.dataset.k); $('#annuaire').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    /* Annuaire */
+    let filter = 'all', parkOnly = false, shown = 9;
+    $('#chips').innerHTML = [['all', 'Tout'], ...Object.entries(U).map(([k, v]) => [k, v[0]])].map(([k, l]) => `<button type="button" data-f="${k}" class="${k === 'all' ? 'on' : ''}">${l}</button>`).join('');
+    function card([n, k, d, addr, tel, web, park]) {
+      return `<article class="shop"><div class="top"><span class="tag">${U[k][1]} ${U[k][0]}</span>${park ? '<span class="park">🅿️ Chèque parking</span>' : ''}</div>
+        <h3>${n}</h3><p>${d}</p>${addr ? `<span class="line">📍 ${addr}, 76000 Rouen</span>` : '<span class="line">🛒 Achat en ligne disponible</span>'}
+        <div class="acts">${tel ? `<a href="tel:${tel.replace(/\s/g, '')}">📞 ${tel}</a>` : ''}${web ? `<a href="${web}" target="_blank" rel="noopener">Site web ↗</a>` : ''}${addr ? `<a href="https://maps.google.com/?q=${encodeURIComponent(n + ', ' + addr + ', Rouen')}" target="_blank" rel="noopener">Itinéraire</a>` : ''}</div></article>`;
+    }
+    function render() {
+      const list = SHOPS.filter((s) => (filter === 'all' || s[1] === filter) && (!parkOnly || s[6]));
+      $('#shops').innerHTML = list.length ? list.slice(0, shown).map(card).join('') : '<p class="empty">Aucun commerce ne correspond.</p>';
+      $('#more').hidden = list.length <= shown;
+      $('#count').textContent = `${list.length} commerce${list.length > 1 ? 's' : ''}`;
+    }
+    function setFilter(k) { filter = k; shown = 9; $$('#chips button').forEach((b) => b.classList.toggle('on', b.dataset.f === k)); render(); }
+    $('#chips').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) setFilter(b.dataset.f); });
+    $('#park').addEventListener('change', (e) => { parkOnly = e.target.checked; shown = 9; render(); });
+    $('#more').addEventListener('click', () => { shown += 9; render(); });
+    render();
+
+    /* Recherche instantanée */
+    const q = $('#q'), res = $('#results');
+    function search(v) {
+      const t = norm(v.trim());
+      if (t.length < 2) { res.hidden = true; return; }
+      const hits = SHOPS.filter((s) => norm(`${s[0]} ${s[2]} ${U[s[1]][0]}`).includes(t.replace(/s$/, ''))).slice(0, 7);
+      res.innerHTML = hits.length ? hits.map((s) => `<a href="${s[5] || '#annuaire'}" ${s[5] ? 'target="_blank" rel="noopener"' : ''}><i>${U[s[1]][1]}</i><span><b>${s[0]}</b><small>${s[2]}${s[3] ? ' · ' + s[3] : ''}</small></span>${s[6] ? '<em>🅿️ -1 €</em>' : ''}</a>`).join('') : `<p>Aucun résultat pour « ${v} » dans cette démo. Sur le vrai site, la recherche couvre tout l'annuaire.</p>`;
+      res.hidden = false;
+    }
+    q.addEventListener('input', () => search(q.value));
+    $('#sform').addEventListener('submit', (e) => { e.preventDefault(); search(q.value); });
+    $$('.quick button').forEach((b) => b.addEventListener('click', () => { q.value = b.dataset.q; search(q.value); q.focus(); }));
+    document.addEventListener('click', (e) => { if (!e.target.closest('.search')) res.hidden = true; });
+
+    /* Chèques cadeau */
+    const AM = [10, 15, 25, 30, 40, 50];
+    let amount = 25, qty = 5;
+    $('#amounts').innerHTML = AM.map((a) => `<button type="button" data-a="${a}" class="${a === amount ? 'on' : ''}">${a} €</button>`).join('');
+    function upd() { $('#qty').textContent = qty; $('#total').textContent = (amount * qty).toLocaleString('fr-FR') + ' €'; }
+    $('#amounts').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; amount = +b.dataset.a; $$('#amounts button').forEach((x) => x.classList.toggle('on', x === b)); upd(); });
+    $$('[data-q-d]').forEach((b) => b.addEventListener('click', () => { qty = Math.max(1, Math.min(500, qty + +b.dataset.qD)); upd(); }));
+    upd();
+
+    $$('[data-toast]').forEach((b) => b.addEventListener('click', () => toast(b.dataset.toast)));
+    $('#nl').addEventListener('submit', (e) => { e.preventDefault(); e.target.reset(); toast('Inscription confirmée ! (démo)'); });
+
+    const io = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .08 });
+    $$('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
